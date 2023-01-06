@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.shadow-inner-lg {
+  --tw-shadow: inset 0 0px 128px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: inset 0 4px 8px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
