@@ -48,6 +48,7 @@ export default class Tab {
         <div
           class="h-5 w-5 flex items-center justify-center hover:bg-neutral-500 opacity-50 transition-all rounded text-xs"
           onClick={this.close.bind(this)}
+          onMouseDown={(e) => e.stopPropagation()}
         >
           <i class="fa-regular fa-xmark text-xs mt-[2px]"></i>
         </div>
@@ -87,6 +88,9 @@ export default class Tab {
     if (tabs().length === 1) {
       new Tab();
     }
+    document
+      .querySelector<HTMLDivElement>("#content")
+      ?.removeChild(this.iframe);
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
     Array.from(tabStack())[0].focus = true;
