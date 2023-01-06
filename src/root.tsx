@@ -20,8 +20,9 @@ export default function Root() {
         <Title>Tabs</Title>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="/pro.fontawesome.js" defer></script>
       </Head>
-      <Body>
+      <Body class="h-screen">
         <Suspense>
           <ErrorBoundary>
             <Routes>

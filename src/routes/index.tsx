@@ -1,9 +1,12 @@
-import Header from "~/components/Header";
+import Tabs from "~/components/Tabs";
+import Utility from "~/components/Utility";
 
 export default function Home() {
   return (
-    <main class="">
-      <Header />
+    <main class="h-full flex flex-col">
+      <Tabs />
+      <Utility />
+      <main id="content" class="w-full bg-[#2B2A33] flex-1"></main>
     </main>
   );
 }
