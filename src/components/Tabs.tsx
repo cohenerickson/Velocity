@@ -10,13 +10,13 @@ export default function Header(): JSX.Element {
       console.log(new Tab(url, true));
       window.history.replaceState({}, document.title, "/");
     } else {
-      console.log(new Tab("https://radon.games/", true));
+      console.log(new Tab("local://newTab", true));
     }
   });
 
   // still a bit buggy here
   function makeTab() {
-    new Tab("chrome://newTab", true);
+    new Tab("local://newTab", true);
     setTabs([...tabs()]);
   }
 

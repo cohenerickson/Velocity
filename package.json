@@ -1,13 +1,14 @@
 {
   "name": "tabs",
   "scripts": {
-    "dev": "solid-start dev",
+    "dev": "concurrently \"bare-server-node --host=127.0.0.1 --port=8080\" \"solid-start dev --host\"",
     "build": "solid-start build",
     "start": "solid-start start"
   },
   "type": "module",
   "devDependencies": {
     "autoprefixer": "^10.4.12",
+    "concurrently": "^7.6.0",
     "postcss": "^8.4.18",
     "solid-start-node": "^0.2.0",
     "tailwindcss": "^3.2.0",
@@ -17,11 +18,12 @@
   "dependencies": {
     "@solidjs/meta": "^0.28.0",
     "@solidjs/router": "^0.6.0",
+    "@tomphttp/bare-server-node": "^1.2.2",
     "solid-js": "^1.6.2",
     "solid-start": "^0.2.0",
     "undici": "^5.11.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }

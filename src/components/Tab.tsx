@@ -1,43 +1,68 @@
 import { JSX, Setter, Accessor, createSignal, onMount } from "solid-js";
 import { tabs, setTabs, tabStack, setTabStack } from "~/data/appState";
-import localProto from "~/util/protocol";
+import keybinds from "~/util/keybinds";
+import * as urlUtil from "~/util/url";
+import handleClick from "~/util/clickHandler";
+
+interface ProxyWindow extends Window {
+  __uv$location: Location;
+}
 
 export default class Tab {
   element: JSX.Element;
   iframe: HTMLIFrameElement = document.createElement("iframe");
   id: number = Math.floor(Math.random() * 1000000000000000000);
-  #title: [Accessor<string>, Setter<string>];
-  #icon: [Accessor<string>, Setter<string>];
-  #focus: [Accessor<boolean>, Setter<boolean>];
-  history: string[] = [];
-  historyIndex: number = 0;
+  #pinned: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
+  #small: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
+  #title: [Accessor<string>, Setter<string>] = createSignal<string>("");
+  #url: [Accessor<string>, Setter<string>] = createSignal<string>("");
+  #search: [Accessor<string | boolean>, Setter<string | boolean>] =
+    createSignal<string | boolean>(false);
+  #icon: [Accessor<string>, Setter<string>] = createSignal<string>("");
+  #focus: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
 
   constructor(url?: string, isActive?: boolean) {
-    const title = createSignal<string>("New Tab");
-    this.#title = title;
-    const icon = createSignal<string>(
-      "https://www.mozilla.org/media/protocol/img/logos/firefox/browser/logo.eb1324e44442.svg"
-    );
-    this.#icon = icon;
-    const focus = createSignal<boolean>(false);
-    this.#focus = focus;
-
+    // Add tab to stack
     setTabs([...tabs(), this]);
+    if (isActive) {
+      this.focus = true;
+      setTabStack(new Set([this, ...tabStack()]));
+    } else {
+      setTabStack(new Set([...tabStack(), this]));
+    }
 
+    // initialize iframe
+    this.iframe.classList.add("w-full", "h-full", "border-0");
+    document
+      .querySelector<HTMLDivElement>("#content")
+      ?.appendChild(this.iframe);
+    this.navigate(url || "local:///newTab");
+    requestAnimationFrame(this.#updateDetails.bind(this));
+
+    // initialize tab element
     this.element = (
       <div
+        ref={this.#dragHandle.bind(this)}
         class={`text-white h-full ${
           this.#focus[0]() ? "bg-[#52525E]" : "hover:bg-[#35343A]"
-        } w-48 p-2 flex items-center gap-2 text-xs rounded shadow-inner-lg overflow-hidden transition-all`}
+        } ${
+          this.#pinned[0]() || this.#small[0]() ? "" : "w-48"
+        } p-2 flex items-center gap-2 text-xs rounded shadow-inner-lg overflow-hidden transition-all`}
         onMouseDown={() => {
           this.focus = true;
         }}
       >
         <div
-          class="w-4 h-4 bg-cover bg-no-repeat"
+          class={`w-4 h-4 bg-cover bg-no-repeat ${
+            this.#small[0]() && this.focus ? "hidden" : ""
+          }`}
           style={`background-image: url("${this.#icon[0]()}")`}
         ></div>
-        <div class="flex-1 overflow-hidden">
+        <div
+          class={`flex-1 overflow-hidden ${
+            this.#small[0]() || this.#pinned[0]() ? "hidden" : ""
+          }`}
+        >
           <p
             class="text-clip whitespace-nowrap w-full"
             style="-webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);"
@@ -46,7 +71,11 @@ export default class Tab {
           </p>
         </div>
         <div
-          class="h-5 w-5 flex items-center justify-center hover:bg-neutral-500 opacity-50 transition-all rounded text-xs"
+          class={`h-4 w-4 flex items-center justify-center hover:bg-neutral-500 opacity-50 transition-all rounded text-xs ${
+            (this.#small[0]() && !this.focus) || this.#pinned[0]()
+              ? "hidden"
+              : ""
+          }`}
           onClick={this.close.bind(this)}
           onMouseDown={(e) => e.stopPropagation()}
         >
@@ -54,31 +83,31 @@ export default class Tab {
         </div>
       </div>
     );
-    setTabStack(new Set([this, ...tabStack()]));
-
-    if (isActive) {
-      this.focus = true;
-    }
-
-    this.iframe.classList.add("w-full", "h-full", "border-0");
-    document
-      .querySelector<HTMLDivElement>("#content")
-      ?.appendChild(this.iframe);
-
-    this.navigate(url || "chrome:///newTab");
   }
 
-  navigate(url: string) {
-    const location = localProto.get(url.replace("chrome://", "")) || url;
-    this.iframe.src = location;
-    this.#historyPush(url);
+  goBack() {
+    this.iframe.contentWindow?.history.back();
   }
 
-  #historyPush(url: string) {
-    if (this.historyIndex !== this.history.length - 1) {
-      this.history = this.history.slice(0, this.historyIndex + 1);
-    }
-    this.history.push(url);
+  goForward() {
+    this.iframe.contentWindow?.history.forward();
+  }
+
+  pin() {}
+
+  reload() {
+    this.iframe.contentWindow?.location.reload();
+  }
+
+  navigate(query: string) {
+    let url = urlUtil.generateProxyUrl(query);
+
+    // bind events & inject scripts
+    this.iframe.onload = () => {
+      this.iframe.contentWindow?.addEventListener("keydown", keybinds);
+      this.iframe.contentWindow?.addEventListener("click", handleClick);
+    };
+    this.iframe.src = url;
   }
 
   close(event?: MouseEvent): void {
@@ -86,7 +115,7 @@ export default class Tab {
       event.stopPropagation();
     }
     if (tabs().length === 1) {
-      new Tab();
+      new Tab("local://newTab", true);
     }
     document
       .querySelector<HTMLDivElement>("#content")
@@ -94,6 +123,37 @@ export default class Tab {
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
     Array.from(tabStack())[0].focus = true;
+  }
+
+  #dragHandle(element: HTMLDivElement): void {}
+
+  #updateDetails(): void {
+    this.#url[1](
+      urlUtil.normalize(
+        (this.iframe.contentWindow as ProxyWindow)?.__uv$location?.toString() ||
+          this.iframe.src
+      )
+    );
+
+    this.title = this.iframe.contentDocument?.title || this.#url[0]();
+
+    this.icon =
+      this.iframe.contentDocument?.querySelector<HTMLLinkElement>(
+        "link[rel='icon']"
+      )?.href || "";
+
+    this.#url[1](
+      urlUtil.normalize(
+        (this.iframe.contentWindow as ProxyWindow)?.__uv$location?.toString() ||
+          this.iframe.src
+      )
+    );
+
+    setTimeout(this.#updateDetails.bind(this), 100);
+  }
+
+  get url(): Accessor<string> {
+    return this.#url[0];
   }
 
   set focus(value: boolean) {
@@ -110,6 +170,22 @@ export default class Tab {
 
   get focus(): boolean {
     return this.#focus[0]();
+  }
+
+  get search(): Accessor<string | boolean> {
+    return this.#search[0];
+  }
+
+  set search(value: string | boolean | Accessor<string | boolean>) {
+    this.#search[1](value);
+  }
+
+  get pinned(): boolean {
+    return this.#pinned[0]();
+  }
+
+  set pinned(value: boolean) {
+    this.#pinned[1](value);
   }
 
   get title(): string {
