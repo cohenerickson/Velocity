@@ -22,15 +22,6 @@ export default class Tab {
   #focus: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
 
   constructor(url?: string, isActive?: boolean) {
-    // Add tab to stack
-    setTabs([...tabs(), this]);
-    if (isActive) {
-      this.focus = true;
-      setTabStack(new Set([this, ...tabStack()]));
-    } else {
-      setTabStack(new Set([...tabStack(), this]));
-    }
-
     // initialize iframe
     this.iframe.classList.add("w-full", "h-full", "border-0");
     document
@@ -83,6 +74,15 @@ export default class Tab {
         </div>
       </div>
     );
+
+    // Add tab to stack
+    setTabs([...tabs(), this]);
+    if (isActive) {
+      this.focus = true;
+      setTabStack(new Set([this, ...tabStack()]));
+    } else {
+      setTabStack(new Set([...tabStack(), this]));
+    }
   }
 
   goBack() {
@@ -106,6 +106,11 @@ export default class Tab {
     this.iframe.onload = () => {
       this.iframe.contentWindow?.addEventListener("keydown", keybinds);
       this.iframe.contentWindow?.addEventListener("click", handleClick);
+      (this.iframe.contentWindow || ({} as { open: any })).open = (
+        url: string
+      ) => {
+        new Tab(url, true);
+      };
     };
     this.iframe.src = url;
   }
@@ -157,6 +162,11 @@ export default class Tab {
   }
 
   set focus(value: boolean) {
+    /*
+      We also need to store the scroll position for each iframe because when they get hidden and then
+      un-hidden the scroll position gets reset, this seems to be a bug with browsers and not a result
+      of the code here.
+    */
     if (value) {
       tabs().forEach((tab) => {
         tab.focus = false;

@@ -1,5 +1,5 @@
 import { JSX, onMount } from "solid-js";
-import { setTabs, tabs } from "~/data/appState";
+import { tabs } from "~/data/appState";
 import Tab from "./Tab";
 
 export default function Header(): JSX.Element {
@@ -14,10 +14,8 @@ export default function Header(): JSX.Element {
     }
   });
 
-  // still a bit buggy here
   function makeTab() {
     new Tab("local://newTab", true);
-    setTabs([...tabs()]);
   }
 
   return (
