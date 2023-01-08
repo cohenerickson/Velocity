@@ -142,10 +142,18 @@ export default class Tab {
 
     this.title = this.iframe.contentDocument?.title || this.#url[0]();
 
-    this.icon =
-      this.iframe.contentDocument?.querySelector<HTMLLinkElement>(
-        "link[rel='icon']"
-      )?.href || "";
+    let ico = this.iframe.contentDocument?.querySelector<HTMLLinkElement>(
+      "link[rel='favicon'], link[rel='shortcut icon'], link[rel='icon']"
+    )?.href;
+    if (ico && /^data:/.test(ico)) {
+      this.icon = ico;
+    } else if (ico) {
+      this.icon = urlUtil.generateProxyUrl(ico);
+    } else {
+      this.icon = urlUtil.generateProxyUrl(`https://icons.duckduckgo.com/ip3/${
+        new URL(this.#url[0]() || this.iframe.src).host
+      }.ico`);
+    }
 
     this.#url[1](
       urlUtil.normalize(
