@@ -1,13 +1,15 @@
 {
   "name": "tabs",
   "scripts": {
-    "dev": "solid-start dev --host",
+    "dev": "concurrently \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
     "build": "solid-start build",
     "start": "solid-start start"
   },
   "type": "module",
   "devDependencies": {
+    "@tomphttp/bare-server-node": "^1.2.2",
     "autoprefixer": "^10.4.12",
+    "concurrently": "^7.6.0",
     "postcss": "^8.4.18",
     "solid-start-node": "^0.2.0",
     "tailwindcss": "^3.2.0",

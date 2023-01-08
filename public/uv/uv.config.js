@@ -1,7 +1,7 @@
 /*global Ultraviolet*/
 self.__uv$config = {
   prefix: "/~/",
-  bare: "https://radon.games/bare/",
+  bare: "/bare/",
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,
   handler: "/uv/uv.handler.js",

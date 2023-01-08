@@ -27,6 +27,7 @@ export default class Tab {
   constructor(url?: string, isActive?: boolean) {
     // initialize iframe
     this.iframe.classList.add("w-full", "h-full", "border-0");
+    if (!isActive) this.iframe.classList.add("hidden");
     document
       .querySelector<HTMLDivElement>("#content")
       ?.appendChild(this.iframe);
@@ -37,7 +38,7 @@ export default class Tab {
     this.element = (
       <div
         ref={this.#dragHandle.bind(this)}
-        class={`text-white h-full ${
+        class={`text-white h-8 ${
           this.#focus[0]() ? "bg-[#52525E]" : "hover:bg-[#35343A]"
         } ${
           this.#pinned[0]() || this.#small[0]() ? "" : "w-48"
@@ -46,12 +47,6 @@ export default class Tab {
           this.focus = true;
         }}
       >
-        {/* <div
-          class={`w-4 h-4 bg-cover bg-no-repeat ${
-            this.#small[0]() && this.focus ? "hidden" : ""
-          }`}
-          style={`background-image: url("${this.#icon[0]()}")`}
-        ></div> */}
         <Favicon src={this.#icon[0]} tab={this} loading={this.loading} />
         <div
           class={`flex-1 overflow-hidden ${
@@ -150,7 +145,9 @@ export default class Tab {
     Array.from(tabStack())[0].focus = true;
   }
 
-  #dragHandle(element: HTMLDivElement): void {}
+  #dragHandle(element: HTMLDivElement): void {
+    // Implement dragging
+  }
 
   #updateDetails(): void {
     this.#url[1](
