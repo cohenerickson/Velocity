@@ -1,4 +1,4 @@
-import { JSX, Setter, Accessor, createSignal, onMount } from "solid-js";
+import { JSX, Setter, Accessor, createSignal, Show } from "solid-js";
 import { tabs, setTabs, tabStack, setTabStack } from "~/data/appState";
 import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
@@ -22,6 +22,7 @@ export default class Tab {
   #icon: [Accessor<string>, Setter<string>] = createSignal<string>("");
   #focus: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
   #loading: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(true);
+  #playing: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
   #scrollPos: number = 0;
 
   constructor(url?: string, isActive?: boolean) {
@@ -48,6 +49,9 @@ export default class Tab {
         }}
       >
         <Favicon src={this.#icon[0]} tab={this} loading={this.loading} />
+        <Show when={this.#playing[0]()}>
+          <i class="text-[10px] fa-regular fa-volume mt-[2px]"></i>
+        </Show>
         <div
           class={`flex-1 overflow-hidden ${
             this.#small[0]() || this.#pinned[0]() ? "hidden" : ""
@@ -109,22 +113,7 @@ export default class Tab {
     // bind events & inject scripts
     this.iframe.onload = () => {
       this.loading = false;
-      this.iframe.contentWindow?.addEventListener("keydown", keybinds);
-      this.iframe.contentWindow?.addEventListener("click", handleClick);
-      (this.iframe.contentWindow || ({} as { open: any })).open = (
-        url: string
-      ) => {
-        new Tab(url, true);
-      };
-      this.iframe.contentWindow?.addEventListener("unload", () => {
-        this.loading = true;
-      });
-      this.iframe.contentWindow?.addEventListener("wheel", () => {
-        setTimeout(() => {
-          this.#scrollPos =
-            this.iframe.contentDocument?.documentElement.scrollTop || 0;
-        }, 0);
-      });
+      this.#injectScripts();
     };
 
     this.iframe.src = url;
@@ -143,6 +132,25 @@ export default class Tab {
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
     Array.from(tabStack())[0].focus = true;
+  }
+
+  #injectScripts() {
+    this.iframe.contentWindow?.addEventListener("keydown", keybinds);
+    this.iframe.contentWindow?.addEventListener("click", handleClick);
+    (this.iframe.contentWindow || ({} as { open: any })).open = (
+      url: string
+    ) => {
+      new Tab(url, true);
+    };
+    this.iframe.contentWindow?.addEventListener("unload", () => {
+      this.loading = true;
+    });
+    this.iframe.contentWindow?.addEventListener("wheel", () => {
+      setTimeout(() => {
+        this.#scrollPos =
+          this.iframe.contentDocument?.documentElement.scrollTop || 0;
+      }, 0);
+    });
   }
 
   #dragHandle(element: HTMLDivElement): void {
@@ -178,6 +186,13 @@ export default class Tab {
           this.iframe.src
       )
     );
+
+    const media: (HTMLAudioElement | HTMLVideoElement)[] = Array.from(
+      this.iframe.contentDocument?.querySelectorAll<
+        HTMLAudioElement | HTMLVideoElement
+      >("audio, video") as any
+    );
+    this.playing = media.some((x) => !x.paused && !x.muted);
 
     setTimeout(this.#updateDetails.bind(this), 100);
   }
@@ -248,6 +263,10 @@ export default class Tab {
 
   set loading(value: boolean | Accessor<boolean>) {
     this.#loading[1](value);
+  }
+
+  set playing(value: boolean | Accessor<boolean>) {
+    this.#playing[1](value);
   }
 
   get small(): Accessor<boolean> {
