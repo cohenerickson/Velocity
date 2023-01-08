@@ -52,7 +52,7 @@ export default class Tab {
           }`}
           style={`background-image: url("${this.#icon[0]()}")`}
         ></div> */}
-        <Favicon src={this.#icon[0]} tab={this} />
+        <Favicon src={this.#icon[0]} tab={this} loading={this.loading} />
         <div
           class={`flex-1 overflow-hidden ${
             this.#small[0]() || this.#pinned[0]() ? "hidden" : ""
@@ -174,7 +174,7 @@ export default class Tab {
         new URL(this.#url[0]() || this.iframe.src).host
       }.ico`;
     }
-    
+
     this.#url[1](
       urlUtil.normalize(
         (this.iframe.contentWindow as ProxyWindow)?.__uv$location?.toString() ||

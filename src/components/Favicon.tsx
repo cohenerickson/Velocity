@@ -1,11 +1,19 @@
 import BareClient from "@tomphttp/bare-client";
-import { JSX, onCleanup, createSignal, Accessor, createEffect } from "solid-js";
+import {
+  JSX,
+  onCleanup,
+  createSignal,
+  Accessor,
+  createEffect,
+  Show
+} from "solid-js";
 import Tab from "./Tab";
 import { bareClient, setBareClient } from "~/data/appState";
 
 interface FaviconProps {
   src: Accessor<string>;
   tab: Tab;
+  loading: Accessor<boolean>;
 }
 
 export default function Favicon(props: FaviconProps): JSX.Element {
@@ -44,11 +52,20 @@ export default function Favicon(props: FaviconProps): JSX.Element {
   });
 
   return (
-    <div
-      class={`w-4 h-4 bg-cover bg-no-repeat ${
-        props.tab.small() && props.tab.focus ? "hidden" : ""
-      }`}
-      style={`background-image: url("${icon()}")`}
-    ></div>
+    <div class="w-4 h-4">
+      <Show when={props.loading()}>
+        <div class="w-4 h-4 overflow-hidden">
+          <div class="loading-animation w-[960px] h-4 bg-white mask-image-[]"></div>
+        </div>
+      </Show>
+      <Show when={!props.loading()}>
+        <div
+          class={`w-4 h-4 bg-cover bg-no-repeat ${
+            props.tab.small() && props.tab.focus ? "hidden" : ""
+          }`}
+          style={`background-image: url("${icon()}")`}
+        ></div>
+      </Show>
+    </div>
   );
 }
