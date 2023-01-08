@@ -20,6 +20,8 @@ export default class Tab {
     createSignal<string | boolean>(false);
   #icon: [Accessor<string>, Setter<string>] = createSignal<string>("");
   #focus: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
+  #loading: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
+  #scrollPos: number = 0;
 
   constructor(url?: string, isActive?: boolean) {
     // initialize iframe
@@ -99,11 +101,17 @@ export default class Tab {
     this.iframe.contentWindow?.location.reload();
   }
 
+  stop() {
+    this.loading = false;
+    this.iframe.contentWindow?.stop();
+  }
+
   navigate(query: string) {
     let url = urlUtil.generateProxyUrl(query);
 
     // bind events & inject scripts
     this.iframe.onload = () => {
+      this.loading = false;
       this.iframe.contentWindow?.addEventListener("keydown", keybinds);
       this.iframe.contentWindow?.addEventListener("click", handleClick);
       (this.iframe.contentWindow || ({} as { open: any })).open = (
@@ -111,7 +119,18 @@ export default class Tab {
       ) => {
         new Tab(url, true);
       };
+      this.iframe.contentWindow?.addEventListener("unload", () => {
+        this.loading = true;
+      });
+      this.iframe.contentWindow?.addEventListener("wheel", () => {
+        setTimeout(() => {
+          this.#scrollPos =
+            this.iframe.contentDocument?.documentElement.scrollTop || 0;
+        }, 0);
+      });
     };
+
+    this.loading = true;
     this.iframe.src = url;
   }
 
@@ -150,9 +169,11 @@ export default class Tab {
     } else if (ico) {
       this.icon = urlUtil.generateProxyUrl(ico);
     } else {
-      this.icon = urlUtil.generateProxyUrl(`https://icons.duckduckgo.com/ip3/${
-        new URL(this.#url[0]() || this.iframe.src).host
-      }.ico`);
+      this.icon = urlUtil.generateProxyUrl(
+        `https://icons.duckduckgo.com/ip3/${
+          new URL(this.#url[0]() || this.iframe.src).host
+        }.ico`
+      );
     }
 
     this.#url[1](
@@ -182,6 +203,9 @@ export default class Tab {
       });
       setTabStack(new Set([this, ...tabStack()]));
       this.iframe.classList.remove("hidden");
+      (
+        this.iframe.contentDocument || ({ documentElement: {} } as Document)
+      ).documentElement.scrollTop = this.#scrollPos;
     }
     this.#focus[1](value);
   }
@@ -220,5 +244,13 @@ export default class Tab {
 
   set icon(icon: string) {
     this.#icon[1](icon);
+  }
+
+  get loading(): Accessor<boolean> {
+    return this.#loading[0];
+  }
+
+  set loading(value: boolean | Accessor<boolean>) {
+    this.#loading[1](value);
   }
 }

@@ -9,8 +9,12 @@ export default function Utility(): JSX.Element {
   const [canGoForward, setCanGoForward] = createSignal(false);
 
   function reload() {
-    Array.from(tabStack())[0].search = false;
-    Array.from(tabStack())[0]?.reload();
+    if (Array.from(tabStack())[0]?.loading()) {
+      Array.from(tabStack())[0]?.stop();
+    } else {
+      Array.from(tabStack())[0].search = false;
+      Array.from(tabStack())[0]?.reload();
+    }
   }
 
   function forward() {
@@ -61,7 +65,13 @@ export default function Utility(): JSX.Element {
           class="h-8 w-8 rounded hover:bg-[#6E6E79] text-white flex items-center justify-center"
           onClick={reload}
         >
-          <i class="fa-light fa-rotate-right mt-[2px]"></i>
+          <i
+            class={`fa-light ${
+              Array.from(tabStack())[0]?.loading()
+                ? "fa-xmark"
+                : "fa-rotate-right"
+            } mt-[2px]`}
+          ></i>
         </div>
       </div>
       <div class="flex items-center flex-1 h-8 text-sm rounded bg-[#4A4A55]">
