@@ -11,8 +11,6 @@ export default function Home() {
 
   return (
     <main class="h-full flex flex-col">
-      <script src="/uv/uv.bundle.js" defer></script>
-      <script src="/uv/uv.config.js" defer></script>
       <Tabs />
       <Utility />
       <main id="content" class="w-full bg-white flex-1"></main>

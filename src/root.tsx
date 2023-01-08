@@ -21,6 +21,8 @@ export default function Root() {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="/pro.fontawesome.js" defer></script>
+        <script src="/uv/uv.bundle.js" defer></script>
+        <script src="/uv/uv.config.js" defer></script>
       </Head>
       <Body class="h-screen">
         <Suspense>
