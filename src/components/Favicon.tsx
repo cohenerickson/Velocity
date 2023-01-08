@@ -9,16 +9,14 @@ interface FaviconProps {
 }
 
 export default function Favicon(props: FaviconProps): JSX.Element {
-  const isData =
-    new URL(props.src(), location.toString()).origin !== location.origin;
   const [icon, setIcon] = createSignal<string | undefined>(
-    isData ? undefined : props.src()
+    /^data:/.test(props.src()) ? undefined : props.src()
   );
 
   createEffect(() => {
     const abort = new AbortController();
 
-    if (isData) return;
+    if (/^data:/.test(props.src())) return setIcon(props.src());
     try {
       new URL(props.src());
     } catch {

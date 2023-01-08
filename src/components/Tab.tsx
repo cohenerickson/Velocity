@@ -174,6 +174,7 @@ export default class Tab {
         new URL(this.#url[0]() || this.iframe.src).host
       }.ico`;
     }
+    console.log(ico);
 
     this.#url[1](
       urlUtil.normalize(
