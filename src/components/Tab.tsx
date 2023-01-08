@@ -3,6 +3,7 @@ import { tabs, setTabs, tabStack, setTabStack } from "~/data/appState";
 import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
+import Favicon from "./Favicon";
 
 interface ProxyWindow extends Window {
   __uv$location: Location;
@@ -20,7 +21,7 @@ export default class Tab {
     createSignal<string | boolean>(false);
   #icon: [Accessor<string>, Setter<string>] = createSignal<string>("");
   #focus: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
-  #loading: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
+  #loading: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(true);
   #scrollPos: number = 0;
 
   constructor(url?: string, isActive?: boolean) {
@@ -45,12 +46,13 @@ export default class Tab {
           this.focus = true;
         }}
       >
-        <div
+        {/* <div
           class={`w-4 h-4 bg-cover bg-no-repeat ${
             this.#small[0]() && this.focus ? "hidden" : ""
           }`}
           style={`background-image: url("${this.#icon[0]()}")`}
-        ></div>
+        ></div> */}
+        <Favicon src={this.#icon[0]} tab={this} />
         <div
           class={`flex-1 overflow-hidden ${
             this.#small[0]() || this.#pinned[0]() ? "hidden" : ""
@@ -130,7 +132,6 @@ export default class Tab {
       });
     };
 
-    this.loading = true;
     this.iframe.src = url;
   }
 
@@ -167,13 +168,11 @@ export default class Tab {
     if (ico && /^data:/.test(ico)) {
       this.icon = ico;
     } else if (ico) {
-      this.icon = urlUtil.generateProxyUrl(ico);
+      this.icon = ico;
     } else {
-      this.icon = urlUtil.generateProxyUrl(
-        `https://icons.duckduckgo.com/ip3/${
-          new URL(this.#url[0]() || this.iframe.src).host
-        }.ico`
-      );
+      this.icon = `https://icons.duckduckgo.com/ip3/${
+        new URL(this.#url[0]() || this.iframe.src).host
+      }.ico`;
     }
 
     this.#url[1](
@@ -252,5 +251,9 @@ export default class Tab {
 
   set loading(value: boolean | Accessor<boolean>) {
     this.#loading[1](value);
+  }
+
+  get small(): Accessor<boolean> {
+    return this.#small[0];
   }
 }

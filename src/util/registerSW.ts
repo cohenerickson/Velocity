@@ -2,6 +2,7 @@ declare global {
   interface Window {
     __uv$config: {
       prefix: string;
+      bare: string;
       encodeUrl: (x: string) => string;
       decodeUrl: (x: string) => string;
     };
