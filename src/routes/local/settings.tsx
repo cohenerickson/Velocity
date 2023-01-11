@@ -53,6 +53,7 @@ export default function NewTab(): JSX.Element {
                 </div>
               )}
             </For>
+            
           </div>
           <input
             class="bg-[#52525E] rounded px-2 py-1 shadow-lg focus:ring-0 focus:outline-none"
