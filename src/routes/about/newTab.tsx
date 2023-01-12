@@ -12,15 +12,15 @@ export default function NewTab(): JSX.Element {
   }
 
   return (
-    <main class="flex flex-col w-full h-full bg-[#1C1B22] items-center justify-center">
+    <main class="flex flex-col w-full h-full bg-[#2B2A33] items-center">
       <Title>New Tab</Title>
-      <Link rel="icon" href="/firefox-logo.svg"></Link>
-      <div class="flex items-center gap-5 m-5">
-        <img class="h-24 w-24" src="/firefox-logo.svg" alt="" />
-        <h1 class="text-5xl font-semibold text-white">Firefox</h1>
+      <Link rel="icon" href="/firefox-logo.png"></Link>
+      <div class="flex items-center gap-5 m-5 mt-32">
+        <img class="h-20 w-20" src="/firefox-logo.png" alt="" />
+        <h1 class="text-4xl font-semibold text-white">Firefox</h1>
       </div>
       <input
-        class="bg-[#52525E] px-5 py-4 text-white rounded-md m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
+        class="bg-[#42414D] px-5 py-4 text-white rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
         placeholder="Search with Google or enter address"
         onKeyDown={handleKeydown}
       ></input>

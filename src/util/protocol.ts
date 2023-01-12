@@ -1,6 +1,7 @@
-const local = new Map<string, string>();
+const protocol = new Map<string, string>();
 
-local.set("newTab", "/local/newTab");
-local.set("settings", "/local/settings");
+protocol.set("newtab", "/about/newTab");
+protocol.set("preferences", "/about/preferences");
+protocol.set("blank", "/about/blank");
 
-export default local;
+export default protocol;

@@ -1,15 +1,15 @@
-import localProto from "./protocol";
+import protocol from "./protocol";
 
 export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;
-  if (url.startsWith(location.origin + "/local/")) {
-    url = url.replace(location.origin + "/local/", "local://");
+  if (url.startsWith(location.origin + "/about/")) {
+    url = url.replace(location.origin + "/about/", "about:");
   }
   if (url.startsWith(location.origin + "/~/")) {
     url = url.replace(location.origin + "/~/", "");
     url = xor.decode(url);
   }
-  if (url === "local://newTab") {
+  if (url === "about:newTab") {
     url = "";
   }
 
@@ -18,12 +18,11 @@ export function normalize(url: string): string {
 
 export function generateProxyUrl(query: string): string {
   let location: string;
-  if (/^local:\/\//.test(query)) {
-    location =
-      localProto.get(query.replace(/^local:\/\//, "")) || "/local/newTab";
-  } else if (/^https?:\/\/([^\s]+\.)+[^\s]+$/.test(query)) {
+  if (/^about:/i.test(query)) {
+    location = protocol.get(query.replace(/^about:/i, "").toLowerCase()) || "/about/blank";
+  } else if (/^https?:\/\/([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {
     location = window.__uv$config.prefix + window.__uv$config.encodeUrl(query);
-  } else if (/^([^\s]+\.)+[^\s]+$/.test(query)) {
+  } else if (/^([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {
     /*
         We use http here because otherwise we will get certifacate issues when trying to
         connect to http only websites. If a website uses https it should automatically redirect.

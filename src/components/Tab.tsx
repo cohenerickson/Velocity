@@ -32,18 +32,18 @@ export default class Tab {
     document
       .querySelector<HTMLDivElement>("#content")
       ?.appendChild(this.iframe);
-    this.navigate(url || "local:///newTab");
+    this.navigate(url || "about:newTab");
     requestAnimationFrame(this.#updateDetails.bind(this));
 
     // initialize tab element
     this.element = (
       <div
         ref={this.#dragHandle.bind(this)}
-        class={`text-white h-8 ${
-          this.#focus[0]() ? "bg-[#52525E]" : "hover:bg-[#35343A]"
+        class={`text-[#FBFBFE] h-8 ${
+          this.#focus[0]() ? "bg-[#42414D]" : "hover:bg-[#35343A]"
         } ${
           this.#pinned[0]() || this.#small[0]() ? "" : "w-48"
-        } p-2 flex items-center gap-2 text-xs rounded shadow-inner-lg overflow-hidden transition-all`}
+        } p-2 pr-1 flex items-center gap-2 text-xs rounded shadow-inner-lg overflow-hidden transition-all`}
         onMouseDown={() => {
           this.focus = true;
         }}
@@ -58,14 +58,14 @@ export default class Tab {
           }`}
         >
           <p
-            class="text-clip whitespace-nowrap w-full"
+            class="text-clip whitespace-nowrap w-full text-[11px]"
             style="-webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);"
           >
             {this.#title[0]()}
           </p>
         </div>
         <div
-          class={`h-4 w-4 flex items-center justify-center hover:bg-neutral-500 opacity-50 transition-all rounded text-xs ${
+          class={`h-6 w-6 flex items-center justify-center hover:bg-neutral-500 hover:bg-opacity-50 transition-all rounded ${
             (this.#small[0]() && !this.focus) || this.#pinned[0]()
               ? "hidden"
               : ""
@@ -73,7 +73,7 @@ export default class Tab {
           onClick={this.close.bind(this)}
           onMouseDown={(e) => e.stopPropagation()}
         >
-          <i class="fa-regular fa-xmark text-xs mt-[2px]"></i>
+          <i class="fa-light fa-xmark text-[10px] mt-[2px] text-white"></i>
         </div>
       </div>
     );
@@ -124,7 +124,7 @@ export default class Tab {
       event.stopPropagation();
     }
     if (tabs().length === 1) {
-      new Tab("local://newTab", true);
+      new Tab("about:newTab", true);
     }
     document
       .querySelector<HTMLDivElement>("#content")

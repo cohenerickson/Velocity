@@ -5,7 +5,7 @@ export default function keybinds(e: KeyboardEvent) {
   if (e.altKey) {
     if (e.key === "t") {
       e.preventDefault();
-      new Tab("local://newTab", true);
+      new Tab("about:newTab", true);
       setTabs([...tabs()]);
     } else if (e.key === "w") {
       e.preventDefault();

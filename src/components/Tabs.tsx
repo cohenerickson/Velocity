@@ -67,12 +67,12 @@ export default function Header(): JSX.Element {
       console.log(new Tab(url, true));
       window.history.replaceState({}, document.title, "/");
     } else {
-      console.log(new Tab("local://newTab", true));
+      console.log(new Tab("about:newTab", true));
     }
   });
 
   function makeTab() {
-    new Tab("local://newTab", true);
+    new Tab("about:newTab", true);
   }
 
   return (
