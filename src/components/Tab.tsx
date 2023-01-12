@@ -4,6 +4,7 @@ import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
 import Favicon from "./Favicon";
+import checkIframeLoaded from "~/util/checkIframeLoaded";
 
 interface ProxyWindow extends Window {
   __uv$location: Location;
@@ -32,6 +33,7 @@ export default class Tab {
     document
       .querySelector<HTMLDivElement>("#content")
       ?.appendChild(this.iframe);
+    this.#injectScripts();
     this.navigate(url || "about:newTab");
     requestAnimationFrame(this.#updateDetails.bind(this));
 
@@ -113,7 +115,6 @@ export default class Tab {
     // bind events & inject scripts
     this.iframe.onload = () => {
       this.loading = false;
-      this.#injectScripts();
     };
 
     this.iframe.src = url;
@@ -140,9 +141,13 @@ export default class Tab {
     (this.iframe.contentWindow || ({} as { open: any })).open = (
       url: string
     ) => {
-      new Tab(url, true);
+      const tab = new Tab(url, true);
+      return tab.iframe.contentWindow;
     };
     this.iframe.contentWindow?.addEventListener("unload", () => {
+      setTimeout(() => {
+        this.#injectScripts();
+      });
       this.loading = true;
     });
     this.iframe.contentWindow?.addEventListener("wheel", () => {
@@ -190,7 +195,7 @@ export default class Tab {
     const media: (HTMLAudioElement | HTMLVideoElement)[] = Array.from(
       this.iframe.contentDocument?.querySelectorAll<
         HTMLAudioElement | HTMLVideoElement
-      >("audio, video") as any
+      >("audio, video") ?? []
     );
     this.playing = media.some((x) => !x.paused && !x.muted);
 
