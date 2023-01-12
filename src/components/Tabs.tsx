@@ -29,7 +29,6 @@ const ConstrainDragAxis = () => {
 
   // We have to use any on this because solid-dnd doesn't have proper typings
   onDragEnd(({ draggable }: any) => {
-    console.log(draggable);
     removeTransformer("draggables", draggable.id, transformer.id);
   });
 
@@ -64,10 +63,10 @@ export default function Header(): JSX.Element {
     const searchParams = new URLSearchParams(window.location.search);
     const url = searchParams.get("url");
     if (url) {
-      console.log(new Tab(url, true));
+      new Tab(url, true);
       window.history.replaceState({}, document.title, "/");
     } else {
-      console.log(new Tab("about:newTab", true));
+      new Tab("about:newTab", true);
     }
   });
 
