@@ -10,14 +10,4 @@ export const [bareClient, setBareClient] = createSignal<
 >();
 export const [bookmarks, setBookmarks] = createSignal<
   Set<BookmarkType | FolderType>
->(
-  // new Set(JSON.parse(localStorage.getItem("bookmarks") || "[]"))
-  new Set([
-    {
-      type: "bookmark",
-      name: "Google",
-      url: "https://www.google.com/",
-      icon: "https://www.google.com/favicon.ico"
-    }
-  ])
-);
+>(new Set([]));

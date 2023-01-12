@@ -1,9 +1,17 @@
 import { JSX, Setter, Accessor, createSignal, Show } from "solid-js";
-import { tabs, setTabs, tabStack, setTabStack } from "~/data/appState";
+import {
+  tabs,
+  setTabs,
+  tabStack,
+  setTabStack,
+  bookmarks,
+  setBookmarks
+} from "~/data/appState";
 import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
 import Favicon from "./Favicon";
+import { BookmarkType } from "~/types/Bookmarks";
 
 interface ProxyWindow extends Window {
   __uv$location: Location;
@@ -149,7 +157,20 @@ export default class Tab {
     Array.from(tabStack())[0].focus = true;
   }
 
-  bookmark() {}
+  bookmark() {
+    const marks = Array.from(bookmarks()) as BookmarkType[];
+
+    if (!marks.find((x) => x.url === this.#url[0]())) {
+      marks.push({
+        type: "bookmark",
+        name: this.#title[0](),
+        url: this.#url[0](),
+        icon: this.#icon[0]()
+      });
+
+      setBookmarks(new Set(marks));
+    }
+  }
 
   #injectScripts() {
     this.iframe.contentWindow?.addEventListener("keydown", keybinds);

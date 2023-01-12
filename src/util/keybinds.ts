@@ -20,6 +20,7 @@ export default function keybinds(e: KeyboardEvent) {
       e.preventDefault();
       Array.from(tabStack())[0].goForward();
     } else if (e.key === "d") {
+      e.preventDefault();
       Array.from(tabStack())[0].bookmark();
     }
   }

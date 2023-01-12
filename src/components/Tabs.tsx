@@ -1,5 +1,5 @@
-import { JSX, onMount, For } from "solid-js";
-import { tabs, setTabs } from "~/data/appState";
+import { JSX, onMount, For, createEffect } from "solid-js";
+import { tabs, setTabs, tabStack } from "~/data/appState";
 import {
   DragDropProvider,
   DragDropSensors,
@@ -62,12 +62,34 @@ export default function Header(): JSX.Element {
   onMount(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const url = searchParams.get("url");
-    if (url) {
+    const urls: string[] = JSON.parse(localStorage.getItem("tabs") || "[]");
+    const activeTab: number = parseInt(
+      localStorage.getItem("activeTab") || "0"
+    );
+    if (urls.length) {
+      urls.forEach((url: string): void => {
+        new Tab(url, false);
+      });
+      Array.from(tabStack())[activeTab].focus = true;
+    } else if (url) {
       new Tab(url, true);
       window.history.replaceState({}, document.title, "/");
     } else {
       new Tab("about:newTab", true);
     }
+  });
+
+  createEffect(() => {
+    localStorage.setItem(
+      "tabs",
+      JSON.stringify(Array.from(tabs()).map((x) => x.url()))
+    );
+    localStorage.setItem(
+      "activeTab",
+      Array.from(tabs())
+        .findIndex((x) => x.focus)
+        .toString()
+    );
   });
 
   function makeTab() {
