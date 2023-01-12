@@ -19,6 +19,8 @@ export default function keybinds(e: KeyboardEvent) {
     } else if (e.key === "ArrowRight") {
       e.preventDefault();
       Array.from(tabStack())[0].goForward();
+    } else if (e.key === "d") {
+      Array.from(tabStack())[0].bookmark();
     }
   }
 }

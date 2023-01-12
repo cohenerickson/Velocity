@@ -4,7 +4,6 @@ import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
 import Favicon from "./Favicon";
-import checkIframeLoaded from "~/util/checkIframeLoaded";
 
 interface ProxyWindow extends Window {
   __uv$location: Location;
@@ -50,7 +49,22 @@ export default class Tab {
           this.focus = true;
         }}
       >
-        <Favicon src={this.#icon[0]} tab={this} loading={this.loading} />
+        <div class="w-4 h-4">
+          <Show when={this.loading()}>
+            <div class="w-4 h-4 overflow-hidden">
+              <div class="loading-animation w-[960px] h-4 bg-white mask-image-[]"></div>
+            </div>
+          </Show>
+          <Show when={!this.loading()}>
+            <div
+              class={`h-full w-full ${
+                this.#small[0]() && this.#focus[0]() ? "hidden" : ""
+              }`}
+            >
+              <Favicon src={this.#icon[0]} />
+            </div>
+          </Show>
+        </div>
         <Show when={this.#playing[0]()}>
           <i class="text-[10px] fa-regular fa-volume mt-[2px]"></i>
         </Show>
@@ -135,6 +149,8 @@ export default class Tab {
     Array.from(tabStack())[0].focus = true;
   }
 
+  bookmark() {}
+
   #injectScripts() {
     this.iframe.contentWindow?.addEventListener("keydown", keybinds);
     this.iframe.contentWindow?.addEventListener("click", handleClick);
@@ -154,7 +170,7 @@ export default class Tab {
       setTimeout(() => {
         this.#scrollPos =
           this.iframe.contentDocument?.documentElement.scrollTop || 0;
-      }, 0);
+      });
     });
   }
 
