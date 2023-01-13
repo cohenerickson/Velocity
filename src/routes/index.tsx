@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <main class="h-full flex flex-col">
-      <Title>Tabs</Title>
+      <Title>Velocity</Title>
       <Tabs />
       <Utility />
       <Bookmarks />

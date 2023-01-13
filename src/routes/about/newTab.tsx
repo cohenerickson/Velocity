@@ -15,10 +15,10 @@ export default function NewTab(): JSX.Element {
     <main class="flex flex-col w-full h-full bg-[#2B2A33] items-center">
       <Title>New Tab</Title>
       <Link rel="icon" href="/firefox-logo.png"></Link>
-      
+
       <div class="flex items-center gap-5 m-5 mt-32">
         <img class="h-20 w-20" src="/firefox-logo.png" alt="" />
-        <h1 class="text-4xl font-semibold text-white">Firefox</h1>
+        <h1 class="text-4xl font-semibold text-white">Velocity</h1>
       </div>
       <input
         class="bg-[#42414D] px-5 py-4 text-white rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
