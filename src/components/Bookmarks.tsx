@@ -17,7 +17,7 @@ export default function Bookmarks(): JSX.Element {
   });
 
   return (
-    <div class="flex items-center h-6 w-full bg-[#2B2A33] text-white text-[11px] px-2 gap-2">
+    <div class="flex items-center h-7 w-full bg-[#2B2A33] text-white text-[11px] px-2 gap-2">
       <For each={Array.from(bookmarks())}>
         {(bookmark: BookmarkType | FolderType) => {
           if (bookmark.type === "folder") {

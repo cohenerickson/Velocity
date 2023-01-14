@@ -1,16 +1,44 @@
 import Tab from "~/components/Tab";
+import { tabStack } from "~/data/appState";
+import Preferences from "~/types/Preferences";
 
 export default function clickHandler(event: MouseEvent) {
   const element = getAnchor(event.target);
   if (element && element.href) {
     if (event.ctrlKey) {
-      event.preventDefault();
-      new Tab(element.href, false);
+      open(event, element.href, false, false);
+    } else if (event.shiftKey) {
+      open(event, element.href, true, false);
     } else if (element.target === "_blank") {
-      event.preventDefault();
-      new Tab(element.href, true);
+      open(event, element.href, false, true);
+    } else if (element.target === "_parent") {
+      navigate(event, element.href);
+    } else if (element.target === "_top") {
+      navigate(event, element.href);
     }
   }
+}
+
+function open(
+  event: MouseEvent,
+  url: string,
+  isWindow: boolean,
+  isBlank: boolean
+) {
+  event.preventDefault();
+  const preferences: Preferences = JSON.parse(
+    localStorage.getItem("preferences") || "{}"
+  );
+  if (isWindow && !preferences["general.tabs.openWindowLinksInTab"]) {
+    window.open(`${location.origin}?url=${encodeURIComponent(url)}`);
+  } else {
+    new Tab(url, preferences["general.tabs.switchToMedia"] || isBlank);
+  }
+}
+
+function navigate(event: MouseEvent, url: string) {
+  event.preventDefault();
+  Array.from(tabStack())[0].navigate(url);
 }
 
 function getAnchor(element: EventTarget | null): HTMLAnchorElement | undefined {

@@ -36,6 +36,9 @@ export default function Utility(): JSX.Element {
           Array.from(tabStack())[0].search = false;
           element.blur();
         }
+      } else if (event.key === "Escape") {
+        Array.from(tabStack())[0].search = false;
+        element.blur();
       } else {
         setTimeout(() => (Array.from(tabStack())[0].search = element.value), 0);
       }
@@ -43,10 +46,10 @@ export default function Utility(): JSX.Element {
   }
 
   return (
-    <div class="flex items-center gap-2 w-full h-9 bg-[#2B2A33] p-2 text-[#FBFBFE]">
-      <div class="flex gap-1 items-center text-sm">
+    <div class="flex items-center gap-2 w-full h-10 bg-[#2B2A33] p-2 text-[#FBFBFE]">
+      <div class="flex gap-1 items-center">
         <div
-          class={`h-7 w-7 rounded ${
+          class={`h-8 w-8 rounded ${
             canGoBack() ? "hover:bg-[#52525E]" : "text-[#95959E]"
           } flex items-center justify-center`}
           onClick={back}
@@ -54,7 +57,7 @@ export default function Utility(): JSX.Element {
           <i class="fa-light fa-arrow-left mt-[2px]"></i>
         </div>
         <div
-          class={`h-7 w-7 rounded ${
+          class={`h-8 w-8 rounded ${
             canGoForward() ? "hover:bg-[#52525E]" : "text-[#95959E]"
           } flex items-center justify-center`}
           onClick={forward}
@@ -62,7 +65,7 @@ export default function Utility(): JSX.Element {
           <i class="fa-light fa-arrow-right mt-[2px]"></i>
         </div>
         <div
-          class="h-7 w-7 rounded hover:bg-[#52525E] flex items-center justify-center"
+          class="h-8 w-8 rounded hover:bg-[#52525E] flex items-center justify-center"
           onClick={reload}
         >
           <i
@@ -74,13 +77,14 @@ export default function Utility(): JSX.Element {
           ></i>
         </div>
       </div>
-      <div class="flex items-center flex-1 h-[30px] text-sm rounded bg-[#1C1B22]">
-        <div class="flex h-7 w-7 rounded items-center justify-center mx-[2px]">
-          <i class="fa-light fa-magnifying-glass mt-[2px] text-xs"></i>
+      <div class="flex items-center flex-1 h-[32px] text-sm rounded bg-[#1C1B22]">
+        <div class="flex h-8 w-8 rounded items-center justify-center mx-[2px]">
+          <i class="fa-light fa-magnifying-glass mt-[2px]"></i>
         </div>
         <input
           ref={urlBar}
-          class="flex-1 flex items-center leading-8 h-full text-xs rounded bg-transparent focus:outline-none"
+          id="url_bar"
+          class="flex-1 flex items-center leading-8 h-full text-sm rounded bg-transparent focus:outline-none placeholder-[#B0B3B3]"
           value={
             Array.from(tabStack())[0]?.search() !== false
               ? (Array.from(tabStack())[0]?.search() as string)
@@ -90,8 +94,8 @@ export default function Utility(): JSX.Element {
         ></input>
       </div>
       <div class="flex gap-1 items-center">
-        <div class="h-7 w-7 rounded hover:bg-[#6E6E79] flex items-center justify-center text-xs">
-          <i class="fa-light fa-bars mt-[2px]"></i>
+        <div class="h-8 w-8 rounded hover:bg-[#6E6E79] flex items-center justify-center">
+          <i class="fa-light fa-bars mt-[2px] text-sm"></i>
         </div>
       </div>
     </div>

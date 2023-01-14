@@ -10,6 +10,7 @@ import {
   useDragDropContext
 } from "@thisbeyond/solid-dnd";
 import Tab from "./Tab";
+import Preferences from "~/types/Preferences";
 
 const ConstrainDragAxis = () => {
   // We have to use any on this because solid-dnd doesn't have proper typings
@@ -62,18 +63,23 @@ export default function Header(): JSX.Element {
   onMount(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const url = searchParams.get("url");
-    const urls: string[] = JSON.parse(localStorage.getItem("tabs") || "[]");
-    const activeTab: number = parseInt(
-      localStorage.getItem("activeTab") || "0"
+    const preferences: Preferences = JSON.parse(
+      localStorage.getItem("preferences") || "{}"
     );
-    if (urls.length) {
+    const urls: string[] = JSON.parse(localStorage.getItem("tabs") || "[]");
+
+    if (url) {
+      new Tab(url, true);
+      window.history.replaceState({}, document.title, "/");
+    } else if (urls.length && preferences["general.startup.openPreviousTabs"]) {
+      const activeTab: number = parseInt(
+        localStorage.getItem("activeTab") || "0"
+      );
       urls.forEach((url: string): void => {
+        console.log("NEW TAB");
         new Tab(url, false);
       });
       Array.from(tabStack())[activeTab].focus = true;
-    } else if (url) {
-      new Tab(url, true);
-      window.history.replaceState({}, document.title, "/");
     } else {
       new Tab("about:newTab", true);
     }
@@ -97,7 +103,7 @@ export default function Header(): JSX.Element {
   }
 
   return (
-    <div class="flex w-full h-10 bg-[#1C1B22] p-1 cursor-default select-none gap-1 transition-all">
+    <div class="flex w-full items-center h-11 bg-[#1C1B22] p-[2px] cursor-default select-none gap-1 transition-all">
       <DragDropProvider
         onDragEnd={onDragEnd}
         onDragStart={onDragStart}

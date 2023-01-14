@@ -24,7 +24,7 @@ export default function Bookmakr(props: BookmarkProps): JSX.Element {
   return (
     <div
       onClick={handleClick}
-      class="h-5 flex items-center gap-1 rounded hover:bg-[#60606e] cursor-default px-1 select-none"
+      class="h-6 flex items-center gap-1 rounded hover:bg-[#60606e] cursor-default px-1 select-none"
     >
       <div class="w-[15px] h-[15px]">
         <Favicon src={createSignal<string>(props.icon)[0]}></Favicon>

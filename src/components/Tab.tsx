@@ -48,11 +48,11 @@ export default class Tab {
     this.element = (
       <div
         ref={this.#dragHandle.bind(this)}
-        class={`text-[#FBFBFE] h-8 ${
+        class={`text-[#FBFBFE] h-9 ${
           this.#focus[0]() ? "bg-[#42414D]" : "hover:bg-[#35343A]"
         } ${
           this.#pinned[0]() || this.#small[0]() ? "" : "w-48"
-        } p-2 pr-1 flex items-center gap-2 text-xs rounded shadow-inner-lg overflow-hidden transition-all`}
+        } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden transition-all`}
         onMouseDown={() => {
           this.focus = true;
         }}
@@ -60,7 +60,7 @@ export default class Tab {
         <div class="w-4 h-4">
           <Show when={this.loading()}>
             <div class="w-4 h-4 overflow-hidden">
-              <div class="loading-animation w-[960px] h-4 bg-white mask-image-[]"></div>
+              <div class="loading-animation w-[960px] h-4 bg-white"></div>
             </div>
           </Show>
           <Show when={!this.loading()}>
@@ -82,7 +82,7 @@ export default class Tab {
           }`}
         >
           <p
-            class="text-clip whitespace-nowrap w-full text-[11px]"
+            class="text-clip whitespace-nowrap w-full text-xs font-light"
             style="-webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);"
           >
             {this.#title[0]()}
