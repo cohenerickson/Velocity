@@ -7,9 +7,8 @@ export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;
   if (url.startsWith(location.origin + "/about/")) {
     url = url.replace(location.origin + "/about/", "about:");
-  }
-  if (url.startsWith(location.origin + "/~/")) {
-    url = url.replace(location.origin + "/~/", "");
+  } else if (url.startsWith(location.origin + window.__uv$config.prefix)) {
+    url = url.replace(location.origin + window.__uv$config.prefix, "");
     url = xor.decode(url);
   }
   if (url === "about:newTab") {

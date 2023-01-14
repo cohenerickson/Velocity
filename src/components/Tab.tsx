@@ -149,12 +149,16 @@ export default class Tab {
     if (tabs().length === 1) {
       new Tab("about:newTab", true);
     }
-    document
-      .querySelector<HTMLDivElement>("#content")
-      ?.removeChild(this.iframe);
+    this.cleanup();
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
     Array.from(tabStack())[0].focus = true;
+  }
+
+  cleanup() {
+    document
+      .querySelector<HTMLDivElement>("#content")
+      ?.removeChild(this.iframe);
   }
 
   bookmark() {
@@ -221,13 +225,6 @@ export default class Tab {
         new URL(this.#url[0]() || this.iframe.src).host
       }.ico`;
     }
-
-    this.#url[1](
-      urlUtil.normalize(
-        (this.iframe.contentWindow as ProxyWindow)?.__uv$location?.toString() ||
-          this.iframe.src
-      )
-    );
 
     const media: (HTMLAudioElement | HTMLVideoElement)[] = Array.from(
       this.iframe.contentDocument?.querySelectorAll<

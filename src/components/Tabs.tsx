@@ -1,4 +1,11 @@
-import { JSX, onMount, For, createEffect, createSignal } from "solid-js";
+import {
+  JSX,
+  onMount,
+  For,
+  createEffect,
+  createSignal,
+  onCleanup
+} from "solid-js";
 import { tabs, setTabs, tabStack } from "~/data/appState";
 import {
   DragDropProvider,
@@ -78,18 +85,24 @@ export default function Header(): JSX.Element {
         localStorage.getItem("activeTab") || "0"
       );
       urls.forEach((url: string): void => {
-        console.log("NEW TAB");
         new Tab(url, false);
       });
-      Array.from(tabStack())[activeTab].focus = true;
+      if (0 <= activeTab && activeTab > tabs().length) {
+        Array.from(tabStack())[activeTab].focus = true;
+      }
     } else {
       new Tab("about:newTab", true);
     }
+
+    onCleanup(() => {
+      tabs().map((x) => x.cleanup());
+      setTabs([]);
+    });
   });
 
   createEffect(() => {
     localStorage.setItem(
-      "tabs",
+      "tabs", 
       JSON.stringify(Array.from(tabs()).map((x) => x.url()))
     );
     localStorage.setItem(
