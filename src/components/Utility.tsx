@@ -1,5 +1,7 @@
 import { JSX, createSignal, onMount } from "solid-js";
 import { tabStack } from "~/data/appState";
+import engines from "~/util/engines";
+import preferences from "~/util/preferences";
 import * as urlUtil from "~/util/url";
 
 export default function Utility(): JSX.Element {
@@ -46,7 +48,7 @@ export default function Utility(): JSX.Element {
   }
 
   return (
-    <div class="flex items-center gap-2 w-full h-10 bg-[#2B2A33] p-2 text-[#FBFBFE]">
+    <div class="flex items-center gap-2 w-full h-10 bg-[#2B2A33] p-2 text-white">
       <div class="flex gap-1 items-center">
         <div
           class={`h-8 w-8 rounded ${
@@ -90,7 +92,10 @@ export default function Utility(): JSX.Element {
               ? (Array.from(tabStack())[0]?.search() as string)
               : urlUtil.normalize(Array.from(tabStack())[0]?.url() || "")
           }
-          placeholder="Search with Google or enter address"
+          placeholder={`Search with ${
+            engines[preferences()["search.defaults.searchEngine"] || "google"]
+              .name
+          } or enter address`}
         ></input>
       </div>
       <div class="flex gap-1 items-center">

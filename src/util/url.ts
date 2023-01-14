@@ -1,4 +1,7 @@
 import protocol from "./protocol";
+import { xor } from "./codec";
+import engines from "./engines";
+import preferences from "./preferences";
 
 export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;
@@ -19,7 +22,9 @@ export function normalize(url: string): string {
 export function generateProxyUrl(query: string): string {
   let location: string;
   if (/^about:/i.test(query)) {
-    location = protocol.get(query.replace(/^about:/i, "").toLowerCase()) || "/about/blank";
+    location =
+      protocol.get(query.replace(/^about:/i, "").toLowerCase()) ||
+      "/about/blank";
   } else if (/^https?:\/\/([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {
     location = window.__uv$config.prefix + window.__uv$config.encodeUrl(query);
   } else if (/^([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {
@@ -33,37 +38,13 @@ export function generateProxyUrl(query: string): string {
   } else {
     location =
       window.__uv$config.prefix +
-      window.__uv$config.encodeUrl(
-        `https://www.google.com/search?q=${encodeURIComponent(query)}`
-      );
+      window.__uv$config.encodeUrl(generateSearchURL(query));
   }
   return location;
 }
 
-const xor = {
-  encode(str: string): string {
-    if (!str) return str;
-    return encodeURIComponent(
-      str
-        .toString()
-        .split("")
-        .map((char, ind) =>
-          ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char
-        )
-        .join("")
-    );
-  },
-  decode(str: string): string {
-    if (!str) return str;
-    let [input, ...search] = str.split("?");
-
-    return (
-      decodeURIComponent(input)
-        .split("")
-        .map((char, ind) =>
-          ind % 2 ? String.fromCharCode(char.charCodeAt(0) ^ 2) : char
-        )
-        .join("") + (search.length ? "?" + search.join("?") : "")
-    );
-  }
-};
+function generateSearchURL(query: string): string {
+  return engines[
+    preferences()["search.defaults.searchEngine"] || "google"
+  ].searchStr.replace("%s", encodeURIComponent(query));
+}

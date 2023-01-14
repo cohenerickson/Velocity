@@ -1,4 +1,4 @@
-import { JSX, createSignal, onMount, createEffect, Accessor } from "solid-js";
+import { JSX, Accessor } from "solid-js";
 import Toggle from "./inputs/Toggle";
 
 interface GeneralProps {
@@ -38,9 +38,9 @@ export default function General(props: GeneralProps): JSX.Element {
             label="When you open a link, image or media in a new tab, switch to it imediately"
           />
           <Toggle
-            id="general.tabs.confirmBeforeQuitting"
+            id="general.tabs.confirmBeforeClosing"
             default={true}
-            label="Confirm before quitting"
+            label="Confirm before closing multiple tabs"
           />
         </div>
       </section>

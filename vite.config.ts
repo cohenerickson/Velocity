@@ -2,6 +2,7 @@ import solid from "solid-start/vite";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
+import { stompPath } from "@sysce/stomp";
 
 export default defineConfig({
   plugins: [
@@ -14,6 +15,10 @@ export default defineConfig({
         {
           src: `public/uv/uv.config.js`,
           dest: "uv"
+        },
+        {
+          src: `${stompPath}/.`,
+          dest: "stomp"
         }
       ]
     }),

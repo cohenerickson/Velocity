@@ -5,6 +5,7 @@ import Bookmarks from "~/components/Bookmarks";
 import keybinds from "~/util/keybinds";
 import { Title } from "solid-start";
 import Preferences from "~/types/Preferences";
+import { tabs } from "~/data/appState"
 
 export default function Home() {
   onMount(async () => {
@@ -17,9 +18,9 @@ export default function Home() {
         const preferences: Preferences = JSON.parse(
           localStorage.getItem("preferences") || "{}"
         );
-        if (preferences["general.tabs.confirmBeforeQuitting"]) {
+        if (tabs().length > 1 && preferences["general.tabs.confirmBeforeClosing"]) {
           event.preventDefault();
-          return (event.returnValue = "Are you sure you want to quit?");
+          return (event.returnValue = "Confirm before closing multiple tabs");
         }
       },
       { capture: true }

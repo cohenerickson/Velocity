@@ -1,4 +1,5 @@
 import { JSX, createSignal, onMount, createEffect } from "solid-js";
+import preferences from "~/util/preferences";
 import Preferences from "~/types/Preferences";
 
 interface ToggleProps {
@@ -11,24 +12,18 @@ export default function Toggle(props: ToggleProps): JSX.Element {
   const [getState, setState] = createSignal<boolean>(props.default);
 
   onMount(() => {
-    const preferences: Preferences = JSON.parse(
-      localStorage.getItem("preferences") || "{}"
-    );
-
-    // TODO: Fix typings
-    setState(preferences[props.id] ?? (props.default as any));
+    setState(preferences()[props.id] ?? (props.default as any));
   });
 
   createEffect(() => {
-    const preferences: Preferences = JSON.parse(
-      localStorage.getItem("preferences") || "{}"
+    localStorage.setItem(
+      "preferences",
+      JSON.stringify(
+        Object.assign(preferences(), {
+          [props.id]: getState()
+        })
+      )
     );
-
-    Object.assign(preferences, {
-      [props.id]: getState()
-    });
-
-    localStorage.setItem("preferences", JSON.stringify(preferences));
   });
 
   function onChange(element: HTMLInputElement) {

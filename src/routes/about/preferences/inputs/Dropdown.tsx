@@ -1,0 +1,56 @@
+import { JSX, createSignal, onMount, createEffect } from "solid-js";
+import preferences from "~/util/preferences";
+import Preferences from "~/types/Preferences";
+
+interface ToggleProps {
+  id: keyof Preferences;
+  label: string;
+  default: string;
+  values: string[];
+}
+
+export default function Toggle(props: ToggleProps): JSX.Element {
+  const [getState, setState] = createSignal<string>(props.default);
+
+  onMount(() => {
+    // TODO: Fix typings
+    setState(preferences()[props.id] ?? (props.default as any));
+  });
+
+  createEffect(() => {
+    localStorage.setItem(
+      "preferences",
+      JSON.stringify(
+        Object.assign(preferences(), {
+          [props.id]: getState()
+        })
+      )
+    );
+  });
+
+  function onChange(element: HTMLSelectElement) {
+    element.addEventListener("change", () => {
+      setState(element.value);
+    });
+  }
+
+  return (
+    <div class="flex items-center gap-2">
+      <select
+        value={getState()}
+        ref={onChange}
+        id={props.id}
+        class="bg-[#2A2A32] rounded py-[7px] px-[15px]"
+      >
+        {props.values.map(
+          (value): JSX.Element => (
+            <option class="text-white" value={value.toLowerCase()}>
+              {value}
+            </option>
+          )
+        )}
+      </select>
+      <label>{props.label}</label>
+    </div>
+  );
+}

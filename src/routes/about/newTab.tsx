@@ -1,8 +1,11 @@
-import { JSX } from "solid-js";
+import { createSignal, JSX, onMount } from "solid-js";
 import { Title, Link } from "solid-start";
+import engines from "~/util/engines";
+import preferences from "~/util/preferences";
 import { generateProxyUrl } from "~/util/url";
 
 export default function NewTab(): JSX.Element {
+  const [name, setName] = createSignal<string>("Google");
   function handleKeydown(event: KeyboardEvent) {
     if (event.key === "Enter") {
       const element = event.target as HTMLInputElement;
@@ -10,6 +13,14 @@ export default function NewTab(): JSX.Element {
       location.href = generateProxyUrl(query);
     }
   }
+
+  onMount(() => {
+    setInterval(() => {
+      setName(
+        engines[preferences()["search.defaults.searchEngine"] || "google"].name
+      );
+    }, 100);
+  });
 
   return (
     <main class="flex flex-col w-full h-full bg-[#2B2A33] items-center">
@@ -22,7 +33,7 @@ export default function NewTab(): JSX.Element {
       </div>
       <input
         class="bg-[#42414D] px-5 py-4 text-white rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
-        placeholder="Search with Google or enter address"
+        placeholder={`Search with ${name()} or enter address`}
         onKeyDown={handleKeydown}
       ></input>
     </main>

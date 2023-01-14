@@ -48,7 +48,7 @@ export default class Tab {
     this.element = (
       <div
         ref={this.#dragHandle.bind(this)}
-        class={`text-[#FBFBFE] h-9 ${
+        class={`text-white h-9 ${
           this.#focus[0]() ? "bg-[#42414D]" : "hover:bg-[#35343A]"
         } ${
           this.#pinned[0]() || this.#small[0]() ? "" : "w-48"
