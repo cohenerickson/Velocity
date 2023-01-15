@@ -47,7 +47,6 @@ export default class Tab {
     // initialize tab element
     this.element = (
       <div
-        ref={this.#dragHandle.bind(this)}
         class={`text-white h-9 ${
           this.#focus[0]() ? "bg-[#42414D]" : "hover:bg-[#35343A]"
         } ${
@@ -197,10 +196,6 @@ export default class Tab {
           this.iframe.contentDocument?.documentElement.scrollTop || 0;
       });
     });
-  }
-
-  #dragHandle(element: HTMLDivElement): void {
-    // Implement dragging
   }
 
   #updateDetails(): void {

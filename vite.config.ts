@@ -15,10 +15,6 @@ export default defineConfig({
         {
           src: `public/uv/uv.config.js`,
           dest: "uv"
-        },
-        {
-          src: `${stompPath}/.`,
-          dest: "stomp"
         }
       ]
     }),
