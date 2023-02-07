@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import Tab from "~/components/Tab";
+import Tab from "~/data/Tab";
 import BareClient from "@tomphttp/bare-client";
 import { BookmarkType, FolderType } from "~/types/Bookmarks";
 

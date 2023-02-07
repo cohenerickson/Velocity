@@ -1,5 +1,5 @@
-import { JSX, createSignal } from "solid-js";
+import { JSX } from "solid-js";
 
-export default function ContextMenu (): JSX.Element {
+export default function ContextMenu(): JSX.Element {
   return <></>;
 }

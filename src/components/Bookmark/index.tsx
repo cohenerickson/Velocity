@@ -1,5 +1,5 @@
 import { JSX, createSignal } from "solid-js";
-import Tab from "~/components/Tab";
+import Tab from "~/data/Tab";
 import { tabStack } from "~/data/appState";
 import Favicon from "../Favicon";
 

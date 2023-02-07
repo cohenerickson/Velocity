@@ -1,11 +1,5 @@
 import BareClient from "@tomphttp/bare-client";
-import {
-  JSX,
-  onCleanup,
-  createSignal,
-  Accessor,
-  createEffect
-} from "solid-js";
+import { JSX, onCleanup, createSignal, Accessor, createEffect } from "solid-js";
 import { bareClient, setBareClient } from "~/data/appState";
 
 interface FaviconProps {

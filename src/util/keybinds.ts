@@ -1,5 +1,5 @@
-import Tab from "~/components/Tab";
-import { tabs, setTabs, tabStack } from "~/data/appState";
+import Tab from "~/data/Tab";
+import { tabStack } from "~/data/appState";
 
 export default function keybinds(e: KeyboardEvent) {
   if (e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) {
@@ -28,7 +28,6 @@ export default function keybinds(e: KeyboardEvent) {
       // ctrl + t
       e.preventDefault();
       new Tab("about:newTab", true);
-      setTabs([...tabs()]);
     } else if (e.key === "w") {
       // ctrl + w
       e.preventDefault();

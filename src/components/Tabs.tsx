@@ -16,8 +16,9 @@ import {
   createSortable,
   useDragDropContext
 } from "@thisbeyond/solid-dnd";
-import Tab from "./Tab";
+import Tab from "../data/Tab";
 import preferences from "~/util/preferences";
+import TabElement from "~/components/Tab";
 
 const ConstrainDragAxis = () => {
   // We have to use any on this because solid-dnd doesn't have proper typings
@@ -93,16 +94,11 @@ export default function Header(): JSX.Element {
     } else {
       new Tab("about:newTab", true);
     }
-
-    onCleanup(() => {
-      tabs().map((x) => x.cleanup());
-      setTabs([]);
-    });
   });
 
   createEffect(() => {
     localStorage.setItem(
-      "tabs", 
+      "tabs",
       JSON.stringify(Array.from(tabs()).map((x) => x.url()))
     );
     localStorage.setItem(
@@ -173,7 +169,9 @@ export default function Header(): JSX.Element {
                 return (
                   // @ts-ignore
                   // We have to ignore this because Typescript doesn't think this is valid syntax
-                  <div use:sortable>{tab.element}</div>
+                  <div use:sortable>
+                    <TabElement tab={tab} />
+                  </div>
                 );
               }}
             </For>

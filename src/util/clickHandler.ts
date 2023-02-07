@@ -1,4 +1,4 @@
-import Tab from "~/components/Tab";
+import Tab from "~/data/Tab";
 import { tabStack } from "~/data/appState";
 import Preferences from "~/types/Preferences";
 

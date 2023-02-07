@@ -1,4 +1,4 @@
-import { JSX, createSignal, onMount } from "solid-js";
+import { JSX, createSignal } from "solid-js";
 import { tabStack } from "~/data/appState";
 import engines from "~/util/engines";
 import preferences from "~/util/preferences";
