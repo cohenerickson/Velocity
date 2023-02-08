@@ -1,4 +1,4 @@
-import { JSX, Show, onMount, onCleanup } from "solid-js";
+import { JSX, Show } from "solid-js";
 import TabData from "~/data/Tab";
 import Favicon from "./Favicon";
 

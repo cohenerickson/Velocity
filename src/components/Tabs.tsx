@@ -3,8 +3,7 @@ import {
   onMount,
   For,
   createEffect,
-  createSignal,
-  onCleanup
+  createSignal
 } from "solid-js";
 import { tabs, setTabs, tabStack } from "~/data/appState";
 import {

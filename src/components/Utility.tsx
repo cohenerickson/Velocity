@@ -99,9 +99,11 @@ export default function Utility(): JSX.Element {
         ></input>
       </div>
       <div class="flex gap-1 items-center">
-        <div class="h-8 w-8 rounded hover:bg-[#6E6E79] flex items-center justify-center">
-          <i class="fa-light fa-bars mt-[2px] text-sm"></i>
-        </div>
+        <a target="_blank" href="https://github.com/cohenerickson/Velocity">
+          <div class="h-8 w-8 rounded hover:bg-[#6E6E79] flex items-center justify-center">
+            <i class="fa-brands fa-github mt-[2px] text-sm"></i>
+          </div>
+        </a>
       </div>
     </div>
   );
