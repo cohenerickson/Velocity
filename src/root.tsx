@@ -11,6 +11,7 @@ import {
   Scripts
 } from "solid-start";
 import "./root.css";
+import SEO from "./components/SEO";
 
 export default function Root() {
   return (
@@ -18,6 +19,7 @@ export default function Root() {
       <Head>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
+        <SEO />
         <script src="/pro.fontawesome.js" defer></script>
         <script src="/uv/uv.bundle.js" defer></script>
         <script src="/uv/uv.config.js" defer></script>

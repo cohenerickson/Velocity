@@ -8,11 +8,11 @@
 
 ## About
 
-Velocity's initial inspiration came from other proxies such as Hypertabs and Rammerhead Browser. After using these proxies I came across issues that break the illusion of using a web browser. 
+The initial inspiration for Velocity came from other proxies such as Hypertabs and Rammerhead Browser. After using these proxies issues arose that broke the illusion of using a web browser which velocity attempts to fix. 
 
 ## Features
 
- * Sleak Firefox inspired UI
+ * Sleek Firefox inspired UI
  * Proper link handling
  * Script injection for native functions
  
