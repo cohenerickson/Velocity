@@ -4,16 +4,20 @@ import Favicon from "./Favicon";
 
 interface TabProps {
   tab: TabData;
+  sortable: any;
 }
 
 export default function Tab(props: TabProps): JSX.Element {
+  const { sortable } = props;
   return (
     <div
+      // @ts-ignore
+      use:sortable
       class={`text-white h-9 ${
         props.tab.focus() ? "bg-[#42414D]" : "hover:bg-[#35343A]"
       } ${
         props.tab.pinned() || props.tab.small() ? "" : "w-48"
-      } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden transition-all`}
+      } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden`}
       onMouseDown={() => {
         props.tab.focus = true;
       }}

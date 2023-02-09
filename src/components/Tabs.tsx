@@ -1,10 +1,4 @@
-import {
-  JSX,
-  onMount,
-  For,
-  createEffect,
-  createSignal
-} from "solid-js";
+import { JSX, onMount, For, createEffect, createSignal } from "solid-js";
 import { tabs, setTabs, tabStack } from "~/data/appState";
 import {
   DragDropProvider,
@@ -44,7 +38,7 @@ const ConstrainDragAxis = () => {
 };
 
 export default function Header(): JSX.Element {
-  const [fullscreen, setFullscreen] = createSignal<boolean>(false);
+  // const [fullscreen, setFullscreen] = createSignal<boolean>(false);
 
   // We have to use any on this because solid-dnd doesn't have proper typings
   const onDragEnd = ({ draggable, droppable }: any) => {
@@ -112,48 +106,48 @@ export default function Header(): JSX.Element {
     new Tab("about:newTab", true);
   }
 
-  function toglgleFullscreen() {
-    const document = window.document as any;
-    if (document.isFullscreen === undefined) {
-      var fs = function () {
-        if (document.fullscreenElement !== undefined)
-          return document.fullscreenElement;
-        if (document.webkitFullscreenElement !== undefined)
-          return document.webkitFullscreenElement;
-        if (document.mozFullScreenElement !== undefined)
-          return document.mozFullScreenElement;
-        if (document.msFullscreenElement !== undefined)
-          return document.msFullscreenElement;
-      };
-      if (fs() === undefined) document.isFullscreen = undefined;
-      else document.isFullscreen = fs;
-    }
+  // function toglgleFullscreen() {
+  //   const document = window.document as any;
+  //   if (document.isFullscreen === undefined) {
+  //     var fs = function () {
+  //       if (document.fullscreenElement !== undefined)
+  //         return document.fullscreenElement;
+  //       if (document.webkitFullscreenElement !== undefined)
+  //         return document.webkitFullscreenElement;
+  //       if (document.mozFullScreenElement !== undefined)
+  //         return document.mozFullScreenElement;
+  //       if (document.msFullscreenElement !== undefined)
+  //         return document.msFullscreenElement;
+  //     };
+  //     if (fs() === undefined) document.isFullscreen = undefined;
+  //     else document.isFullscreen = fs;
+  //   }
 
-    if (document.isFullscreen()) {
-      document.exitFullscreen();
-      setFullscreen(false);
-    } else {
-      document.body.requestFullscreen();
-      setFullscreen(true);
-    }
-  }
+  //   if (document.isFullscreen()) {
+  //     document.exitFullscreen();
+  //     setFullscreen(false);
+  //   } else {
+  //     document.body.requestFullscreen();
+  //     setFullscreen(true);
+  //   }
+  // }
 
-  function close() {
-    if (
-      tabs().length > 1 &&
-      preferences()["general.tabs.confirmBeforeClosing"]
-    ) {
-      if (!confirm("Confirm before closing multiple tabs")) {
-        return;
-      }
-    }
-    Array.from(tabs()).map((x) => x.close());
-    window.close();
-  }
+  // function close() {
+  //   if (
+  //     tabs().length > 1 &&
+  //     preferences()["general.tabs.confirmBeforeClosing"]
+  //   ) {
+  //     if (!confirm("Confirm before closing multiple tabs")) {
+  //       return;
+  //     }
+  //   }
+  //   Array.from(tabs()).map((x) => x.close());
+  //   window.close();
+  // }
 
   return (
-    <div class="flex w-full items-center h-11 bg-[#1C1B22] px-[2px] cursor-default select-none gap-1">
-      <div class="flex flex-1 items-center h-full gap-1">
+    <div class="flex w-full bg-[#1C1B22]">
+      <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1">
         <DragDropProvider
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
@@ -168,9 +162,7 @@ export default function Header(): JSX.Element {
                 return (
                   // @ts-ignore
                   // We have to ignore this because Typescript doesn't think this is valid syntax
-                  <div use:sortable>
-                    <TabElement tab={tab} />
-                  </div>
+                  <TabElement sortable={sortable} tab={tab} />
                 );
               }}
             </For>
@@ -186,7 +178,8 @@ export default function Header(): JSX.Element {
           </div>
         </div>
       </div>
-      <div class="flex h-full text-white">
+
+      {/* <div class="flex h-full text-white">
         <div
           class="flex w-11 h-11 items-center justify-center hover:bg-[#4E4D53] text-xs"
           onClick={toglgleFullscreen}
@@ -203,7 +196,7 @@ export default function Header(): JSX.Element {
         >
           <i class="fa-light fa-xmark"></i>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
