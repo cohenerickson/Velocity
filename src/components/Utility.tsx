@@ -3,6 +3,7 @@ import { tabStack } from "~/data/appState";
 import engines from "~/util/engines";
 import preferences from "~/util/preferences";
 import * as urlUtil from "~/util/url";
+import Tab from "~/data/Tab";
 
 export default function Utility(): JSX.Element {
   // Navigating back when history is empty makes the parent navigate so we will have to
@@ -99,6 +100,14 @@ export default function Utility(): JSX.Element {
         ></input>
       </div>
       <div class="flex gap-1 items-center">
+        <div
+          class="h-8 w-8 rounded hover:bg-[#6E6E79] flex items-center justify-center"
+          onClick={() => {
+            new Tab("about:preferences", true);
+          }}
+        >
+          <i class="fa-regular fa-gear mt-[2px] text-sm"></i>
+        </div>
         <a target="_blank" href="https://github.com/cohenerickson/Velocity">
           <div class="h-8 w-8 rounded hover:bg-[#6E6E79] flex items-center justify-center">
             <i class="fa-brands fa-github mt-[2px] text-sm"></i>

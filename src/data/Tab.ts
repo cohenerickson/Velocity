@@ -116,6 +116,10 @@ export default class Tab {
     }
   }
 
+  executeScript(script: string): any {
+    return this.iframe.contentWindow?.window.eval(script);
+  }
+
   #injectScripts() {
     this.iframe.contentWindow?.addEventListener("keydown", keybinds);
     this.iframe.contentWindow?.addEventListener("click", handleClick);

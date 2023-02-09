@@ -12,6 +12,9 @@ interface BookmarkProps {
 export default function Bookmakr(props: BookmarkProps): JSX.Element {
   function handleClick(event: MouseEvent) {
     if (/^javascript:/.test(props.url)) {
+      Array.from(tabStack())[0].executeScript(
+        decodeURIComponent(props.url.replace(/^javascript:/, ""))
+      );
     } else {
       if (event.ctrlKey) {
         new Tab(props.url, false);

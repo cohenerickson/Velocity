@@ -4,7 +4,7 @@ import { tabStack } from "~/data/appState";
 export default function keybinds(e: KeyboardEvent) {
   if (e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) {
     if (e.key === "r") {
-      // ctrl + t
+      // ctrl + r
       e.preventDefault();
       Array.from(tabStack())[0].reload();
     } else if (e.key === "d") {
