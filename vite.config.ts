@@ -22,6 +22,10 @@ export default defineConfig({
           dest: "uv"
         },
         {
+          src: `${uvPath}/uv.client.js`,
+          dest: "uv"
+        },
+        {
           src: `public/uv/uv.config.js`,
           dest: "uv"
         }
