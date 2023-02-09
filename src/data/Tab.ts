@@ -129,6 +129,9 @@ export default class Tab {
       const tab = new Tab(url, true);
       return tab.iframe.contentWindow;
     };
+    (this.iframe.contentWindow || ({} as { close: any })).close = () => {
+      this.close();
+    };
     this.iframe.contentWindow?.addEventListener("unload", () => {
       setTimeout(() => {
         this.#injectScripts();
