@@ -13,7 +13,8 @@ Velocity's initial inspiration came from other proxies such as Hypertabs and Ram
 ## Features
 
  * Sleak Firefox inspired UI
- * Link
+ * Proper link handling
+ * Script injection for native functions
  
 ## Internal URL's
  * `about:newTab` - New tab page
