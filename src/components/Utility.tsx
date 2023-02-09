@@ -106,7 +106,7 @@ export default function Utility(): JSX.Element {
             new Tab("about:preferences", true);
           }}
         >
-          <i class="fa-regular fa-gear mt-[2px] text-sm"></i>
+          <i class="fa-light fa-gear mt-[2px] text-sm"></i>
         </div>
         <a target="_blank" href="https://github.com/cohenerickson/Velocity">
           <div class="h-8 w-8 rounded hover:bg-[#6E6E79] flex items-center justify-center">
