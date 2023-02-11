@@ -6,7 +6,6 @@ import {
   FileRoutes,
   Head,
   Html,
-  Meta,
   Routes,
   Scripts
 } from "solid-start";
@@ -17,10 +16,10 @@ export default function Root() {
   return (
     <Html lang="en">
       <Head>
-        <SEO />
         <script src="/pro.fontawesome.js" defer></script>
-        <script src="/uv/uv.bundle.js" defer></script>
-        <script src="/uv/uv.config.js" defer></script>
+        <script src="/uv/uv.bundle.js"></script>
+        <script src="/uv/uv.config.js"></script>
+        <SEO />
       </Head>
       <Body class="h-screen">
         <Suspense>
