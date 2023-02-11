@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="150px" src="https://velocity.radon.games/icons/newTab.png">
+</p>
+
 <h1 align="center">
   Velocity
 </h1>
