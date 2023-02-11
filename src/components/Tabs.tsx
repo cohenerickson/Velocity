@@ -81,8 +81,9 @@ export default function Header(): JSX.Element {
       urls.forEach((url: string): void => {
         new Tab(url, false);
       });
-      if (0 <= activeTab && activeTab > tabs().length) {
-        Array.from(tabStack())[activeTab].focus = true;
+      const focusTab = Array.from(tabStack())[activeTab];
+      if (focusTab) {
+        focusTab.focus = true;
       }
     } else {
       new Tab("about:newTab", true);
@@ -94,10 +95,11 @@ export default function Header(): JSX.Element {
       "tabs",
       JSON.stringify(Array.from(tabs()).map((x) => x.url()))
     );
+    console.log(Array.from(tabs()).findIndex((x) => x.focus()));
     localStorage.setItem(
       "activeTab",
       Array.from(tabs())
-        .findIndex((x) => x.focus)
+        .findIndex((x) => x.focus())
         .toString()
     );
   });

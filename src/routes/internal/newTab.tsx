@@ -25,10 +25,9 @@ export default function NewTab(): JSX.Element {
   return (
     <main class="flex flex-col w-full h-full bg-[#2B2A33] items-center">
       <Title>New Tab</Title>
-      <Link rel="icon" href="/firefox-logo.png"></Link>
       {/*  */}
       <div class="flex items-center gap-5 m-5 mt-32">
-        <img class="h-20 w-20" src="/firefox-logo.png" alt="" />
+        <img class="h-20 w-20" src="/icons/newTab.png" alt="" />
         <h1 class="text-4xl font-semibold text-white">Velocity</h1>
       </div>
       <input

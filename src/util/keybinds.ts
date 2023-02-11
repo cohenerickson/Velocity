@@ -11,6 +11,10 @@ export default function keybinds(e: KeyboardEvent) {
       // ctrl + d
       e.preventDefault();
       Array.from(tabStack())[0].bookmark();
+    } else if (e.key === "u") {
+      // ctrl + u
+      e.preventDefault();
+      new Tab(`view-source:${Array.from(tabStack())[0].url()}`, true);
     } else if (e.key === "e") {
       // ctrl + e
       e.preventDefault();

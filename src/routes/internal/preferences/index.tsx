@@ -11,7 +11,7 @@ export default function Preferences(): JSX.Element {
   return (
     <main class="flex w-full h-full bg-[#1C1B22] text-white">
       <Title>Settings</Title>
-      <Link rel="icon" href="/firefox-logo.svg"></Link>
+      <Link rel="icon" href="/icons/gear.svg"></Link>
       {/*  */}
       <div class="w-[118px] sm:w-[240px] sm:items-end h-full flex flex-col items-center pt-[70px] text-2xl select-none">
         <NavButton

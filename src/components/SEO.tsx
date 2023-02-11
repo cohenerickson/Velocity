@@ -1,5 +1,5 @@
 import { JSX } from "solid-js";
-import { Meta, Title } from "solid-start";
+import { Meta, Title, Link } from "solid-start";
 
 export default function SEO(): JSX.Element {
   return (
@@ -11,7 +11,7 @@ export default function SEO(): JSX.Element {
       <Title>Velocity</Title>
       <Meta property="og:title" content="Velocity" />
 
-      <link rel="icon" href="/favicon.ico" />
+      <Link rel="icon" href="/icons/newTab.png"></Link>
 
       <Meta name="robots" content="index, follow" />
       <Meta name="revisit-after" content="7 days" />

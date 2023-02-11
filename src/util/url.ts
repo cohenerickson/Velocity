@@ -1,12 +1,16 @@
-import protocol from "./protocol";
+import protocol from "./protocols";
 import { xor } from "./codec";
 import engines from "./engines";
 import preferences from "./preferences";
 
 export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;
-  if (url.startsWith(location.origin + "/about/")) {
-    url = url.replace(location.origin + "/about/", "about:");
+  const reverse = protocol.reverse(url);
+  if (protocol.find(url)) {
+    return url;
+  }
+  if (reverse) {
+    url = reverse;
   } else if (url.startsWith(location.origin + window.__uv$config.prefix)) {
     url = url.replace(location.origin + window.__uv$config.prefix, "");
     url = xor.decode(url);
@@ -20,10 +24,8 @@ export function normalize(url: string): string {
 
 export function generateProxyUrl(query: string): string {
   let location: string;
-  if (/^about:/i.test(query)) {
-    location =
-      protocol.get(query.replace(/^about:/i, "").toLowerCase()) ||
-      "/about/blank";
+  if (protocol.find(query) || protocol.reverse(query)) {
+    location = protocol.find(query) || "/internal/newTab";
   } else if (/^https?:\/\/([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {
     location = window.__uv$config.prefix + window.__uv$config.encodeUrl(query);
   } else if (/^([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {

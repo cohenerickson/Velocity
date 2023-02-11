@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 .loading-animation {
-  -webkit-mask-image: url("/loading.svg");
-  mask-image: url("/loading.svg");
+  -webkit-mask-image: url("/icons/loading.svg");
+  mask-image: url("/icons/loading.svg");
   animation: tab-throbber-animation 2s steps(60) infinite;
 }
 

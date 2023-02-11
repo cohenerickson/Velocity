@@ -156,17 +156,18 @@ export default class Tab {
 
     this.title = this.iframe.contentDocument?.title || this.#url[0]();
 
-    let ico = this.iframe.contentDocument?.querySelector<HTMLLinkElement>(
-      "link[rel='favicon'], link[rel='shortcut icon'], link[rel='icon']"
-    )?.href;
+    const icons =
+      this.iframe.contentDocument?.head.querySelectorAll<HTMLLinkElement>(
+        "link[rel='favicon'], link[rel='shortcut icon'], link[rel='icon']"
+      );
+    const ico = icons?.[icons.length - 1]?.href;
+
     if (ico && /^data:/.test(ico)) {
       this.icon = ico;
     } else if (ico) {
       this.icon = ico;
     } else {
-      this.icon = `https://icons.duckduckgo.com/ip3/${
-        new URL(this.#url[0]() || this.iframe.src).host
-      }.ico`;
+      this.icon = "/icons/earth.svg";
     }
 
     const media: (HTMLAudioElement | HTMLVideoElement)[] = Array.from(

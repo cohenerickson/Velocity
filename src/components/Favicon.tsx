@@ -15,11 +15,15 @@ export default function Favicon(props: FaviconProps): JSX.Element {
     const abort = new AbortController();
 
     if (/^data:/.test(props.src())) return setIcon(props.src());
+
     try {
       new URL(props.src());
     } catch {
       return;
     }
+
+    if (new URL(props.src()).origin === location.origin)
+      return setIcon(props.src());
 
     if (!bareClient())
       setBareClient(
