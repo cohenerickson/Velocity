@@ -1,7 +1,7 @@
 {
   "name": "velocity",
   "description": "A highly customizable tabbed proxy for evading internet censorship.",
-  "version": "1.0.0-beta",
+  "version": "1.1.0",
   "scripts": {
     "dev": "concurrently \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
     "build": "solid-start build",
