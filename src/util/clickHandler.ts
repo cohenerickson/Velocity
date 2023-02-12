@@ -19,13 +19,13 @@ export default function clickHandler(event: MouseEvent) {
   }
 }
 
-function open(
-  event: MouseEvent,
+export function open(
+  event: MouseEvent | undefined,
   url: string,
   isWindow: boolean,
   isBlank: boolean
 ) {
-  event.preventDefault();
+  if (event) event.preventDefault();
   const preferences: Preferences = JSON.parse(
     localStorage.getItem("preferences") || "{}"
   );

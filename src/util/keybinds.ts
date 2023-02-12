@@ -45,5 +45,11 @@ export default function keybinds(e: KeyboardEvent) {
       e.preventDefault();
       Array.from(tabStack())[0].goForward();
     }
+  } else if (e.ctrlKey && !e.shiftKey && e.altKey && !e.metaKey) {
+    if (e.key === "i") {
+      // ctrl + shift + i
+      e.preventDefault();
+      Array.from(tabStack())[0].setDevTools();
+    }
   }
 }

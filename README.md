@@ -41,6 +41,7 @@ Velocity implements many commands that web browsers commonly use in order to do 
 
 - `Alt + T` - Open new tab (originally `Ctrl + T`)
 - `Alt + W` - Close current tab (originally `Ctrl + W`)
+- `Ctrl + Alt + I` - Open developer tools (originally `Ctrl + Shift + I`)
 
 ## Deployment
 
@@ -61,6 +62,6 @@ npm start
 Velocity is still in it's early stages but if it gains enough interest among the community there are quite a few other features that I would like to implement, listed below are a few of these.
 
 - Bookmarklets
-- Custom context menus
-- Unblocked dev tools
+- Limited extension support
+- Themes
 - And more...

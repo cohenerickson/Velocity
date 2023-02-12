@@ -1,32 +1,18 @@
 import solid from "solid-start/vite";
 import { defineConfig } from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
-// import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
-
-const uvPath = "node_modules/@titaniumnetwork-dev/ultraviolet/dist";
+import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 
 export default defineConfig({
   plugins: [
     viteStaticCopy({
       targets: [
         {
-          src: `${uvPath}/uv.bundle.js`,
+          src: `${uvPath}/.`.replace(/\\/g, "/"),
           dest: "uv"
         },
         {
-          src: `${uvPath}/uv.handler.js`,
-          dest: "uv"
-        },
-        {
-          src: `${uvPath}/uv.sw.js`,
-          dest: "uv"
-        },
-        {
-          src: `${uvPath}/uv.client.js`,
-          dest: "uv"
-        },
-        {
-          src: `public/uv/uv.config.js`,
+          src: "public/uv/uv.config.js",
           dest: "uv"
         }
       ]

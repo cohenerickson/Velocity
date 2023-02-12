@@ -24,6 +24,7 @@ export function normalize(url: string): string {
 
 export function generateProxyUrl(query: string): string {
   let location: string;
+  if (!window.__uv$config) window.location.reload();
   if (protocol.find(query) || protocol.reverse(query)) {
     location = protocol.find(query) || "/internal/newTab";
   } else if (/^https?:\/\/([^\s]+\.)+[^\s]+(:[0-65536])?$/.test(query)) {

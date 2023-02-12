@@ -1,7 +1,7 @@
 {
   "name": "velocity",
   "description": "A highly customizable tabbed proxy for evading internet censorship.",
-  "version": "1.1.0",
+  "version": "1.2.0-beta",
   "scripts": {
     "dev": "concurrently \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
     "build": "solid-start build",
@@ -16,7 +16,8 @@
     "solid-start-node": "^0.2.0",
     "tailwindcss": "^3.2.0",
     "typescript": "^4.8.4",
-    "vite": "^3.1.8"
+    "vite": "^3.1.8",
+    "vite-plugin-static-copy": "^0.13.0"
   },
   "dependencies": {
     "@solidjs/meta": "^0.28.0",
@@ -29,8 +30,7 @@
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",
     "solid-js": "^1.6.2",
-    "solid-start": "^0.2.0",
-    "vite-plugin-static-copy": "^0.13.0"
+    "solid-start": "^0.2.0"
   },
   "engines": {
     "node": ">=18"

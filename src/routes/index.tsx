@@ -6,10 +6,12 @@ import keybinds from "~/util/keybinds";
 import { Title } from "solid-start";
 import Preferences from "~/types/Preferences";
 import { tabs } from "~/data/appState";
+import ContextMenu from "~/components/ContextMenu";
 
 export default function Home() {
   onMount(async () => {
     await import("~/util/registerSW");
+    await import("~/util/API");
     window.addEventListener("keydown", keybinds);
 
     addEventListener(
@@ -36,6 +38,7 @@ export default function Home() {
       <Tabs />
       <Utility />
       <Bookmarks />
+      <ContextMenu />
       <div class="h-[0px] w-full border-b border-[#0C0C0D]"></div>
       <main id="content" class="w-full bg-white flex-1"></main>
     </main>

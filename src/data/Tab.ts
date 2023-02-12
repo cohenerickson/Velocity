@@ -11,6 +11,9 @@ import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
 import { BookmarkType } from "~/types/Bookmarks";
+import { bindIFrameMousemove } from "~/components/ContextMenu";
+import ContextItem from "./ContextItem";
+import generateContextButtons from "~/util/generateContextButtons";
 
 interface ProxyWindow extends Window {
   __uv$location: Location;
@@ -120,6 +123,50 @@ export default class Tab {
     return this.iframe.contentWindow?.window.eval(script);
   }
 
+  setDevTools(state?: boolean) {
+    const iframeWindow = this.iframe.contentWindow as Window & { eruda: any };
+    if (!iframeWindow.eruda) {
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/eruda";
+      script.onload = () => {
+        this.setDevTools(state);
+      };
+      this.iframe.contentDocument?.body.appendChild(script);
+      return;
+    }
+
+    if (!iframeWindow.eruda._isInit) iframeWindow.eruda.init();
+
+    const btnBk = iframeWindow.eruda._entryBtn._$el[0].cloneNode(true);
+    btnBk.style.display = "none";
+    iframeWindow.eruda._entryBtn._$el[0].parentElement.replaceChild(
+      btnBk,
+      iframeWindow.eruda._entryBtn._$el[0]
+    );
+    btnBk.onclick = () => {
+      btnBk.style.display = "none";
+      iframeWindow.eruda.hide();
+    };
+    iframeWindow.eruda._entryBtn._$el[0] = btnBk;
+
+    if (state) {
+      btnBk.style.display = "flex";
+      iframeWindow.eruda.show();
+    } else {
+      if (
+        state !== undefined ||
+        iframeWindow.eruda._shadowRoot.querySelector(".eruda-dev-tools").style
+          .display !== "none"
+      ) {
+        btnBk.style.display = "none";
+        iframeWindow.eruda.hide();
+      } else {
+        btnBk.style.display = "flex";
+        iframeWindow.eruda.show();
+      }
+    }
+  }
+
   #injectScripts() {
     this.iframe.contentWindow?.addEventListener("keydown", keybinds);
     this.iframe.contentWindow?.addEventListener("click", handleClick);
@@ -144,6 +191,17 @@ export default class Tab {
           this.iframe.contentDocument?.documentElement.scrollTop || 0;
       });
     });
+    this.iframe.contentWindow?.addEventListener(
+      "contextmenu",
+      (event: Event & { data?: ContextItem[] }) => {
+        if (event.target)
+          event.data = generateContextButtons(event.target as HTMLElement);
+      }
+    );
+    this.iframe.contentWindow?.addEventListener("load", () => {
+      this.setDevTools(false);
+    });
+    bindIFrameMousemove(this.iframe);
   }
 
   #updateDetails(): void {

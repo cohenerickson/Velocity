@@ -1,6 +1,6 @@
 import Protocol from "~/data/Protocol";
 
-const protocols: Protocol[] = [];
+export const protocols: Protocol[] = [];
 
 const about = new Protocol("about");
 
@@ -8,13 +8,9 @@ about.register("blank", "about:blank");
 about.register("newTab", "/internal/newTab");
 about.register("preferences", "/internal/preferences");
 
-protocols.push(about);
-
 const viewSource = new Protocol("view-source");
 
 viewSource.register("*", "/internal/view-source");
-
-protocols.push(viewSource);
 
 export default {
   find: (url: string) => {

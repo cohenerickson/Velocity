@@ -1,3 +1,5 @@
+import { protocols } from "~/util/protocols";
+
 export default class Protocol {
   #match: RegExp;
   #domains: Map<string, string> = new Map<string, string>();
@@ -6,6 +8,8 @@ export default class Protocol {
   constructor(prefix: string) {
     this.#match = new RegExp(`^${prefix}:`);
     this.#prefix = prefix;
+
+    protocols.push(this);
   }
 
   register(domain: string, path: string) {

@@ -95,7 +95,6 @@ export default function Header(): JSX.Element {
       "tabs",
       JSON.stringify(Array.from(tabs()).map((x) => x.url()))
     );
-    console.log(Array.from(tabs()).findIndex((x) => x.focus()));
     localStorage.setItem(
       "activeTab",
       Array.from(tabs())
