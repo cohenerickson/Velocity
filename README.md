@@ -44,6 +44,10 @@ Velocity implements many commands that web browsers commonly use in order to do 
 - `Alt + T` - Open new tab (originally `Ctrl + T`)
 - `Alt + W` - Close current tab (originally `Ctrl + W`)
 
+## API
+
+Velocity exposes basic APIs in order to allow developers to easily create customizations and implement it into their own projects. To learn more, check out the [API Docs](/docs/API.md).
+
 ## Deployment
 
 ### Requirements
