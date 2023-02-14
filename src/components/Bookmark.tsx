@@ -1,8 +1,8 @@
 import { JSX, createSignal } from "solid-js";
-import Tab from "~/data/Tab";
+import Tab from "~/API/Tab";
 import { tabStack } from "~/data/appState";
 import Favicon from "./Favicon";
-import ContextItem from "~/data/ContextItem";
+import ContextItem from "~/API/ContextItem";
 import { open } from "~/util/clickHandler";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import BookmarkType from "~/types/Bookmarks";

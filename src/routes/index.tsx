@@ -11,7 +11,7 @@ import ContextMenu from "~/components/ContextMenu";
 export default function Home() {
   onMount(async () => {
     await import("~/util/registerSW");
-    await import("~/util/API");
+    await import("~/API");
     window.addEventListener("keydown", keybinds);
 
     addEventListener(

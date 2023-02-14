@@ -2,7 +2,7 @@ import { JSX, createEffect, For, onMount, Show } from "solid-js";
 import Bookmark from "./Bookmark";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import BookmarkType from "~/types/Bookmarks";
-import ContextItem from "~/data/ContextItem";
+import ContextItem from "~/API/ContextItem";
 import preferences from "~/util/preferences";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 import {

@@ -1,4 +1,4 @@
-import Protocol from "~/data/Protocol";
+import Protocol from "~/API/Protocol";
 
 export const protocols: Protocol[] = [];
 

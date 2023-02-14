@@ -1,5 +1,5 @@
-import ContextItem from "~/data/ContextItem";
-import Tab from "~/data/Tab";
+import ContextItem from "~/API/ContextItem";
+import Tab from "~/API/Tab";
 import { tabStack } from "~/data/appState";
 import { open } from "~/util/clickHandler";
 

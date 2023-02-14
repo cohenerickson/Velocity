@@ -3,7 +3,7 @@ import { tabStack } from "~/data/appState";
 import engines from "~/util/engines";
 import preferences from "~/util/preferences";
 import * as urlUtil from "~/util/url";
-import Tab from "~/data/Tab";
+import Tab from "~/API/Tab";
 
 export default function Utility(): JSX.Element {
   // Navigating back when history is empty makes the parent navigate so we will have to

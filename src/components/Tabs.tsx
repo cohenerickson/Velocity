@@ -7,7 +7,7 @@ import {
   closestCenter,
   createSortable
 } from "@thisbeyond/solid-dnd";
-import Tab from "../data/Tab";
+import Tab from "../API/Tab";
 import preferences from "~/util/preferences";
 import TabElement from "~/components/Tab";
 import ConstrainDragAxis from "./constrainDragAxis";
