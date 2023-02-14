@@ -10,4 +10,5 @@ export default interface Preferences {
     | "brave"
     | "yahoo";
   "search.defaults.proxy"?: "ultraviolet";
+  "bookmarks.shown"?: boolean;
 }

@@ -22,7 +22,7 @@
   "dependencies": {
     "@solidjs/meta": "^0.28.0",
     "@solidjs/router": "^0.6.0",
-    "@thisbeyond/solid-dnd": "^0.7.3",
+    "@thisbeyond/solid-dnd": "^0.7.4",
     "@titaniumnetwork-dev/ultraviolet": "^1.0.8-beta",
     "@tomphttp/bare-client": "^1.1.2-beta.3",
     "@tomphttp/bare-server-node": "^1.2.3",

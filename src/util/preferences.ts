@@ -9,6 +9,7 @@ export default function preferences(): Preferences {
         "general.tabs.switchToMedia": false,
         "general.tabs.confirmBeforeClosing": true,
         "search.defaults.searchEngine": "google",
-        "search.defaults.proxy": "ultraviolet"
+        "search.defaults.proxy": "ultraviolet",
+        "bookmarks.shown": true
       } as const);
 }

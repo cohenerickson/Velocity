@@ -1,12 +1,7 @@
-export interface BookmarkType {
+export default interface Bookmark {
   type: "bookmark";
+  id: number;
   name: string;
   url: string;
   icon: string;
-}
-
-export interface FolderType {
-  type: "folder";
-  name: string;
-  bookmarks: BookmarkType[];
 }

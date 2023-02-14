@@ -10,7 +10,7 @@ import {
 import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
-import { BookmarkType } from "~/types/Bookmarks";
+import Bookmark from "~/types/Bookmarks";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import ContextItem from "./ContextItem";
 import generateContextButtons from "~/util/generateContextButtons";
@@ -21,7 +21,7 @@ interface ProxyWindow extends Window {
 
 export default class Tab {
   iframe: HTMLIFrameElement = document.createElement("iframe");
-  id: number = Math.floor(Math.random() * 1000000000000000000);
+  id: number = Math.floor(Math.random() * 1000000000000000);
   #pinned: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
   #small: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
   #title: [Accessor<string>, Setter<string>] = createSignal<string>("");
@@ -105,11 +105,12 @@ export default class Tab {
   }
 
   bookmark() {
-    const marks = Array.from(bookmarks()) as BookmarkType[];
+    const marks = Array.from(bookmarks());
 
     if (!marks.find((x) => x.url === this.#url[0]())) {
       marks.push({
         type: "bookmark",
+        id: Math.floor(Math.random() * 1000000000000000),
         name: this.#title[0](),
         url: this.#url[0](),
         icon: this.#icon[0]()

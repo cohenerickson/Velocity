@@ -1,4 +1,5 @@
 import { JSX, Show } from "solid-js";
+import ContextItem from "~/data/ContextItem";
 import TabData from "~/data/Tab";
 import Favicon from "./Favicon";
 
@@ -9,6 +10,7 @@ interface TabProps {
 
 export default function Tab(props: TabProps): JSX.Element {
   const { sortable } = props;
+
   return (
     <div
       // @ts-ignore
@@ -20,6 +22,40 @@ export default function Tab(props: TabProps): JSX.Element {
       } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden`}
       onMouseDown={() => {
         props.tab.focus = true;
+      }}
+      oncontextmenu={(event: MouseEvent & { data?: ContextItem[] }): void => {
+        event.data = [
+          new ContextItem({
+            text: "New tab",
+            onClick: () => {
+              new TabData("about:newTab", true);
+            }
+          }),
+          new ContextItem({
+            separator: true
+          }),
+          new ContextItem({
+            text: "Reload",
+            onClick: () => {
+              props.tab.reload();
+            }
+          }),
+          new ContextItem({
+            text: "Duplicate",
+            onClick: () => {
+              new TabData(props.tab.url(), true);
+            }
+          }),
+          new ContextItem({
+            separator: true
+          }),
+          new ContextItem({
+            text: "Close",
+            onClick: () => {
+              props.tab.close();
+            }
+          })
+        ];
       }}
     >
       <div class="w-4 h-4">

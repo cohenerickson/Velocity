@@ -1,41 +1,16 @@
-import { JSX, onMount, For, createEffect, createSignal } from "solid-js";
+import { JSX, onMount, For, createEffect } from "solid-js";
 import { tabs, setTabs, tabStack } from "~/data/appState";
 import {
   DragDropProvider,
   DragDropSensors,
   SortableProvider,
   closestCenter,
-  Transformer,
-  createSortable,
-  useDragDropContext
+  createSortable
 } from "@thisbeyond/solid-dnd";
 import Tab from "../data/Tab";
 import preferences from "~/util/preferences";
 import TabElement from "~/components/Tab";
-
-const ConstrainDragAxis = () => {
-  // We have to use any on this because solid-dnd doesn't have proper typings
-  const [, { onDragStart, onDragEnd, addTransformer, removeTransformer }] =
-    useDragDropContext() as any;
-
-  const transformer: Transformer = {
-    id: "constrain-y-axis",
-    order: 100,
-    callback: (transform) => ({ ...transform, y: 0 })
-  };
-
-  // We have to use any on this because solid-dnd doesn't have proper typings
-  onDragStart(({ draggable }: any) => {
-    addTransformer("draggables", draggable.id, transformer);
-  });
-
-  // We have to use any on this because solid-dnd doesn't have proper typings
-  onDragEnd(({ draggable }: any) => {
-    removeTransformer("draggables", draggable.id, transformer.id);
-  });
-
-  return <></>;
-};
+import ConstrainDragAxis from "./constrainDragAxis";
 
 export default function Header(): JSX.Element {
   // const [fullscreen, setFullscreen] = createSignal<boolean>(false);

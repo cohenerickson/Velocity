@@ -31,17 +31,18 @@ The initial inspiration for Velocity came from other proxies such as Hypertabs a
 Velocity implements many commands that web browsers commonly use in order to do certain functions. Due to the limitations of JavaScript many of these have to be adapted but listed below is all commands that have been implemented so far.
 
 - `Ctrl + R` - Reload current tab
-- `Ctrl + D` - Bookmark current page (limited support)
 - `Ctrl + E` - Search
 - `Ctrl + U` - View page source
+- `Ctrl + Shift + I` - Open developer tools
 - `Alt + ArrowLeft` - Navigate backwards in history
 - `Alt + ArrowRight` - Navigate forward in history
+- `Ctrl + D` - Bookmark current page
+- `Ctrl + Shift + B` - Toggle bookmarks bar
 
 ### Adapted commands
 
 - `Alt + T` - Open new tab (originally `Ctrl + T`)
 - `Alt + W` - Close current tab (originally `Ctrl + W`)
-- `Ctrl + Alt + I` - Open developer tools (originally `Ctrl + Shift + I`)
 
 ## Deployment
 

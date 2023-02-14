@@ -1,21 +1,24 @@
 import Tab from "~/data/Tab";
 import { tabStack } from "~/data/appState";
+import preferences from "./preferences";
+import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 
 export default function keybinds(e: KeyboardEvent) {
+  const key = e.key.toLowerCase();
   if (e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey) {
-    if (e.key === "r") {
+    if (key === "r") {
       // ctrl + r
       e.preventDefault();
       Array.from(tabStack())[0].reload();
-    } else if (e.key === "d") {
+    } else if (key === "d") {
       // ctrl + d
       e.preventDefault();
       Array.from(tabStack())[0].bookmark();
-    } else if (e.key === "u") {
+    } else if (key === "u") {
       // ctrl + u
       e.preventDefault();
       new Tab(`view-source:${Array.from(tabStack())[0].url()}`, true);
-    } else if (e.key === "e") {
+    } else if (key === "e") {
       // ctrl + e
       e.preventDefault();
       const searchElement =
@@ -28,28 +31,40 @@ export default function keybinds(e: KeyboardEvent) {
           : "";
     }
   } else if (!e.ctrlKey && !e.shiftKey && e.altKey && !e.metaKey) {
-    if (e.key === "t") {
+    if (key === "t") {
       // ctrl + t
       e.preventDefault();
       new Tab("about:newTab", true);
-    } else if (e.key === "w") {
+    } else if (key === "w") {
       // ctrl + w
       e.preventDefault();
       Array.from(tabStack())[0].close();
-    } else if (e.key === "ArrowLeft") {
+    } else if (key === "ArrowLeft") {
       // alt + ArrowLeft
       e.preventDefault();
       Array.from(tabStack())[0].goBack();
-    } else if (e.key === "ArrowRight") {
+    } else if (key === "ArrowRight") {
       // alt + ArrowRight
       e.preventDefault();
       Array.from(tabStack())[0].goForward();
     }
-  } else if (e.ctrlKey && !e.shiftKey && e.altKey && !e.metaKey) {
-    if (e.key === "i") {
+  } else if (e.ctrlKey && e.shiftKey && !e.altKey && !e.metaKey) {
+    if (key === "i") {
       // ctrl + shift + i
       e.preventDefault();
       Array.from(tabStack())[0].setDevTools();
+    } else if (key === "b") {
+      // ctrl + shift + b
+      e.preventDefault();
+      setBookmarksShown(!bookmarksShown());
+      localStorage.setItem(
+        "preferences",
+        JSON.stringify(
+          Object.assign(preferences(), {
+            ["bookmarks.shown"]: bookmarksShown()
+          })
+        )
+      );
     }
   }
 }
