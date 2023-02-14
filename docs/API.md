@@ -1,48 +1,98 @@
-## `Velocity.Tab`
+# API
 
-Creates a new tab.
+The Velocity API is exposed through the `Velocity` global object.
+
+# Functions
+
+- `getTabs` - Returns an array of all open tabs
+- `getBookmarks` - Returns an array of all bookmarks
+- `getProtocol` - Returns an array of all protocols
+
+# Classes
+
+## `Tab` - Open new tabs
 
 ### Paramaters
 
-- _{url: string}_ - URL to open in the new tab.
-- _{setActive?: boolean}_ - When the tab opens, switch to it immediately.
+- _`URL` - A string representing the URL to open_
+- _`setActive` - A boolean value to focus the newly opened tab_
+
+### Methods
+
+- _`goBack` - Navigate backwards in history_
+- _`goForward` - Navigate forwards in history_
+- _`reload` - Reload the tab_
+- _`stop` - Stop the tab from loading any further_
+- _`navigate` - Navigate to a new URL_
+  - _`URL` - A string representing where to navigate to_
+- _`close` - Close the tab_
+- _`bookmark` - Bookmark the tab as it is_
+- _`executeScript` - Evaluate JavaScript inside the tab scope_
+- _`setDevTools` - Open/close Eruda dev tools_
+  - _`isOpen` - A boolean value representing the dev tool open status_
+
+### Values
+
+TODO
 
 ### Example
 
 ```js
-new Velocity.Tab("https://www.google.com/", true);
+new Tab("about:newTab", true); // Open a new tab
 ```
 
-## `Velocity.Protocol`
-
-Create a new protocol.
+## `Bookmark` - Create new bookmarks
 
 ### Paramaters
 
-- _{prefix: string}_ - Prefix to use for the protocol.
+- _`options`_
+  - _`name` - Display name for bookmark_
+  - _`url` - Bookmark URL_
+  - _`icon` - URL to bookmark icon_
+  - _`id?` - Optional ID feild_
 
-### Protocol.register() - Register a new domain on the protocol.
+### Methods
 
-- _{domain: string | "\*"}_ - Domain for the registration _("\*" for wildcard)_
-- _{path: string}_ - URL to map the domain to _(not proxied)_
+- _`delete` - Delete the bookmark_
 
 ### Example
 
 ```js
-const protocol = new Velocity.Protocol("rd");
-
-protocol.register("*", "https://radon.games/");
+new Bookmark({
+  name: "Radon Games",
+  url: "https://radon.games/",
+  icon: "https://radon.games/favicon.ico"
+});
 ```
 
-## `Velocity.ContextItem`
-
-Creates a new context menu item.
+## `Protocol` - Create custom protocols
 
 ### Paramaters
 
-- _{text?: string}_ - Text for item display.
-- _{onClick?: () => void}_ - Function executed when user clicks the button.
-- _{separator?: boolean}_ - Create a separator line instead of button.
+- _`prefix` - Prefix to use for the protocol_
+
+### Methods
+
+- _`register` - Register a new domain_
+  - _`domain` - A string representing the domain ("\*" for wildcard)_
+  - _`URL` - A string URL to map the domain to_
+
+### Example
+
+```js
+const proto = new Protocol("rd");
+
+proto.register("*", "https://radon.games/");
+```
+
+## `ContextItem` - Modify context menus
+
+### Paramaters
+
+- _`options`_
+  - _`separator?` - Boolean value to consider item a separator_
+  - _`text?` - Text value of the context button_
+  - _`onClick?` - A function that is executed when a user clicks the button_
 
 ### Example
 
