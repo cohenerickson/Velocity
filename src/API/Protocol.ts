@@ -1,4 +1,4 @@
-import { protocols } from "~/util/protocols";
+import { protocols, setProtocols } from "~/data/appState";
 
 export default class Protocol {
   #match: RegExp;
@@ -9,7 +9,7 @@ export default class Protocol {
     this.#match = new RegExp(`^${prefix}:`);
     this.#prefix = prefix;
 
-    protocols.push(this);
+    setProtocols([...protocols(), this]);
   }
 
   register(domain: string, path: string) {

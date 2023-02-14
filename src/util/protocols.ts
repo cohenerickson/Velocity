@@ -1,6 +1,5 @@
 import Protocol from "~/API/Protocol";
-
-export const protocols: Protocol[] = [];
+import { protocols } from "~/data/appState";
 
 const about = new Protocol("about");
 
@@ -14,7 +13,7 @@ viewSource.register("*", "/internal/view-source");
 
 export default {
   find: (url: string) => {
-    for (const protocol of protocols) {
+    for (const protocol of protocols()) {
       if (protocol.match.test(url)) {
         const domain = url.replace(protocol.match, "");
         return protocol.find(domain);
@@ -22,7 +21,7 @@ export default {
     }
   },
   reverse: (url: string) => {
-    for (const protocol of protocols) {
+    for (const protocol of protocols()) {
       if (protocol.reverse(url)) {
         return protocol.reverse(url);
       }

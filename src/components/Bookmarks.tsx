@@ -1,7 +1,7 @@
-import { JSX, createEffect, For, onMount, Show } from "solid-js";
+import { JSX, For, Show } from "solid-js";
 import Bookmark from "./Bookmark";
 import { bookmarks, setBookmarks } from "~/data/appState";
-import BookmarkType from "~/types/Bookmarks";
+import BookmarkAPI from "~/API/Bookmark";
 import ContextItem from "~/API/ContextItem";
 import preferences from "~/util/preferences";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
@@ -12,24 +12,24 @@ import {
   closestCenter,
   createSortable
 } from "@thisbeyond/solid-dnd";
-import ConstrainDragAxis from "./constrainDragAxis";
+import ConstrainDragAxis from "./ConstrainDragAxis";
 
 export default function Bookmarks(): JSX.Element {
   // We have to use any on this because solid-dnd doesn't have proper typings
   const onDragEnd = ({ draggable, droppable }: any) => {
     draggable.node.classList.remove("z-20");
     if (draggable && droppable) {
-      const currentItems = Array.from(bookmarks());
+      const currentItems = bookmarks();
       const fromIndex = currentItems.findIndex(
-        (bookmark: BookmarkType) => bookmark.id === draggable.id
+        (bookmark: BookmarkAPI) => bookmark.id === draggable.id
       );
       const toIndex = currentItems.findIndex(
-        (bookmark: BookmarkType) => bookmark.id === droppable.id
+        (bookmark: BookmarkAPI) => bookmark.id === droppable.id
       );
       if (fromIndex !== toIndex) {
         const updatedItems = currentItems.slice();
         updatedItems.splice(toIndex, 0, ...updatedItems.splice(fromIndex, 1));
-        setBookmarks(new Set(updatedItems));
+        setBookmarks(updatedItems);
       }
     }
   };
@@ -37,29 +37,6 @@ export default function Bookmarks(): JSX.Element {
   // We have to use any on this because solid-dnd doesn't have proper typings
   const onDragStart = ({ draggable }: any) =>
     draggable.node.classList.add("z-20");
-
-  onMount(() => {
-    setBookmarks(
-      new Set<BookmarkType>(
-        JSON.parse(localStorage.getItem("bookmarks") || "[]")
-      )
-    );
-
-    setBookmarksShown((preferences()["bookmarks.shown"] as boolean) ?? true);
-  });
-
-  createEffect(() => {
-    localStorage.setItem("bookmarks", JSON.stringify(Array.from(bookmarks())));
-
-    localStorage.setItem(
-      "preferences",
-      JSON.stringify(
-        Object.assign(preferences(), {
-          ["bookmarks.shown"]: bookmarksShown()
-        })
-      )
-    );
-  });
 
   return (
     <Show when={bookmarksShown()}>
@@ -84,18 +61,11 @@ export default function Bookmarks(): JSX.Element {
         >
           <ConstrainDragAxis />
           <DragDropSensors />
-          <SortableProvider ids={Array.from(bookmarks()).map((x) => x.id)}>
-            <For each={Array.from(bookmarks())}>
-              {(bookmark: BookmarkType) => {
+          <SortableProvider ids={bookmarks().map((x) => x.id)}>
+            <For each={bookmarks()}>
+              {(bookmark: BookmarkAPI) => {
                 const sortable = createSortable(bookmark.id);
-                return (
-                  <Bookmark
-                    name={bookmark.name}
-                    sortable={sortable}
-                    url={bookmark.url}
-                    icon={bookmark.icon}
-                  />
-                );
+                return <Bookmark sortable={sortable} bookmark={bookmark} />;
               }}
             </For>
           </SortableProvider>

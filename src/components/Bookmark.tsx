@@ -4,29 +4,26 @@ import { tabStack } from "~/data/appState";
 import Favicon from "./Favicon";
 import ContextItem from "~/API/ContextItem";
 import { open } from "~/util/clickHandler";
-import { bookmarks, setBookmarks } from "~/data/appState";
-import BookmarkType from "~/types/Bookmarks";
+import BookmarkAPI from "~/API/Bookmark";
 
 interface BookmarkProps {
-  name: string;
-  url: string;
-  icon: string;
   sortable: any;
+  bookmark: BookmarkAPI;
 }
 
 export default function Bookmark(props: BookmarkProps): JSX.Element {
-  const { sortable } = props;
+  const { sortable, bookmark } = props;
 
   function handleClick(event: MouseEvent) {
-    if (/^javascript:/.test(props.url)) {
+    if (/^javascript:/.test(bookmark.url)) {
       Array.from(tabStack())[0].executeScript(
-        decodeURIComponent(props.url.replace(/^javascript:/, ""))
+        decodeURIComponent(bookmark.url.replace(/^javascript:/, ""))
       );
     } else {
       if (event.ctrlKey) {
-        new Tab(props.url, false);
+        new Tab(bookmark.url, false);
       } else {
-        Array.from(tabStack())[0].navigate(props.url);
+        Array.from(tabStack())[0].navigate(bookmark.url);
       }
     }
   }
@@ -42,7 +39,7 @@ export default function Bookmark(props: BookmarkProps): JSX.Element {
           new ContextItem({
             text: "Open in new tab",
             onClick: () => {
-              open(event, props.url, false, true);
+              open(event, bookmark.url, false, true);
             }
           }),
           new ContextItem({
@@ -51,13 +48,7 @@ export default function Bookmark(props: BookmarkProps): JSX.Element {
           new ContextItem({
             text: "Delete",
             onClick: () => {
-              setBookmarks(
-                new Set(
-                  Array.from(bookmarks()).filter(
-                    (bookmark) => bookmark.url !== props.url
-                  )
-                )
-              );
+              bookmark.delete();
             }
           }),
           new ContextItem({
@@ -67,9 +58,9 @@ export default function Bookmark(props: BookmarkProps): JSX.Element {
       }}
     >
       <div class="w-[15px] h-[15px]">
-        <Favicon src={createSignal<string>(props.icon)[0]}></Favicon>
+        <Favicon src={createSignal<string>(bookmark.icon)[0]}></Favicon>
       </div>
-      {props.name}
+      {bookmark.name}
     </div>
   );
 }

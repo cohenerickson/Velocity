@@ -1,4 +1,4 @@
-import { JSX, onMount, For, createEffect } from "solid-js";
+import { JSX, onMount, For } from "solid-js";
 import { tabs, setTabs, tabStack } from "~/data/appState";
 import {
   DragDropProvider,
@@ -10,11 +10,9 @@ import {
 import Tab from "../API/Tab";
 import preferences from "~/util/preferences";
 import TabElement from "~/components/Tab";
-import ConstrainDragAxis from "./constrainDragAxis";
+import ConstrainDragAxis from "./ConstrainDragAxis";
 
 export default function Header(): JSX.Element {
-  // const [fullscreen, setFullscreen] = createSignal<boolean>(false);
-
   // We have to use any on this because solid-dnd doesn't have proper typings
   const onDragEnd = ({ draggable, droppable }: any) => {
     draggable.node.classList.remove("z-20");
@@ -65,61 +63,9 @@ export default function Header(): JSX.Element {
     }
   });
 
-  createEffect(() => {
-    localStorage.setItem(
-      "tabs",
-      JSON.stringify(Array.from(tabs()).map((x) => x.url()))
-    );
-    localStorage.setItem(
-      "activeTab",
-      Array.from(tabs())
-        .findIndex((x) => x.focus())
-        .toString()
-    );
-  });
-
   function makeTab() {
     new Tab("about:newTab", true);
   }
-
-  // function toglgleFullscreen() {
-  //   const document = window.document as any;
-  //   if (document.isFullscreen === undefined) {
-  //     var fs = function () {
-  //       if (document.fullscreenElement !== undefined)
-  //         return document.fullscreenElement;
-  //       if (document.webkitFullscreenElement !== undefined)
-  //         return document.webkitFullscreenElement;
-  //       if (document.mozFullScreenElement !== undefined)
-  //         return document.mozFullScreenElement;
-  //       if (document.msFullscreenElement !== undefined)
-  //         return document.msFullscreenElement;
-  //     };
-  //     if (fs() === undefined) document.isFullscreen = undefined;
-  //     else document.isFullscreen = fs;
-  //   }
-
-  //   if (document.isFullscreen()) {
-  //     document.exitFullscreen();
-  //     setFullscreen(false);
-  //   } else {
-  //     document.body.requestFullscreen();
-  //     setFullscreen(true);
-  //   }
-  // }
-
-  // function close() {
-  //   if (
-  //     tabs().length > 1 &&
-  //     preferences()["general.tabs.confirmBeforeClosing"]
-  //   ) {
-  //     if (!confirm("Confirm before closing multiple tabs")) {
-  //       return;
-  //     }
-  //   }
-  //   Array.from(tabs()).map((x) => x.close());
-  //   window.close();
-  // }
 
   return (
     <div class="flex w-full bg-[#1C1B22]">
@@ -154,25 +100,6 @@ export default function Header(): JSX.Element {
           </div>
         </div>
       </div>
-
-      {/* <div class="flex h-full text-white">
-        <div
-          class="flex w-11 h-11 items-center justify-center hover:bg-[#4E4D53] text-xs"
-          onClick={toglgleFullscreen}
-        >
-          <i
-            class={`fa-light ${
-              fullscreen() ? "fa-window-restore" : "fa-window"
-            }`}
-          ></i>
-        </div>
-        <div
-          class="flex w-11 h-11 items-center justify-center hover:bg-[#E81123]"
-          onClick={close}
-        >
-          <i class="fa-light fa-xmark"></i>
-        </div>
-      </div> */}
     </div>
   );
 }

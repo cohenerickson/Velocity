@@ -10,7 +10,7 @@ import {
 import keybinds from "~/util/keybinds";
 import * as urlUtil from "~/util/url";
 import handleClick from "~/util/clickHandler";
-import Bookmark from "~/types/Bookmarks";
+import Bookmark from "./Bookmark";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import ContextItem from "./ContextItem";
 import generateContextButtons from "~/util/generateContextButtons";
@@ -92,32 +92,18 @@ export default class Tab {
     if (tabs().length === 1) {
       new Tab("about:newTab", true);
     }
-    this.cleanup();
+    this.#cleanup();
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
     Array.from(tabStack())[0].focus = true;
   }
 
-  cleanup() {
-    document
-      .querySelector<HTMLDivElement>("#content")
-      ?.removeChild(this.iframe);
-  }
-
   bookmark() {
-    const marks = Array.from(bookmarks());
-
-    if (!marks.find((x) => x.url === this.#url[0]())) {
-      marks.push({
-        type: "bookmark",
-        id: Math.floor(Math.random() * 1000000000000000),
-        name: this.#title[0](),
-        url: this.#url[0](),
-        icon: this.#icon[0]()
-      });
-
-      setBookmarks(new Set(marks));
-    }
+    new Bookmark({
+      name: this.#title[0](),
+      url: this.#url[0](),
+      icon: this.#icon[0]()
+    });
   }
 
   executeScript(script: string): any {
@@ -166,6 +152,12 @@ export default class Tab {
         iframeWindow.eruda.show();
       }
     }
+  }
+
+  #cleanup() {
+    document
+      .querySelector<HTMLDivElement>("#content")
+      ?.removeChild(this.iframe);
   }
 
   #injectScripts() {
