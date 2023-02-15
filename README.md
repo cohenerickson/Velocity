@@ -50,6 +50,8 @@ Velocity exposes basic APIs in order to allow developers to easily create custom
 
 ## Deployment
 
+[![Deploy on Railway](https://binbashbanana.github.io/deploy-buttons/buttons/remade/railway.svg)](https://railway.app/new/template/4l8lBH?referralCode=mh_oAJ)
+
 ### Requirements
 
 - [NodeJS version >=18](https://nodejs.org/)
