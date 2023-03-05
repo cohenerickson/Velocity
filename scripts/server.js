@@ -8,6 +8,10 @@ const __dirname = process.cwd();
 const httpServer = http.createServer();
 const app = express();
 
+app.get("/uv/uv.config.js", (req, res) => {
+  res.sendFile(__dirname + "/scripts/uv/uv.config.js");
+});
+
 app.use(express.static(__dirname + "/dist/public"));
 
 app.get("*", (req, res) => {
