@@ -1,10 +1,11 @@
-import { JSX, createSignal } from "solid-js";
+import Favicon from "./Favicon";
+import { createSignal } from "solid-js";
+import type { JSX } from "solid-js";
+import type BookmarkAPI from "~/API/Bookmark";
+import ContextItem from "~/API/ContextItem";
 import Tab from "~/API/Tab";
 import { tabStack } from "~/data/appState";
-import Favicon from "./Favicon";
-import ContextItem from "~/API/ContextItem";
 import { open } from "~/util/clickHandler";
-import BookmarkAPI from "~/API/Bookmark";
 
 interface BookmarkProps {
   sortable: any;

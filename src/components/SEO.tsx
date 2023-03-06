@@ -1,5 +1,5 @@
-import { JSX } from "solid-js";
-import { Meta, Title, Link } from "solid-start";
+import type { JSX } from "solid-js";
+import { Link, Meta, Title } from "solid-start";
 
 export default function SEO(): JSX.Element {
   return (

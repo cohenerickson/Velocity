@@ -1,6 +1,6 @@
+import preferences from "./preferences";
 import Tab from "~/API/Tab";
 import { tabStack } from "~/data/appState";
-import preferences from "./preferences";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 
 export default function keybinds(e: KeyboardEvent) {
@@ -29,6 +29,10 @@ export default function keybinds(e: KeyboardEvent) {
         Array.from(tabStack())[0].search() !== false
           ? Array.from(tabStack())[0].search
           : "";
+    } else if (key === "h") {
+      // ctrl + h
+      e.preventDefault();
+      new Tab("about:history", true);
     }
   } else if (!e.ctrlKey && !e.shiftKey && e.altKey && !e.metaKey) {
     if (key === "t") {

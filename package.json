@@ -1,7 +1,7 @@
 {
   "name": "velocity",
   "description": "A highly customizable tabbed proxy for evading internet censorship.",
-  "version": "1.2.0-beta",
+  "version": "1.3.0-beta",
   "scripts": {
     "dev": "concurrently \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
     "build": "solid-start build",
@@ -27,6 +27,7 @@
     "@tomphttp/bare-client": "^1.1.2-beta.3",
     "@tomphttp/bare-server-node": "^1.2.3",
     "express": "^4.18.2",
+    "idb": "^7.1.1",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.29.0",
     "solid-js": "^1.6.2",

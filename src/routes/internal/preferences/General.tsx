@@ -1,5 +1,5 @@
-import { JSX, Accessor } from "solid-js";
 import Toggle from "./inputs/Toggle";
+import type { Accessor, JSX } from "solid-js";
 
 interface GeneralProps {
   id: string;

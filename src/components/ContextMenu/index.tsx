@@ -1,6 +1,7 @@
-import { createSignal, For, JSX, onMount } from "solid-js";
 import Button from "./Button";
-import ContextItem from "~/API/ContextItem";
+import { For, createSignal, onMount } from "solid-js";
+import type { JSX } from "solid-js";
+import type ContextItem from "~/API/ContextItem";
 
 const [clientX, setClientX] = createSignal(0);
 const [clientY, setClientY] = createSignal(0);

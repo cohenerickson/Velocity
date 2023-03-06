@@ -1,9 +1,9 @@
-import { JSX } from "solid-js";
-import { Title, Link } from "solid-start";
-import { bareClient, setBareClient } from "~/data/appState";
 import BareClient from "@tomphttp/bare-client";
-import Prism from "prismjs";
 import "prism-themes/themes/prism-one-dark.css";
+import Prism from "prismjs";
+import type { JSX } from "solid-js";
+import { Link, Title } from "solid-start";
+import { bareClient, setBareClient } from "~/data/appState";
 
 export default function ViewSource(): JSX.Element {
   if (!bareClient()) {

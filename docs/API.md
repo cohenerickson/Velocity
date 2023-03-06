@@ -110,3 +110,22 @@ element.addEventListener("contextmenu", (event) => {
   );
 });
 ```
+
+# Objects
+
+## `history` - Modify history entries
+
+### Methods
+
+- _`add` - Async function to add or modify history entries_
+  - _`tab?` - the `Tab` object to add or modify in history_
+- _`get` - Async function to get all entries_
+- _`delete` - Async function to delete an entry_
+  - _`id` - the history object id `<Tab>.historyId`_
+- _`clear` - Async function clear all entries_
+
+### Example
+
+```js
+history.clear();
+```

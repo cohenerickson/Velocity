@@ -1,7 +1,7 @@
-import protocol from "./protocols";
 import { xor } from "./codec";
 import engines from "./engines";
 import preferences from "./preferences";
+import protocol from "./protocols";
 
 export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;
@@ -49,4 +49,14 @@ function generateSearchURL(query: string): string {
   return engines[
     preferences()["search.defaults.searchEngine"] || "google"
   ].searchStr.replace("%s", encodeURIComponent(query));
+}
+
+export function areEqual(a: string, b: string): boolean {
+  const urlA = new URL(a);
+  const urlB = new URL(b);
+  return (
+    urlA.origin === urlB.origin &&
+    urlA.pathname === urlB.pathname &&
+    urlA.search === urlB.search
+  );
 }

@@ -1,4 +1,4 @@
-import Preferences from "~/types/Preferences";
+import type Preferences from "~/types/Preferences";
 
 export default function preferences(): Preferences {
   return localStorage.getItem("preferences")

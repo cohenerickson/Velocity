@@ -1,6 +1,6 @@
 import Tab from "~/API/Tab";
 import { tabStack } from "~/data/appState";
-import Preferences from "~/types/Preferences";
+import type Preferences from "~/types/Preferences";
 
 export default function clickHandler(event: MouseEvent) {
   const element = getAnchor(event.target);

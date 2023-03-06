@@ -1,4 +1,4 @@
-import { JSX, Accessor, Setter } from "solid-js";
+import type { Accessor, JSX, Setter } from "solid-js";
 
 interface NavButtonProps {
   title: string;

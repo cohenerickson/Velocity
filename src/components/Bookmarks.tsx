@@ -1,10 +1,5 @@
-import { JSX, For, Show } from "solid-js";
 import Bookmark from "./Bookmark";
-import { bookmarks, setBookmarks } from "~/data/appState";
-import BookmarkAPI from "~/API/Bookmark";
-import ContextItem from "~/API/ContextItem";
-import preferences from "~/util/preferences";
-import { bookmarksShown, setBookmarksShown } from "~/data/appState";
+import ConstrainDragAxis from "./ConstrainDragAxis";
 import {
   DragDropProvider,
   DragDropSensors,
@@ -12,7 +7,12 @@ import {
   closestCenter,
   createSortable
 } from "@thisbeyond/solid-dnd";
-import ConstrainDragAxis from "./ConstrainDragAxis";
+import { For, Show } from "solid-js";
+import type { JSX } from "solid-js";
+import type BookmarkAPI from "~/API/Bookmark";
+import ContextItem from "~/API/ContextItem";
+import { bookmarks, setBookmarks } from "~/data/appState";
+import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 
 export default function Bookmarks(): JSX.Element {
   // We have to use any on this because solid-dnd doesn't have proper typings

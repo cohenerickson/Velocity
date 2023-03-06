@@ -1,6 +1,7 @@
 import { Transformer, useDragDropContext } from "@thisbeyond/solid-dnd";
+import type { JSX } from "solid-js";
 
-export default function ConstrainDragAxis() {
+export default function ConstrainDragAxis(): JSX.Element {
   // We have to use any on this because solid-dnd doesn't have proper typings
   const [, { onDragStart, onDragEnd, addTransformer, removeTransformer }] =
     useDragDropContext() as any;

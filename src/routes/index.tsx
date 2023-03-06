@@ -1,17 +1,16 @@
 import { onMount } from "solid-js";
+import type { JSX } from "solid-js";
+import { Title } from "solid-start";
+import Bookmarks from "~/components/Bookmarks";
+import ContextMenu from "~/components/ContextMenu";
 import Tabs from "~/components/Tabs";
 import Utility from "~/components/Utility";
-import Bookmarks from "~/components/Bookmarks";
-import keybinds from "~/util/keybinds";
-import { Title } from "solid-start";
-import Preferences from "~/types/Preferences";
 import { tabs } from "~/data/appState";
-import ContextMenu from "~/components/ContextMenu";
+import type Preferences from "~/types/Preferences";
+import keybinds from "~/util/keybinds";
 
-export default function Home() {
+export default function Home(): JSX.Element {
   onMount(async () => {
-    await import("~/util/registerSW");
-    await import("~/API");
     window.addEventListener("keydown", keybinds);
 
     addEventListener(

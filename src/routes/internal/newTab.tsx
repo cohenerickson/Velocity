@@ -1,5 +1,6 @@
-import { createSignal, JSX, onMount } from "solid-js";
-import { Title, Link } from "solid-start";
+import { createSignal, onMount } from "solid-js";
+import type { JSX } from "solid-js";
+import { Title } from "solid-start";
 import engines from "~/util/engines";
 import preferences from "~/util/preferences";
 import { generateProxyUrl } from "~/util/url";

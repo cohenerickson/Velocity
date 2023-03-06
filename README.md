@@ -66,7 +66,7 @@ npm start
 
 Velocity is still in it's early stages but if it gains enough interest among the community there are quite a few other features that I would like to implement, listed below are a few of these.
 
+- PWA support
 - Bookmarklet support
-- Custom history handler
 - Extension support
 - And more...

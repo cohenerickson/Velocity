@@ -1,5 +1,5 @@
-import { JSX, onMount, For } from "solid-js";
-import { tabs, setTabs, tabStack } from "~/data/appState";
+import Tab from "../API/Tab";
+import ConstrainDragAxis from "./ConstrainDragAxis";
 import {
   DragDropProvider,
   DragDropSensors,
@@ -7,10 +7,11 @@ import {
   closestCenter,
   createSortable
 } from "@thisbeyond/solid-dnd";
-import Tab from "../API/Tab";
-import preferences from "~/util/preferences";
+import { For, onMount } from "solid-js";
+import type { JSX } from "solid-js";
 import TabElement from "~/components/Tab";
-import ConstrainDragAxis from "./ConstrainDragAxis";
+import { setTabs, tabStack, tabs } from "~/data/appState";
+import preferences from "~/util/preferences";
 
 export default function Header(): JSX.Element {
   // We have to use any on this because solid-dnd doesn't have proper typings

@@ -1,9 +1,10 @@
-import { JSX, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
+import type { JSX } from "solid-js";
+import Tab from "~/API/Tab";
 import { tabStack } from "~/data/appState";
 import engines from "~/util/engines";
 import preferences from "~/util/preferences";
 import * as urlUtil from "~/util/url";
-import Tab from "~/API/Tab";
 
 export default function Utility(): JSX.Element {
   // Navigating back when history is empty makes the parent navigate so we will have to

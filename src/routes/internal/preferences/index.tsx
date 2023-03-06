@@ -1,9 +1,10 @@
-import { JSX, createSignal } from "solid-js";
-import { Title, Link } from "solid-start";
-import NavButton from "./NavButton";
-
 import General from "./General";
+import Keybinds from "./Keybinds";
+import NavButton from "./NavButton";
 import Search from "./Search";
+import { createSignal } from "solid-js";
+import type { JSX } from "solid-js";
+import { Link, Title } from "solid-start";
 
 export default function Preferences(): JSX.Element {
   const [activeSection, setActiveSection] = createSignal<string>("general");
@@ -29,11 +30,17 @@ export default function Preferences(): JSX.Element {
           title="Search"
           icon="search"
         />
+        <NavButton
+          active={[activeSection, setActiveSection]}
+          title="Keybinds"
+          icon="keyboard"
+        />
       </div>
       <div class="flex-1">
         <div class="w-full h-[82px]">{/* Search box */}</div>
         <General id="general" active={activeSection} />
         <Search id="search" active={activeSection} />
+        <Keybinds id="keybinds" active={activeSection} />
       </div>
     </main>
   );

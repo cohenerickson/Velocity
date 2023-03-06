@@ -1,5 +1,9 @@
 // @refresh reload
+import Bookmark from "./API/Bookmark";
+import SEO from "./components/SEO";
+import "./root.css";
 import { Suspense, createEffect, onMount } from "solid-js";
+import type { JSX } from "solid-js";
 import {
   Body,
   ErrorBoundary,
@@ -9,21 +13,20 @@ import {
   Routes,
   Scripts
 } from "solid-start";
-import "./root.css";
-import SEO from "./components/SEO";
-
 import {
-  tabs,
   bookmarks,
+  bookmarksShown,
   setBookmarks,
   setBookmarksShown,
-  bookmarksShown
+  tabs
 } from "~/data/appState";
 import preferences from "~/util/preferences";
-import Bookmark from "./API/Bookmark";
 
-export default function Root() {
-  onMount(() => {
+export default function Root(): JSX.Element {
+  onMount(async () => {
+    await import("~/util/registerSW");
+    await import("~/API");
+
     setBookmarks(
       JSON.parse(localStorage.getItem("bookmarks") || "[]").map(
         (x: any) => new Bookmark(x)

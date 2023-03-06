@@ -15,9 +15,9 @@ export default class Bookmark {
 
   constructor(options: BookmarkOptions) {
     this.name = options.name;
-    this.url = options.url;
+    this.url = options.url || "about:newTab";
     this.icon = options.icon;
-    this.id = options.id ?? Math.floor(Math.random() * 1000000000000000);
+    this.id = options.id ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
     setBookmarks([...bookmarks(), this]);
   }
