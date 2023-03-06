@@ -5,14 +5,17 @@
   "scripts": {
     "dev": "concurrently \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
     "build": "solid-start build",
-    "start": "node scripts/server.js"
+    "start": "node scripts/server.js",
+    "pretty": "prettier --write ."
   },
   "type": "module",
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/prismjs": "^1.26.0",
     "autoprefixer": "^10.4.12",
     "concurrently": "^7.6.0",
     "postcss": "^8.4.18",
+    "prettier": "^2.8.4",
     "solid-start-node": "^0.2.0",
     "tailwindcss": "^3.2.0",
     "typescript": "^4.8.4",
