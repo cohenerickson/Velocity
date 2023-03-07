@@ -24,6 +24,7 @@ The initial inspiration for Velocity came from other proxies such as Hypertabs a
 
 - `about:newTab` - New tab page
 - `about:preferences` - Preferences page
+- `about:history` - History page
 - `about:blank` - Blank document
 
 ## Commands
@@ -38,6 +39,7 @@ Velocity implements many commands that web browsers commonly use in order to do 
 - `Alt + ArrowRight` - Navigate forward in history
 - `Ctrl + D` - Bookmark current page
 - `Ctrl + Shift + B` - Toggle bookmarks bar
+- `Ctrl + H` - Open history
 
 ### Adapted commands
 

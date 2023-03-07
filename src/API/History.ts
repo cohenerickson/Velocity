@@ -1,15 +1,21 @@
 import type Tab from "./Tab";
-import { IDBPDatabase, openDB } from "idb";
+import EventEmitter from "events";
+import type { IDBPDatabase } from "idb";
+import { openDB } from "idb";
+import type HistoryEntry from "~/types/HistoryEntry";
 import protocols from "~/util/protocols";
 
-export default class History {
+export default class History extends EventEmitter {
   #db?: IDBPDatabase<unknown>;
 
   constructor() {
-    this.#init();
+    super();
+    this.#init().then(() => {
+      this.emit("ready");
+    });
   }
 
-  async #init() {
+  async #init(): Promise<IDBPDatabase<unknown>> {
     const db = await openDB("history", 1, {
       upgrade(db) {
         db.createObjectStore("history", { keyPath: "id" });
@@ -17,19 +23,19 @@ export default class History {
     });
 
     this.#db = db;
+
+    return db;
   }
 
-  async add(tab: Tab) {
+  async add(tab: Tab): Promise<any> {
     if (!this.#db) return;
 
-    console.log(tab.url());
-
-    if (!tab.url() || protocols.reverse(tab.url())) return;
+    if (!tab.url() || protocols.find(tab.url())) return;
 
     const tx = this.#db.transaction("history", "readwrite");
     const store = tx.objectStore("history");
 
-    await store.put({
+    return await store.put({
       id: tab.historyId,
       timestamp: Date.now(),
       url: tab.url() || "about:newTab",
@@ -38,7 +44,7 @@ export default class History {
     });
   }
 
-  async get() {
+  async get(): Promise<HistoryEntry[]> {
     if (!this.#db) return [];
 
     const tx = this.#db.transaction("history", "readonly");
@@ -49,21 +55,21 @@ export default class History {
     return history;
   }
 
-  async delete(key: number) {
+  async delete(key: number): Promise<void> {
     if (!this.#db) return;
 
     const tx = this.#db.transaction("history", "readwrite");
     const store = tx.objectStore("history");
 
-    await store.delete(key);
+    return await store.delete(key);
   }
 
-  async clear() {
+  async clear(): Promise<void> {
     if (!this.#db) return;
 
     const tx = this.#db.transaction("history", "readwrite");
     const store = tx.objectStore("history");
 
-    await store.clear();
+    return await store.clear();
   }
 }
