@@ -1,4 +1,5 @@
-import Dropdown from "./inputs/Dropdown";
+import Dropdown from "../../../components/Internal/preferences/inputs/Dropdown";
+import Toggle from "./inputs/Toggle";
 import type { Accessor, JSX } from "solid-js";
 
 interface GeneralProps {
@@ -22,6 +23,16 @@ export default function General(props: GeneralProps): JSX.Element {
             default={"google"}
             values={["Google", "Bing", "DuckDuckGo", "Brave", "Yahoo"]}
             label="This is the default search engine used for searches."
+          />
+        </div>
+      </section>
+      <section>
+        <h2 class="font-semibold text-lg">Default https</h2>
+        <div class="flex flex-col gap-2 my-2">
+          <Toggle
+            id="search.defaults.useHttps"
+            default={false}
+            label="Should Velocity use https when a protocol is not present."
           />
         </div>
       </section>

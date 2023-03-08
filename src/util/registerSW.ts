@@ -1,7 +1,7 @@
 declare global {
   var __uv$config: {
     prefix: string;
-    bare: string;
+    bare: string | string[];
     encodeUrl: (x: string) => string;
     decodeUrl: (x: string) => string;
   };

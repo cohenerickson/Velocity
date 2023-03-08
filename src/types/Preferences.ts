@@ -3,6 +3,7 @@ export default interface Preferences {
   "general.tabs.openWindowLinksInTab"?: boolean;
   "general.tabs.switchToMedia"?: boolean;
   "general.tabs.confirmBeforeClosing"?: boolean;
+  "search.defaults.useHttps"?: boolean;
   "search.defaults.searchEngine"?:
     | "google"
     | "bing"

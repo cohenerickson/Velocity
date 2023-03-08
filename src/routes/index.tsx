@@ -7,7 +7,7 @@ import Tabs from "~/components/Tabs";
 import Utility from "~/components/Utility";
 import { tabs } from "~/data/appState";
 import type Preferences from "~/types/Preferences";
-import keybinds from "~/util/keybinds";
+import keybinds from "~/util/keybindManager";
 
 export default function Home(): JSX.Element {
   onMount(async () => {

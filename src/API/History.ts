@@ -3,7 +3,7 @@ import EventEmitter from "events";
 import type { IDBPDatabase } from "idb";
 import { openDB } from "idb";
 import type HistoryEntry from "~/types/HistoryEntry";
-import protocols from "~/util/protocols";
+import protocols from "~/util/protocolManager";
 
 export default class History extends EventEmitter {
   #db?: IDBPDatabase<unknown>;

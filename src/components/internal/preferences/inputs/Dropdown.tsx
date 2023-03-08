@@ -50,7 +50,7 @@ export default function Toggle(props: ToggleProps): JSX.Element {
           )
         )}
       </select>
-      <label>{props.label}</label>
+      <label class="font-light">{props.label}</label>
     </div>
   );
 }

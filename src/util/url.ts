@@ -1,7 +1,7 @@
 import { xor } from "./codec";
 import engines from "./engines";
 import preferences from "./preferences";
-import protocol from "./protocols";
+import protocol from "./protocolManager";
 
 export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;
@@ -33,10 +33,18 @@ export function generateProxyUrl(query: string): string {
     /*
         We use http here because otherwise we will get certifacate issues when trying to
         connect to http only websites. If a website uses https it should automatically redirect.
+
+        In the future we should look into sniffing for https and using https if the website
+        supports it.
       */
     location =
       window.__uv$config.prefix +
-      window.__uv$config.encodeUrl("http://" + query);
+      window.__uv$config.encodeUrl(
+        "http" +
+          (preferences()["search.defaults.useHttps"] ? "s" : "") +
+          "://" +
+          query
+      );
   } else {
     location =
       window.__uv$config.prefix +
@@ -52,11 +60,15 @@ function generateSearchURL(query: string): string {
 }
 
 export function areEqual(a: string, b: string): boolean {
-  const urlA = new URL(a);
-  const urlB = new URL(b);
-  return (
-    urlA.origin === urlB.origin &&
-    urlA.pathname === urlB.pathname &&
-    urlA.search === urlB.search
-  );
+  try {
+    const urlA = new URL(a);
+    const urlB = new URL(b);
+    return (
+      urlA.origin === urlB.origin &&
+      urlA.pathname === urlB.pathname &&
+      urlA.search === urlB.search
+    );
+  } catch {
+    return false;
+  }
 }

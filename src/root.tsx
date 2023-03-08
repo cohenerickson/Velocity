@@ -25,6 +25,8 @@ import preferences from "~/util/preferences";
 export default function Root(): JSX.Element {
   onMount(async () => {
     await import("~/util/registerSW");
+    await import("~/scripts/registerProtocols");
+    await import("~/scripts/registerKeybinds");
     await import("~/API");
 
     setBookmarks(

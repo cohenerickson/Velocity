@@ -6,7 +6,8 @@ import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { setTabStack, setTabs, tabStack, tabs } from "~/data/appState";
 import handleClick from "~/util/clickHandler";
 import generateContextButtons from "~/util/generateContextButtons";
-import keybinds from "~/util/keybinds";
+import getManifest from "~/util/getManifest";
+import keybinds from "~/util/keybindManager";
 import * as urlUtil from "~/util/url";
 
 interface ProxyWindow extends Window {
@@ -198,6 +199,15 @@ export default class Tab {
       )
         this.historyId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
       window.Velocity.history.add(this);
+      if (window.Velocity && window.Velocity.postManifest) {
+        const manifest =
+          this.iframe.contentDocument?.querySelector<HTMLLinkElement>(
+            "link[rel='manifest']"
+          )?.href;
+        if (manifest) {
+          getManifest(manifest, this.url());
+        }
+      }
     });
     bindIFrameMousemove(this.iframe);
 
