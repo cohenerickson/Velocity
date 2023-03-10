@@ -101,7 +101,7 @@ element.addEventListener("contextmenu", (event) => {
   event.data = event.data ?? [];
 
   event.data.push(
-    new Velocity.ContextItem({
+    new ContextItem({
       text: "Click me!",
       onClick: () => {
         alert("You clicked me!");
@@ -157,5 +157,5 @@ new Keybind({
 ### Example
 
 ```js
-history.clear();
+await history.clear();
 ```
