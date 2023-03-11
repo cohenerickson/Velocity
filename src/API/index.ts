@@ -5,7 +5,7 @@ import Keybind from "./Keybind";
 import Protocol from "./Protocol";
 import Tab from "./Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
-import { bookmarks, protocols, tabs } from "~/data/appState";
+import { bookmarks, protocols, tabs, keybinds } from "~/data/appState";
 
 const Velocity = {
   Tab,
@@ -16,6 +16,7 @@ const Velocity = {
   getBookmarks: bookmarks,
   ContextItem,
   Keybind,
+  getKeybinds: keybinds,
   bindIFrameMousemove,
   history: new History(),
   postManifest: false

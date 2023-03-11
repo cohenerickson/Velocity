@@ -11,7 +11,12 @@ export default function Preferences(): JSX.Element {
   const [activeSection, setActiveSection] = createSignal<string>("general");
 
   return (
-    <main class="flex w-full h-full bg-[#1C1B22] text-white">
+    <main class="flex w-full h-full text-white">
+      <style>{`
+        body {
+          background: #1C1B22;
+        }
+      `}</style>
       <Title>Settings</Title>
       <Link rel="icon" href="/icons/gear.svg"></Link>
       {/*  */}

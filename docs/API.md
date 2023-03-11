@@ -126,6 +126,10 @@ element.addEventListener("contextmenu", (event) => {
   - _`callback` - Callback when keybind is run_
     - _`event` - Keyboard event_
 
+### Methods
+
+- _`toString` - Return the keybind as a readable string_
+
 ### Example
 
 ```js

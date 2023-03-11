@@ -1,4 +1,6 @@
-import type { Accessor, JSX } from "solid-js";
+import KeybindInput from "./inputs/Keybind";
+import { Accessor, For, JSX } from "solid-js";
+import type Keybind from "~/API/Keybind";
 
 interface KeybindsProps {
   id: string;
@@ -13,6 +15,13 @@ export default function Keybinds(props: KeybindsProps): JSX.Element {
       }`}
     >
       <h1 class="font-light text-[1.46em] leading-[1.3em]">Keybinds</h1>
+      <section>
+        <div class="flex flex-col gap-5 my-2 overflow-auto">
+          <For each={window.parent.Velocity.getKeybinds()}>
+            {(keybind: Keybind) => <KeybindInput value={keybind} />}
+          </For>
+        </div>
+      </section>
     </div>
   );
 }

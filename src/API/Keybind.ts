@@ -24,7 +24,7 @@ export default class Keybind {
   callback!: (event: KeyboardEvent) => void;
 
   constructor(options: KeybindOptions) {
-    if (options.id) {
+    if (!options.id) {
       this.name = options.name;
       this.description = options.description;
       this.key = options.key;
