@@ -20,10 +20,12 @@ export default async function getManifest(manifestURL: string, meta: string) {
   const manifest = await request.json();
   if (!manifest) return;
 
-  window.parent.postMessage({
-    type: "manifest",
-    manifestURL,
-    meta,
-    manifest
-  });
+  try {
+    // @ts-ignore
+    window.xen.parent.send("pwaRequest", {
+      manifestURL,
+      meta,
+      manifest
+    });
+  } catch {}
 }
