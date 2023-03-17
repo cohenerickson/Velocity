@@ -1,4 +1,4 @@
-import Dropdown from "../../../components/Internal/preferences/inputs/Dropdown";
+import Dropdown from "./inputs/Dropdown";
 import Toggle from "./inputs/Toggle";
 import type { Accessor, JSX } from "solid-js";
 
@@ -7,7 +7,7 @@ interface GeneralProps {
   active: Accessor<string>;
 }
 
-export default function General(props: GeneralProps): JSX.Element {
+export default function Search(props: GeneralProps): JSX.Element {
   return (
     <div
       class={`w-full flex flex-col gap-5 px-7 ${
