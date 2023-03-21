@@ -1,4 +1,4 @@
-
+out
 dist
 .solid
 .output
@@ -22,3 +22,6 @@ gitignore
 # System Files
 .DS_Store
 Thumbs.db
+
+# Development
+public/*.xpi

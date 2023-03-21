@@ -1,7 +1,7 @@
 // @refresh reload
 import Bookmark from "./API/Bookmark";
+import "./browser.css";
 import SEO from "./components/SEO";
-import "./root.css";
 import { Suspense, createEffect, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import {
@@ -20,13 +20,17 @@ import {
   setBookmarksShown,
   tabs
 } from "~/data/appState";
-import preferences from "~/util/preferences";
+import { preferences } from "~/util/";
 
 export default function Root(): JSX.Element {
   onMount(async () => {
-    await import("~/util/registerSW");
-    await import("~/scripts/registerProtocols");
+    ["/uv/uv.config.js", "/uv/uv.bundle.js"].forEach((_) => {
+      const s = document.createElement("script");
+      s.src = _;
+      document.head.appendChild(s);
+    });
     await import("~/scripts/registerKeybinds");
+    await import("~/scripts/registerAddons");
     await import("~/API");
 
     setBookmarks(

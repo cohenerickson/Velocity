@@ -1,11 +1,5 @@
-const apexHost = "radon.games";
-
 self.__uv$config = {
-  bare: [
-    `https://uv.${apexHost}/bare1/`,
-    `https://uv.${apexHost}/bare2/`,
-    `https://uv.${apexHost}/bare3/`
-  ],
+  bare: "/bare/",
   prefix: "/~/uv/",
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,

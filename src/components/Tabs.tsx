@@ -11,7 +11,7 @@ import { For, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import TabElement from "~/components/Tab";
 import { setTabs, tabStack, tabs } from "~/data/appState";
-import preferences from "~/util/preferences";
+import { preferences } from "~/util/";
 
 export default function Header(): JSX.Element {
   // We have to use any on this because solid-dnd doesn't have proper typings
@@ -37,10 +37,13 @@ export default function Header(): JSX.Element {
   const onDragStart = ({ draggable }: any) =>
     draggable.node.classList.add("z-20");
 
-  onMount(() => {
+  onMount(async () => {
+    await import("~/scripts/registerProtocols");
+
     const searchParams = new URLSearchParams(window.location.search);
     const url = searchParams.get("url");
     const urls: string[] = JSON.parse(localStorage.getItem("tabs") || "[]");
+
 
     if (url) {
       new Tab(url, true);
@@ -69,7 +72,7 @@ export default function Header(): JSX.Element {
   }
 
   return (
-    <div class="flex w-full bg-[#1C1B22]">
+    <div class="flex w-full">
       <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1">
         <DragDropProvider
           onDragEnd={onDragEnd}
@@ -94,7 +97,7 @@ export default function Header(): JSX.Element {
 
         <div class="flex items-center justify-center">
           <div
-            class="h-9 w-9 rounded hover:bg-[#52525E] text-white flex items-center justify-center"
+            class="toolbarbutton-1 h-9 w-9 rounded flex items-center justify-center"
             onClick={makeTab}
           >
             <i class="fa-regular fa-plus text-xs mt-[2px]" />

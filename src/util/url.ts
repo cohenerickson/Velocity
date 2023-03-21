@@ -1,7 +1,6 @@
-import { xor } from "./codec";
-import engines from "./engines";
-import preferences from "./preferences";
-import protocol from "./protocolManager";
+import { xor } from ".";
+import { engines, preferences } from "./";
+import protocol from "~/manager/protocolManager";
 
 export function normalize(url: string): string {
   if (!("location" in globalThis)) return url;

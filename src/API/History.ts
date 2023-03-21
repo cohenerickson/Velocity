@@ -2,11 +2,11 @@ import type Tab from "./Tab";
 import EventEmitter from "events";
 import type { IDBPDatabase } from "idb";
 import { openDB } from "idb";
+import protocols from "~/manager/protocolManager";
 import type HistoryEntry from "~/types/HistoryEntry";
-import protocols from "~/util/protocolManager";
 
 export default class History extends EventEmitter {
-  #db?: IDBPDatabase<unknown>;
+  #db?: IDBPDatabase;
 
   constructor() {
     super();
@@ -15,7 +15,7 @@ export default class History extends EventEmitter {
     });
   }
 
-  async #init(): Promise<IDBPDatabase<unknown>> {
+  async #init(): Promise<IDBPDatabase> {
     const db = await openDB("history", 1, {
       upgrade(db) {
         db.createObjectStore("history", { keyPath: "id" });

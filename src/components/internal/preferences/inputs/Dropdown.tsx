@@ -1,6 +1,6 @@
 import { JSX, createEffect, createSignal, onMount } from "solid-js";
 import Preferences from "~/types/Preferences";
-import preferences from "~/util/preferences";
+import { preferences } from "~/util/";
 
 interface ToggleProps {
   id: keyof Preferences;

@@ -1,5 +1,5 @@
+import { getActiveTab } from "~/util/";
 import Tab from "~/API/Tab";
-import { tabStack } from "~/data/appState";
 import type Preferences from "~/types/Preferences";
 
 export default function clickHandler(event: MouseEvent) {
@@ -38,7 +38,7 @@ export function open(
 
 function navigate(event: MouseEvent, url: string) {
   event.preventDefault();
-  Array.from(tabStack())[0].navigate(url);
+  getActiveTab().navigate(url);
 }
 
 function getAnchor(element: EventTarget | null): HTMLAnchorElement | undefined {

@@ -1,7 +1,7 @@
 import ContextItem from "~/API/ContextItem";
 import Tab from "~/API/Tab";
-import { tabStack } from "~/data/appState";
-import { open } from "~/util/clickHandler";
+import { open } from "./clickManager";
+import { getActiveTab } from "~/util/";
 
 export default function generateContextButtons(
   element: HTMLElement
@@ -44,7 +44,7 @@ export default function generateContextButtons(
     );
   }
 
-  const selection = Array.from(tabStack())[0]
+  const selection = getActiveTab()
     .iframe.contentWindow?.getSelection()
     ?.toString();
   if (selection) {
@@ -64,19 +64,19 @@ export default function generateContextButtons(
       new ContextItem({
         text: "Back",
         onClick: () => {
-          Array.from(tabStack())[0].goBack();
+          getActiveTab().goBack();
         }
       }),
       new ContextItem({
         text: "Forward",
         onClick: () => {
-          Array.from(tabStack())[0].goForward();
+          getActiveTab().goForward();
         }
       }),
       new ContextItem({
         text: "Reload",
         onClick: () => {
-          Array.from(tabStack())[0].reload();
+          getActiveTab().reload();
         }
       }),
       new ContextItem({ separator: true })
@@ -87,13 +87,13 @@ export default function generateContextButtons(
     new ContextItem({
       text: "View Page Source",
       onClick: () => {
-        new Tab("view-source:" + Array.from(tabStack())[0].url(), true);
+        new Tab("view-source:" + getActiveTab().url(), true);
       }
     }),
     new ContextItem({
       text: "Inspect",
       onClick: () => {
-        Array.from(tabStack())[0].setDevTools(true);
+        getActiveTab().setDevTools(true);
       }
     })
   );

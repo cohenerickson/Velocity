@@ -6,11 +6,13 @@ import ContextMenu from "~/components/ContextMenu";
 import Tabs from "~/components/Tabs";
 import Utility from "~/components/Utility";
 import { tabs } from "~/data/appState";
+import keybinds from "~/manager/keybindManager";
 import type Preferences from "~/types/Preferences";
-import keybinds from "~/util/keybindManager";
 
 export default function Home(): JSX.Element {
   onMount(async () => {
+    await import("~/util/registerSW");
+
     window.addEventListener("keydown", keybinds);
 
     addEventListener(
@@ -34,11 +36,14 @@ export default function Home(): JSX.Element {
   return (
     <main class="h-full flex flex-col">
       <Title>Velocity</Title>
-      <Tabs />
-      <Utility />
-      <Bookmarks />
+      <div id="navigator-toolbox-background">
+        <div id="navigator-toolbox">
+          <Tabs />
+          <Utility />
+          <Bookmarks />
+        </div>
+      </div>
       <ContextMenu />
-      <div class="h-[0px] w-full border-b border-[#0C0C0D]"></div>
       <main id="content" class="w-full bg-white flex-1"></main>
     </main>
   );

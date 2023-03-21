@@ -1,20 +1,18 @@
 import Bookmark from "./Bookmark";
-import type ContextItem from "./ContextItem";
+import EventEmitter from "events";
 import { createSignal } from "solid-js";
 import type { Accessor, Setter } from "solid-js";
-import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { setTabStack, setTabs, tabStack, tabs } from "~/data/appState";
-import handleClick from "~/util/clickHandler";
-import generateContextButtons from "~/util/generateContextButtons";
-import getManifest from "~/util/getManifest";
-import keybinds from "~/util/keybindManager";
+import * as contentScriptManager from "~/manager/contentScriptManager";
+import * as tabManager from "~/manager/tabManager";
+import { getActiveTab } from "~/util";
 import * as urlUtil from "~/util/url";
 
 interface ProxyWindow extends Window {
   __uv$location: Location;
 }
 
-export default class Tab {
+export default class Tab extends EventEmitter {
   iframe: HTMLIFrameElement = document.createElement("iframe");
   id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
   historyId: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
@@ -28,16 +26,18 @@ export default class Tab {
   #focus: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
   #loading: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(true);
   #playing: [Accessor<boolean>, Setter<boolean>] = createSignal<boolean>(false);
-  #scrollPos: number = 0;
+  scrollPos: number = 0;
 
   constructor(url?: string, isActive?: boolean) {
+    super();
+    contentScriptManager.subscribe(this);
     // initialize iframe
     this.iframe.classList.add("w-full", "h-full", "border-0");
     if (!isActive) this.iframe.classList.add("hidden");
     document
       .querySelector<HTMLDivElement>("#content")
       ?.appendChild(this.iframe);
-    this.#injectScripts();
+    tabManager.register(this);
     this.navigate(url || "about:newTab");
     requestAnimationFrame(this.#updateDetails.bind(this));
 
@@ -62,7 +62,7 @@ export default class Tab {
   pin() {}
 
   reload() {
-    this.iframe.contentWindow?.location.reload();
+    this.navigate(this.url() || "about:newTab");
   }
 
   stop() {
@@ -91,7 +91,7 @@ export default class Tab {
     this.#cleanup();
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
-    Array.from(tabStack())[0].focus = true;
+    getActiveTab().focus = true;
   }
 
   bookmark() {
@@ -104,6 +104,12 @@ export default class Tab {
 
   executeScript(script: string): any {
     return this.iframe.contentWindow?.window.eval(script);
+  }
+
+  addStyle(style: string): void {
+    const element = this.iframe.contentDocument!.createElement("style");
+    element.innerText = style;
+    this.iframe.contentDocument?.head.appendChild(element);
   }
 
   setDevTools(state?: boolean) {
@@ -156,93 +162,11 @@ export default class Tab {
       ?.removeChild(this.iframe);
   }
 
-  #injectScripts() {
-    this.iframe.contentWindow?.addEventListener("keydown", keybinds);
-    this.iframe.contentWindow?.addEventListener("click", handleClick);
-    (this.iframe.contentWindow || ({} as { open: any })).open = (
-      url: string
-    ) => {
-      const tab = new Tab(url, true);
-      return tab.iframe.contentWindow;
-    };
-    (this.iframe.contentWindow || ({} as { close: any })).close = () => {
-      this.close();
-    };
-    this.iframe.contentWindow?.addEventListener("unload", () => {
-      setTimeout(() => {
-        this.#injectScripts();
-      });
-      this.loading = true;
-    });
-    this.iframe.contentWindow?.addEventListener("wheel", () => {
-      setTimeout(() => {
-        this.#scrollPos =
-          this.iframe.contentDocument?.documentElement.scrollTop || 0;
-      });
-    });
-    this.iframe.contentWindow?.addEventListener(
-      "contextmenu",
-      (event: Event & { data?: ContextItem[] }) => {
-        if (event.target)
-          event.data = generateContextButtons(event.target as HTMLElement);
-      }
-    );
-    this.iframe.contentWindow?.addEventListener("load", async () => {
-      this.setDevTools(false);
-      const history = await window.Velocity.history.get();
-      if (
-        !history.find((x) => {
-          const id = x.id === this.historyId;
-          const url = urlUtil.areEqual(x.url, this.url());
-          return id && url;
-        })
-      )
-        this.historyId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-      window.Velocity.history.add(this);
-      if (window.Velocity && window.Velocity.postManifest) {
-        const manifest =
-          this.iframe.contentDocument?.querySelector<HTMLLinkElement>(
-            "link[rel='manifest']"
-          )?.href;
-        if (manifest) {
-          getManifest(manifest, this.url());
-        }
-      }
-    });
-    bindIFrameMousemove(this.iframe);
-
-    if (this.iframe.contentWindow) {
-      const tab = this;
-      this.iframe.contentWindow.history.pushState = new Proxy(
-        this.iframe.contentWindow.history.pushState,
-        {
-          apply(target, thisArg, argArray) {
-            setTimeout(() => {
-              tab.historyId = Math.floor(
-                Math.random() * Number.MAX_SAFE_INTEGER
-              );
-              window.Velocity.history.add(tab);
-            });
-            return Reflect.apply(target, thisArg, argArray);
-          }
-        }
-      );
-
-      this.iframe.contentWindow.history.replaceState = new Proxy(
-        this.iframe.contentWindow.history.replaceState,
-        {
-          apply(target, thisArg, argArray) {
-            setTimeout(() => {
-              window.Velocity.history.add(tab);
-            });
-            return Reflect.apply(target, thisArg, argArray);
-          }
-        }
-      );
-    }
-  }
-
   #updateDetails(): void {
+    if (!this.iframe.contentWindow || !this.iframe.contentDocument) {
+      setTimeout(this.#updateDetails.bind(this), 100);
+      return;
+    }
     this.#url[1](
       urlUtil.normalize(
         (this.iframe.contentWindow as ProxyWindow)?.__uv$location?.toString() ||
@@ -295,7 +219,7 @@ export default class Tab {
       this.iframe.classList.remove("hidden");
       (
         this.iframe.contentDocument || ({ documentElement: {} } as Document)
-      ).documentElement.scrollTop = this.#scrollPos;
+      ).documentElement.scrollTop = this.scrollPos;
     }
     this.#focus[1](value);
   }

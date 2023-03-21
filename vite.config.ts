@@ -14,9 +14,22 @@ export default defineConfig({
         {
           src: "public/uv/uv.config.js",
           dest: "uv"
+        },
+        {
+          src: "./out/.",
+          dest: "addon"
         }
       ]
     }),
     solid({ ssr: false })
-  ]
+  ],
+  server: {
+    proxy: {
+      "^/bare/*": {
+        rewrite: (path: string) => path.replace(/^\/bare/, ""),
+        target: "http://localhost:8080/",
+        ws: true
+      }
+    }
+  }
 });

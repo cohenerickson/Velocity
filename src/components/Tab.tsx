@@ -16,9 +16,8 @@ export default function Tab(props: TabProps): JSX.Element {
     <div
       // @ts-ignore
       use:sortable
-      class={`text-white h-9 ${
-        props.tab.focus() ? "bg-[#42414D]" : "hover:bg-[#35343A]"
-      } ${
+      id="tab-background"
+      class={`h-9 ${
         props.tab.pinned() || props.tab.small() ? "" : "w-48"
       } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden`}
       onMouseDown={() => {
@@ -58,11 +57,12 @@ export default function Tab(props: TabProps): JSX.Element {
           })
         ];
       }}
+      data-active={props.tab.focus()}
     >
       <div class="w-4 h-4">
         <Show when={props.tab.loading()}>
           <div class="w-4 h-4 overflow-hidden">
-            <div class="loading-animation w-[960px] h-4 bg-white"></div>
+            <div id="tab-throbber" class="w-[960px] h-4"></div>
           </div>
         </Show>
         <Show when={!props.tab.loading()}>
@@ -91,7 +91,7 @@ export default function Tab(props: TabProps): JSX.Element {
         </p>
       </div>
       <div
-        class={`h-6 w-6 flex items-center justify-center hover:bg-neutral-500 hover:bg-opacity-50 transition-all rounded ${
+        class={`close-icon h-6 w-6 flex items-center justify-center hover:bg-opacity-50 rounded ${
           (props.tab.small() && !props.tab.focus()) || props.tab.pinned()
             ? "hidden"
             : ""
@@ -99,7 +99,7 @@ export default function Tab(props: TabProps): JSX.Element {
         onClick={props.tab.close.bind(props.tab)}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <i class="fa-light fa-xmark text-[10px] mt-[2px] text-white"></i>
+        <i class="fa-light fa-xmark text-[10px] mt-[2px]"></i>
       </div>
     </div>
   );

@@ -1,8 +1,7 @@
 import { createSignal, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import { Title } from "solid-start";
-import engines from "~/util/engines";
-import preferences from "~/util/preferences";
+import { engines, preferences } from "~/util/";
 import { generateProxyUrl } from "~/util/url";
 
 export default function NewTab(): JSX.Element {
@@ -24,15 +23,15 @@ export default function NewTab(): JSX.Element {
   });
 
   return (
-    <main class="flex flex-col w-full h-full bg-[#2B2A33] items-center">
+    <main class="flex flex-col w-full h-full items-center" id="ntp">
       <Title>New Tab</Title>
       {/*  */}
       <div class="flex items-center gap-5 m-5 mt-32">
         <img class="h-20 w-20" src="/icons/newTab.png" alt="" />
-        <h1 class="text-4xl font-semibold text-white">Velocity</h1>
+        <h1 class="text-4xl font-semibold">Velocity</h1>
       </div>
       <input
-        class="bg-[#42414D] px-5 py-4 text-white rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
+        class="px-5 py-4 rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
         placeholder={`Search with ${name()} or enter address`}
         onKeyDown={handleKeydown}
       ></input>

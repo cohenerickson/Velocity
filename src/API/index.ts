@@ -1,9 +1,11 @@
+import ExtensionReader from "./AddonReader";
 import Bookmark from "./Bookmark";
 import ContextItem from "./ContextItem";
 import History from "./History";
 import Keybind from "./Keybind";
 import Protocol from "./Protocol";
 import Tab from "./Tab";
+import * as addon from "./addon";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { bookmarks, protocols, tabs, keybinds } from "~/data/appState";
 
@@ -19,7 +21,9 @@ const Velocity = {
   getKeybinds: keybinds,
   bindIFrameMousemove,
   history: new History(),
-  postManifest: false
+  postManifest: false,
+  ExtensionReader,
+  addon
 };
 
 declare global {

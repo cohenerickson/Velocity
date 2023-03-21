@@ -1,7 +1,6 @@
 import { For, JSX, onMount } from "solid-js";
 import { createSignal } from "solid-js";
 import { Link, Title } from "solid-start";
-import Tab from "~/api/Tab";
 import Favicon from "~/components/Favicon";
 import type HistoryEntry from "~/types/HistoryEntry";
 

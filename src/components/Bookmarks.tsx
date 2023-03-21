@@ -41,7 +41,8 @@ export default function Bookmarks(): JSX.Element {
   return (
     <Show when={bookmarksShown()}>
       <div
-        class="flex items-center h-7 w-full bg-[#2B2A33] text-white text-[11px] px-2 gap-2"
+        id="PersonalToolbar"
+        class="flex items-center h-7 w-full text-[11px] px-2 gap-2"
         oncontextmenu={(event: MouseEvent & { data?: ContextItem[] }): void => {
           if (!event.data) event.data = [];
           event.data.push(

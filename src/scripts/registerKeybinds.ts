@@ -1,7 +1,8 @@
 import Keybind from "~/API/Keybind";
 import Tab from "~/API/Tab";
-import { tabStack, bookmarksShown, setBookmarksShown } from "~/data/appState";
-import preferences from "~/util/preferences";
+import { bookmarksShown, setBookmarksShown } from "~/data/appState";
+import { preferences } from "~/util/";
+import { getActiveTab } from "~/util/";
 
 new Keybind({
   name: "Reload",
@@ -9,7 +10,7 @@ new Keybind({
   key: "r",
   ctrl: true,
   callback() {
-    Array.from(tabStack())[0].reload();
+    getActiveTab().reload();
   }
 });
 
@@ -19,7 +20,7 @@ new Keybind({
   key: "d",
   ctrl: true,
   callback() {
-    Array.from(tabStack())[0].bookmark();
+    getActiveTab().bookmark();
   }
 });
 
@@ -29,7 +30,7 @@ new Keybind({
   key: "u",
   ctrl: true,
   callback() {
-    new Tab(`view-source:${Array.from(tabStack())[0].url()}`, true);
+    new Tab(`view-source:${getActiveTab().url()}`, true);
   }
 });
 
@@ -42,10 +43,8 @@ new Keybind({
     const searchElement = document.querySelector<HTMLInputElement>("#url_bar");
     searchElement?.focus();
     searchElement?.select();
-    Array.from(tabStack())[0].search =
-      Array.from(tabStack())[0].search() !== false
-        ? Array.from(tabStack())[0].search
-        : "";
+    getActiveTab().search =
+      getActiveTab().search() !== false ? getActiveTab().search : "";
   }
 });
 
@@ -75,7 +74,7 @@ new Keybind({
   key: "w",
   alt: true,
   callback() {
-    Array.from(tabStack())[0].close();
+    getActiveTab().close();
   }
 });
 
@@ -85,7 +84,7 @@ new Keybind({
   key: "ArrowLeft",
   alt: true,
   callback() {
-    Array.from(tabStack())[0].goBack();
+    getActiveTab().goBack();
   }
 });
 
@@ -95,7 +94,7 @@ new Keybind({
   key: "ArrowRight",
   alt: true,
   callback() {
-    Array.from(tabStack())[0].goForward();
+    getActiveTab().goForward();
   }
 });
 
@@ -106,7 +105,7 @@ new Keybind({
   ctrl: true,
   shift: true,
   callback() {
-    Array.from(tabStack())[0].setDevTools();
+    getActiveTab().setDevTools();
   }
 });
 
