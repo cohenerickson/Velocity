@@ -1,5 +1,5 @@
 self.__uv$config = {
-  bare: `${location.host}/bare/`,
+  bare: `/bare/`,
   prefix: "/~/uv/",
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,
