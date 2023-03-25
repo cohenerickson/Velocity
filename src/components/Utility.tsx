@@ -78,6 +78,7 @@ export default function Utility(): JSX.Element {
         <input
           ref={urlBar}
           id="url_bar"
+          autocomplete="off"
           class="flex-1 flex items-center leading-8 h-full text-sm rounded bg-transparent focus:outline-none"
           value={
             getActiveTab()?.search() !== false

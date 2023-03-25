@@ -19,7 +19,17 @@
   border-top: 1px solid var(--toolbar-top-separator, rgba(0, 0, 0, 0.3));
 }
 
+#tabs {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
 /* Tabs */
+#tab-background, #opentab {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
 #tab-background:not([data-active="true"]) {
   color: var(--tab-background-text);
 }
@@ -132,4 +142,10 @@
 
 #ntp input {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+#ntp #logo {
+  background-color: currentColor;
+  -webkit-mask: url(/icons/velocity.svg) no-repeat center;
+  mask: url(icons/velocity.svg) no-repeat center;
 }

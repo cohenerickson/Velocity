@@ -1,5 +1,7 @@
 self.__uv$config = {
-  bare: "/bare/",
+  bare: ["/bare1/", "/bare2/", "/bare3/"].map(
+    (x) => `https://uv.radon.games${x}`
+  ),
   prefix: "/~/uv/",
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,

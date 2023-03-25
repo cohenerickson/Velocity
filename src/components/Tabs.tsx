@@ -44,7 +44,6 @@ export default function Header(): JSX.Element {
     const url = searchParams.get("url");
     const urls: string[] = JSON.parse(localStorage.getItem("tabs") || "[]");
 
-
     if (url) {
       new Tab(url, true);
       window.history.replaceState({}, document.title, "/");
@@ -72,7 +71,7 @@ export default function Header(): JSX.Element {
   }
 
   return (
-    <div class="flex w-full">
+    <div class="flex w-full" id="tabs">
       <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1">
         <DragDropProvider
           onDragEnd={onDragEnd}
@@ -95,7 +94,7 @@ export default function Header(): JSX.Element {
           </SortableProvider>
         </DragDropProvider>
 
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-center" id="opentab">
           <div
             class="toolbarbutton-1 h-9 w-9 rounded flex items-center justify-center"
             onClick={makeTab}

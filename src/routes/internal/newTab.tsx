@@ -27,7 +27,7 @@ export default function NewTab(): JSX.Element {
       <Title>New Tab</Title>
       {/*  */}
       <div class="flex items-center gap-5 m-5 mt-32">
-        <img class="h-20 w-20" src="/icons/newTab.png" alt="" />
+        <div class="h-20 w-20" id="logo"></div>
         <h1 class="text-4xl font-semibold">Velocity</h1>
       </div>
       <input
