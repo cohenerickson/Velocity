@@ -5,7 +5,7 @@ import type Manifest from "webextension-manifest";
 import type { Theme } from "webextension-manifest";
 import type AddonReader from "~/API/AddonReader";
 
-export let activeTheme = {
+export const defaultTheme = {
   colors: {
     frame: "#1c1b22",
     tab_selected: "#42414d",
@@ -18,25 +18,23 @@ export let activeTheme = {
   }
 };
 
-if (!isServer) updateCssVariables(activeTheme, { colors: {} });
+let activeTheme = Object.assign({}, defaultTheme);
+
+if (!isServer) updateCssVariables(activeTheme);
 
 export default function setTheme(manifest: Manifest, reader: AddonReader) {
   const newTheme = Object.assign({}, activeTheme, manifest.theme);
-  updateCssVariables(newTheme, activeTheme, reader);
+  updateCssVariables(newTheme, reader);
   activeTheme = newTheme;
+  localStorage.setItem("theme", JSON.stringify(activeTheme));
 }
 
-async function updateCssVariables(
-  theme: Theme,
-  oldTheme: Theme,
-  reader?: AddonReader
-) {
+export async function updateCssVariables(theme: Theme, reader?: AddonReader) {
   const root = document.querySelector<HTMLElement>(":root")!;
 
   root.setAttribute("style", "");
 
   for (let rule in theme.colors) {
-    // normalize deprecated values
     if (rule === "accentcolor") rule = "frame";
     if (rule === "textcolor") rule = "tab_background_text";
 
@@ -49,12 +47,10 @@ async function updateCssVariables(
 
   if (theme.images && reader) {
     for (let rule in theme.images) {
-      // normalize deprecated values
       if (rule === "headerURL") rule = "theme_frame";
 
       const cssRule = `--${rule.replace(/_/g, "-")}`;
 
-      // Experimental values
       if (rule === "additional_backgrounds") {
         let property = "";
         const images = theme.images.additional_backgrounds!;

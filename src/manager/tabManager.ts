@@ -1,3 +1,4 @@
+import { registerTab } from "./runtimeManager";
 import type ContextItem from "~/API/ContextItem";
 import Tab from "~/API/Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
@@ -9,6 +10,7 @@ import * as urlUtil from "~/util/url";
 
 export function register(tab: Tab): void {
   registerEvents(tab);
+  registerTab(tab);
 }
 
 function registerEvents(tab: Tab): void {
@@ -24,6 +26,7 @@ function registerEvents(tab: Tab): void {
   tab.iframe.contentWindow?.addEventListener("unload", () => {
     setTimeout(() => {
       registerEvents(tab);
+      tab.emit("document_start", normalizeURL(tab.url()));
     });
     tab.loading = true;
   });
@@ -42,10 +45,11 @@ function registerEvents(tab: Tab): void {
   );
   tab.iframe.contentWindow?.addEventListener("DOMContentLoaded", () => {
     injectabtory(tab);
-    tab.emit("document_end", tab.url());
+    tab.emit("document_end", normalizeURL(tab.url()));
   });
   tab.iframe.contentWindow?.addEventListener("load", async () => {
     tab.setDevTools(false);
+    tab.emit("document_idle", normalizeURL(tab.url()));
     if ("Velocity" in window) {
       const history = await window.Velocity.history.get();
       if (
@@ -105,5 +109,13 @@ function injectabtory(tab: Tab): void {
         }
       }
     );
+  }
+}
+
+function normalizeURL(url: string): string {
+  try {
+    return new URL(url).toString();
+  } catch {
+    return url;
   }
 }

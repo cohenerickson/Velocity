@@ -176,18 +176,20 @@ export default class Tab extends EventEmitter {
 
     this.title = this.iframe.contentDocument?.title || this.#url[0]();
 
-    const icons =
-      this.iframe.contentDocument?.head.querySelectorAll<HTMLLinkElement>(
-        "link[rel='favicon'], link[rel='shortcut icon'], link[rel='icon']"
-      );
-    const ico = icons?.[icons.length - 1]?.href;
+    if (this.iframe.contentDocument.head) {
+      const icons =
+        this.iframe.contentDocument.head.querySelectorAll<HTMLLinkElement>(
+          "link[rel='favicon'], link[rel='shortcut icon'], link[rel='icon']"
+        );
+      const ico = icons?.[icons.length - 1]?.href;
 
-    if (ico && /^data:/.test(ico)) {
-      this.icon = ico;
-    } else if (ico) {
-      this.icon = ico;
-    } else {
-      this.icon = "/icons/earth.svg";
+      if (ico && /^data:/.test(ico)) {
+        this.icon = ico;
+      } else if (ico) {
+        this.icon = ico;
+      } else {
+        this.icon = "/icons/earth.svg";
+      }
     }
 
     const media: (HTMLAudioElement | HTMLVideoElement)[] = Array.from(

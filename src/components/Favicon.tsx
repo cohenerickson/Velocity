@@ -37,17 +37,19 @@ export default function Favicon(props: FaviconProps): JSX.Element {
     }
 
     const promise = (async () => {
-      const outgoing = await (bareClient() as BareClient).fetch(props.src(), {
-        signal: abort.signal
-      });
-      const obj = URL.createObjectURL(await outgoing.blob());
-      setIcon(obj);
-      return obj;
+      try {
+        const outgoing = await (bareClient() as BareClient).fetch(props.src(), {
+          signal: abort.signal
+        });
+        const obj = URL.createObjectURL(await outgoing.blob());
+        setIcon(obj);
+        return obj;
+      } catch {}
     })();
 
     onCleanup(() => {
       abort.abort();
-      promise?.then((obj) => URL.revokeObjectURL(obj));
+      promise?.then((obj) => (obj ? URL.revokeObjectURL(obj) : null));
     });
   });
 

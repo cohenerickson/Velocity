@@ -20,6 +20,7 @@ import {
   setBookmarksShown,
   tabs
 } from "~/data/appState";
+import { defaultTheme, updateCssVariables } from "~/manager/themeManager";
 import { preferences } from "~/util/";
 
 export default function Root(): JSX.Element {
@@ -29,9 +30,14 @@ export default function Root(): JSX.Element {
       s.src = _;
       document.head.appendChild(s);
     });
+    await updateTheme(localStorage.getItem("theme")!);
     await import("~/scripts/registerKeybinds");
-    await import("~/scripts/registerAddons");
+    await import("~/scripts/addonStoreModifier");
     await import("~/API");
+
+    window.addEventListener("storage", async (event: StorageEvent) => {
+      if (event.key === "theme") await updateTheme(event.newValue!);
+    });
 
     setBookmarks(
       JSON.parse(localStorage.getItem("bookmarks") || "[]").map(
@@ -40,6 +46,13 @@ export default function Root(): JSX.Element {
     );
 
     setBookmarksShown((preferences()["bookmarks.shown"] as boolean) ?? true);
+
+    async function updateTheme(value: string) {
+      try {
+        const theme = JSON.parse(value || JSON.stringify(defaultTheme));
+        theme ? await updateCssVariables(theme) : undefined;
+      } catch {}
+    }
   });
 
   createEffect(() => {

@@ -68,7 +68,7 @@ export const engines = {
   }
 };
 
-// https://stackoverflow.com/a/26420284 (with slight modification)
+// https://stackoverflow.com/a/26420284 (with slight modifications)
 export function patternToRegExp(pattern: string) {
   if (pattern == "<all_urls>") return /^(?:http|https|file|ftp):\/\/.*/;
 

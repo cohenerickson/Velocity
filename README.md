@@ -7,7 +7,7 @@
 </h1>
 
 <p align="center">
-  A highly customizable tabbed proxy for evading internet censorship.
+  A fully featured web browser built using web technologies.
 </p>
 
 ## About

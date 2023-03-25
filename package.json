@@ -1,6 +1,6 @@
 {
   "name": "velocity",
-  "description": "A highly customizable tabbed proxy for evading internet censorship.",
+  "description": "A fully featured web browser built using web technologies.",
   "version": "1.3.0-beta",
   "scripts": {
     "dev": "concurrently \"rollup -c --environment BUILD:development\" \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
