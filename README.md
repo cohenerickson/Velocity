@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="150px" src="https://raw.githubusercontent.com/cohenerickson/Velocity/main/public/icons/newTab.png">
+  <img width="150px" src="https://raw.githubusercontent.com/cohenerickson/Velocity/main/public/icons/512.png">
 </p>
 
 <h1 align="center">
