@@ -1,7 +1,7 @@
 {
   "name": "velocity",
   "description": "A fully featured web browser built using web technologies.",
-  "version": "1.3.0-beta",
+  "version": "1.3.0",
   "scripts": {
     "dev": "concurrently \"rollup -c --environment BUILD:development\" \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
     "build": "rollup -c --environment BUILD:production && solid-start build",
