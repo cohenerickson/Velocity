@@ -71,7 +71,11 @@ export default function Header(): JSX.Element {
   }
 
   return (
-    <div class="flex w-full" id="tabs">
+    <div
+      class="flex"
+      id="tabs"
+      style="width: env(titlebar-area-width, 100%); min-height: env(titlebar-area-height, auto);margin-left: env(titlebar-area-x, 0);"
+    >
       <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1">
         <DragDropProvider
           onDragEnd={onDragEnd}

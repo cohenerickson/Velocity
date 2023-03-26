@@ -23,5 +23,6 @@
   "start_url": "/index.html",
   "display": "fullscreen",
   "theme_color": "#1c1b22",
-  "background_color": "#1c1b22"
+  "background_color": "#1c1b22",
+  "display_override": ["window-controls-overlay"]
 }
