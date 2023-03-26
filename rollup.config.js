@@ -3,7 +3,7 @@ import typescript from "@rollup/plugin-typescript";
 
 export default {
   input: {
-    polyfil: "src/addon/polyfil.ts",
+    polyfill: "src/addon/polyfill.ts",
     backgroundWorker: "src/addon/worker.ts"
   },
   output: {

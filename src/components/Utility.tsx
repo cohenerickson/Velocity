@@ -100,7 +100,7 @@ export default function Utility(): JSX.Element {
         >
           <i class="fa-light fa-gear mt-[2px] text-sm"></i>
         </div>
-        <a target="_blank" href="https://github.com/cohenerickson/Velocity">
+        <a target="_blank" href="https://github.com/cohenerickson/Velocity" class="cursor-default">
           <div class="toolbarbutton-1 h-8 w-8 rounded flex items-center justify-center">
             <i class="fa-brands fa-github mt-[2px] text-sm"></i>
           </div>
