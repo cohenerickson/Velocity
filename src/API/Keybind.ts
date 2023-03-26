@@ -1,3 +1,4 @@
+import { IDBPDatabase, openDB } from "idb";
 import { keybinds, setKeybinds } from "~/data/appState";
 
 interface KeybindOptions {
@@ -24,7 +25,13 @@ export default class Keybind {
   callback!: (event: KeyboardEvent) => void;
 
   constructor(options: KeybindOptions) {
-    if (!options.id) {
+    if (
+      typeof options.id === "undefined" ||
+      (typeof options.id !== "undefined" &&
+        !keybinds().find((x) => x.id === options.id))
+    ) {
+      this.id =
+        options.id ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
       this.name = options.name;
       this.description = options.description;
       this.key = options.key;
@@ -33,6 +40,8 @@ export default class Keybind {
       this.alt = options.alt ?? false;
       this.meta = options.meta ?? false;
       this.callback = options.callback;
+
+      this.#init(this);
 
       setKeybinds([...keybinds(), this]);
     } else {
@@ -46,7 +55,8 @@ export default class Keybind {
             keybind.ctrl = options.ctrl ?? keybind.ctrl;
             keybind.alt = options.alt ?? keybind.alt;
             keybind.meta = options.meta ?? keybind.meta;
-            keybind.callback = options.callback ?? keybind.callback;
+            keybind.callback = options.callback || keybind.callback;
+            this.#init(keybind);
           }
           return keybind;
         })
@@ -56,6 +66,25 @@ export default class Keybind {
         (keybind: Keybind) => keybind.id === options.id
       ) as Keybind;
     }
+  }
+
+  async #init(keybind: Keybind) {
+    const db: IDBPDatabase = await openDB("keybinds", 1, {
+      upgrade(db) {
+        db.createObjectStore("keybinds", {
+          keyPath: "id"
+        });
+      }
+    });
+
+    const tx = db.transaction("keybinds", "readwrite");
+    const store = tx.objectStore("keybinds");
+
+    return await store.put(
+      Object.assign({}, keybind, {
+        callback: undefined
+      })
+    );
   }
 
   toString() {

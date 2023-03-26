@@ -31,9 +31,6 @@ export default function Root(): JSX.Element {
       document.head.appendChild(s);
     });
     await updateTheme(localStorage.getItem("theme")!);
-    await import("~/scripts/registerKeybinds");
-    await import("~/scripts/addonStoreModifier");
-    await import("~/API");
 
     window.addEventListener("storage", async (event: StorageEvent) => {
       if (event.key === "theme") await updateTheme(event.newValue!);
@@ -53,29 +50,6 @@ export default function Root(): JSX.Element {
         theme ? await updateCssVariables(theme) : undefined;
       } catch {}
     }
-  });
-
-  createEffect(() => {
-    localStorage.setItem(
-      "tabs",
-      JSON.stringify(Array.from(tabs()).map((x) => x.url()))
-    );
-    localStorage.setItem(
-      "activeTab",
-      Array.from(tabs())
-        .findIndex((x) => x.focus())
-        .toString()
-    );
-
-    localStorage.setItem("bookmarks", JSON.stringify(Array.from(bookmarks())));
-    localStorage.setItem(
-      "preferences",
-      JSON.stringify(
-        Object.assign(preferences(), {
-          ["bookmarks.shown"]: bookmarksShown()
-        })
-      )
-    );
   });
 
   return (

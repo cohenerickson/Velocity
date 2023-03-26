@@ -1,5 +1,6 @@
 import { bookmarks, setBookmarks } from "~/data/appState";
 
+
 interface BookmarkOptions {
   name: string;
   url: string;
@@ -20,9 +21,16 @@ export default class Bookmark {
     this.id = options.id ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
     setBookmarks([...bookmarks(), this]);
+
+    this.#updateStorage();
   }
 
   delete() {
     setBookmarks(bookmarks().filter((x) => x.id !== this.id));
+    this.#updateStorage();
+  }
+
+  #updateStorage () {
+    localStorage.setItem("bookmarks", JSON.stringify(Array.from(bookmarks())));
   }
 }

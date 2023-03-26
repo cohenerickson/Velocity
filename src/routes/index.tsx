@@ -12,6 +12,9 @@ import type Preferences from "~/types/Preferences";
 export default function Home(): JSX.Element {
   onMount(async () => {
     await import("~/util/registerSW");
+    await import("~/scripts/registerKeybinds");
+    await import("~/scripts/addonStoreModifier");
+    await import("~/API");
 
     window.addEventListener("keydown", keybinds);
 

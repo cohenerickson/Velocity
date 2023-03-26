@@ -1,10 +1,25 @@
+import { IDBPDatabase, openDB } from "idb";
 import Keybind from "~/API/Keybind";
 import Tab from "~/API/Tab";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 import { preferences } from "~/util/";
 import { getActiveTab } from "~/util/";
 
+const db: IDBPDatabase = await openDB("keybinds", 1, {
+  upgrade(db) {
+    db.createObjectStore("keybinds", {
+      keyPath: "id"
+    });
+  }
+});
+
+const tx = db.transaction("keybinds", "readwrite");
+const store = tx.objectStore("keybinds");
+
+const keybinds = await store.getAll();
+
 new Keybind({
+  id: 0,
   name: "Reload",
   description: "Reload the current tab",
   key: "r",
@@ -15,6 +30,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 1,
   name: "Bookmark",
   description: "Bookmark the current tab",
   key: "d",
@@ -25,6 +41,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 2,
   name: "View Source",
   description: "View the source of the current tab",
   key: "u",
@@ -35,6 +52,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 3,
   name: "Search",
   description: "Search the current tab",
   key: "e",
@@ -49,6 +67,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 4,
   name: "History",
   description: "Open the history page",
   key: "h",
@@ -59,6 +78,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 5,
   name: "New Tab",
   description: "Open a new tab",
   key: "t",
@@ -69,6 +89,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 6,
   name: "Close Tab",
   description: "Close the current tab",
   key: "w",
@@ -79,6 +100,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 7,
   name: "Back",
   description: "Go back in the current tab",
   key: "ArrowLeft",
@@ -89,6 +111,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 8,
   name: "Forward",
   description: "Go forward in the current tab",
   key: "ArrowRight",
@@ -99,6 +122,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 9,
   name: "Dev Tools",
   description: "Open the dev tools for the current tab",
   key: "i",
@@ -110,6 +134,7 @@ new Keybind({
 });
 
 new Keybind({
+  id: 10,
   name: "Bookmarks",
   description: "Toggle the bookmarks bar",
   key: "b",
@@ -126,4 +151,8 @@ new Keybind({
       )
     );
   }
+});
+
+keybinds.map((keybind) => {
+  new Keybind(keybind);
 });

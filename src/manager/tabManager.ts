@@ -26,6 +26,7 @@ function registerEvents(tab: Tab): void {
   tab.iframe.contentWindow?.addEventListener("unload", () => {
     setTimeout(() => {
       registerEvents(tab);
+      tab.updateStorage();
       tab.emit("document_start", normalizeURL(tab.url()));
     });
     tab.loading = true;

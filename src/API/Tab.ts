@@ -73,12 +73,13 @@ export default class Tab extends EventEmitter {
   navigate(query: string) {
     let url = urlUtil.generateProxyUrl(query);
 
-    // bind events & inject scripts
     this.iframe.onload = () => {
       this.loading = false;
     };
 
     this.iframe.src = url;
+
+    this.updateStorage();
   }
 
   close(event?: MouseEvent): void {
@@ -92,6 +93,7 @@ export default class Tab extends EventEmitter {
     setTabStack(new Set(Array.from(tabStack()).filter((tab) => tab !== this)));
     setTabs(tabs().filter((tab) => tab !== this));
     getActiveTab().focus = true;
+    this.updateStorage();
   }
 
   bookmark() {
@@ -162,6 +164,13 @@ export default class Tab extends EventEmitter {
       ?.removeChild(this.iframe);
   }
 
+  updateStorage() {
+    localStorage.setItem(
+      "tabs",
+      JSON.stringify(Array.from(tabs()).map((x) => x.url()))
+    );
+  }
+
   #updateDetails(): void {
     if (!this.iframe.contentWindow || !this.iframe.contentDocument) {
       setTimeout(this.#updateDetails.bind(this), 100);
@@ -181,14 +190,21 @@ export default class Tab extends EventEmitter {
         this.iframe.contentDocument.head.querySelectorAll<HTMLLinkElement>(
           "link[rel='favicon'], link[rel='shortcut icon'], link[rel='icon']"
         );
-      const ico = icons?.[icons.length - 1]?.href;
+      let ico;
+      try {
+        ico = new URL("/favicon.ico", this.url()).toString();
+      } catch {}
+      for (let i = icons.length - 1; i >= 0; i--) {
+        if (Array.from(icons)?.at(i)?.href) {
+          ico = Array.from(icons).at(i)?.href;
+          break;
+        }
+      }
 
       if (ico && /^data:/.test(ico)) {
         this.icon = ico;
       } else if (ico) {
         this.icon = ico;
-      } else {
-        this.icon = "/icons/earth.svg";
       }
     }
 
@@ -222,6 +238,12 @@ export default class Tab extends EventEmitter {
       (
         this.iframe.contentDocument || ({ documentElement: {} } as Document)
       ).documentElement.scrollTop = this.scrollPos;
+      localStorage.setItem(
+        "activeTab",
+        tabs()
+          .findIndex((x) => x.id === this.id)
+          .toString()
+      );
     }
     this.#focus[1](value);
   }

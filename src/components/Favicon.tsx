@@ -41,9 +41,14 @@ export default function Favicon(props: FaviconProps): JSX.Element {
         const outgoing = await (bareClient() as BareClient).fetch(props.src(), {
           signal: abort.signal
         });
-        const obj = URL.createObjectURL(await outgoing.blob());
-        setIcon(obj);
-        return obj;
+        const blob = await outgoing.blob();
+        if (!/image/.test(blob.type)) {
+          setIcon("/icons/earth.svg");
+        } else {
+          const obj = URL.createObjectURL(blob);
+          setIcon(obj);
+          return obj;
+        }
       } catch {}
     })();
 
