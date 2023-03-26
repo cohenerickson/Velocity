@@ -26,6 +26,7 @@ The initial inspiration for Velocity came from other proxies such as Hypertabs a
 - `about:preferences` - Preferences page
 - `about:history` - History page
 - `about:blank` - Blank document
+- `view-source:*` - View source page
 
 ## Commands
 
