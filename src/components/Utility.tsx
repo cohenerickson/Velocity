@@ -1,5 +1,8 @@
 import { JSX, createSignal } from "solid-js";
+import { KeybindQuery } from "~/API/Keybind";
+import Tab from "~/API/Tab";
 import Velocity from "~/API/index";
+import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 import { engines, preferences } from "~/util/";
 import { getActiveTab } from "~/util/";
 import * as urlUtil from "~/util/url";
@@ -41,9 +44,164 @@ export default function Utility(): JSX.Element {
       }
     });
   }
+  let menu = createSignal<keyof typeof menus | null>(null);
+  let submenuStack: (keyof typeof menus)[] = [];
 
-  let menuOpen = createSignal(false);
-  let menu: HTMLDivElement | undefined;
+  let MenuItem = (
+    enabled: boolean,
+    left: JSX.Element,
+    right: JSX.Element,
+    onClick: ((event: MouseEvent) => any) | (() => any) = () => {}
+  ) => (
+    <div
+      class={`w-full ${
+        enabled
+          ? "hover:bg-[#52525E] text-white"
+          : "pointer-events-none text-neutral-500"
+      } px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.1rem]`}
+      onClick={onClick}
+    >
+      <div class="grow flex flex-row items-center">{left}</div>
+      <div class="">{right}</div>
+    </div>
+  );
+
+  let menus: {
+    [k in [
+      "main",
+      "bookmarks",
+      "history",
+      "tools",
+      "help"
+    ][number]]: JSX.Element;
+  } = {
+    main: "",
+    bookmarks: "",
+    history: "",
+    tools: "",
+    help: ""
+  };
+
+  let SubmenuMenuItem = (
+    enabled: boolean,
+    left: JSX.Element,
+    target: keyof typeof menus
+  ) =>
+    MenuItem(enabled, left, <i class="fa-light fa-chevron-right"></i>, () => {
+      submenuStack.push(target);
+      menu[1](target);
+    });
+
+  let KeybindMenuItem = (
+    enabled: boolean,
+    left: JSX.Element,
+    query: KeybindQuery
+  ) =>
+    MenuItem(enabled, left, Velocity.getKeybind(query)?.toString(), () => {
+      menu[1](null);
+      submenuStack = [];
+      Velocity.getKeybind(query)?.callback();
+    });
+
+  let MenuSeparator = () => <hr class="border-[#686868] my-1" />;
+
+  let Menu = (id: keyof typeof menus, ...children: JSX.Element[]) => (
+    <div
+      class={`h-fit w-full grid row-start-1 col-start-1 ${
+        menu[0]() === id ? "display" : "hidden"
+      }`}
+    >
+      {...children}
+    </div>
+  );
+
+  let SubmenuHeader = (title: JSX.Element) => (
+    <>
+      <div class="text-white relative bottom-0.5 flex flex-row items-center justify-center h-10 cursor-default select-none">
+        <div class="absolute left-0 flex items-center h-full w-8">
+          <div
+            class="flex items-center justify-center hover:bg-[#52525E] rounded h-8 w-8"
+            onClick={() => {
+              submenuStack.pop();
+              menu[1](submenuStack[submenuStack.length - 1]);
+            }}
+          >
+            <i class="fa-light fa-chevron-left"></i>
+          </div>
+        </div>
+        <div class="h-full flex flex-row items-center">
+          <div class="h-full flex flex-row justify-center items-center font-bold">
+            {title}
+          </div>
+        </div>{" "}
+      </div>
+      {MenuSeparator()}
+    </>
+  );
+
+  menus.main = Menu(
+    "main",
+    KeybindMenuItem(true, "New tab", { alias: "new_tab" }),
+    KeybindMenuItem(false, "New window", { alias: "new_window" }),
+
+    MenuSeparator(),
+
+    SubmenuMenuItem(true, "Bookmarks", "bookmarks"),
+    SubmenuMenuItem(true, "History", "history"),
+
+    KeybindMenuItem(false, "Downloads", { alias: "open_downloads" }),
+    MenuItem(false, "Passwords", null, () => {}),
+    KeybindMenuItem(false, "Add-ons and themes", { alias: "open_addons" }),
+
+    MenuSeparator(),
+
+    KeybindMenuItem(false, "Print...", { alias: "print_page" }),
+    KeybindMenuItem(false, "Save page as...", { alias: "save_page" }),
+    KeybindMenuItem(false, "Find in page...", { alias: "search_page" }),
+
+    MenuItem(false, "Zoom", null, () => {}),
+
+    MenuSeparator(),
+
+    MenuItem(true, "Settings", null, () => new Tab("about:preferences", true)),
+    SubmenuMenuItem(true, "More tools", "tools"),
+    SubmenuMenuItem(false, "Help", "help"),
+
+    MenuSeparator(),
+
+    MenuItem(false, "Quit", null, () => {})
+  );
+
+  menus.bookmarks = Menu(
+    "bookmarks",
+    SubmenuHeader("Bookmarks"),
+    KeybindMenuItem(false, "Bookmark current tab", { alias: "bookmark_tab" }),
+    MenuItem(false, "Search bookmarks", null, () => {}),
+    MenuItem(
+      true,
+      <>
+        {bookmarksShown() ? "Hide bookmarks toolbar" : "Show bookmarks toolbar"}
+      </>,
+      null,
+      () => setBookmarksShown(!bookmarksShown())
+    ),
+    MenuSeparator(),
+
+    <div style="height: 100px; color: red;">
+      [placeholder]bookmarks go here
+    </div>,
+
+    MenuSeparator(),
+
+    MenuItem(
+      true,
+      "Manage Bookmarks",
+      null,
+      () => new Tab("about:bookmarks", true)
+    )
+  );
+
+  let menuContainer: HTMLDivElement | undefined;
   return (
     <div class="flex items-center gap-2 w-full h-10 p-2" id="browser-toolbar">
       <div class="flex gap-1 items-center">
@@ -107,135 +265,33 @@ export default function Utility(): JSX.Element {
         <div
           class="toolbarbutton-1 relative h-8 w-8 rounded flex items-center justify-center"
           onClick={(e) => {
-            if (menu?.contains(e.target as Node)) return;
-            menuOpen[1]((o) => !o);
+            let mk = menu[0]();
+            let m = mk === null ? null : menus[mk];
+
+            if (menuContainer?.contains(e.target as Node)) return;
+            menu[1]((m) => (m === null ? "main" : null));
+            submenuStack.push("main");
           }}
         >
           <i class="fa-light fa-bars mt-[2px] text-sm"></i>
-          <div
-            ref={menu}
-            class={`browser-toolbar-menu top-9 right-0.5 display w-[22rem] text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] px-2 py-2 z-30 ${
-              menuOpen[0]() ? "absolute" : "hidden"
-            }`}
-          >
-            <div
-              class="fixed w-full h-full top-0 left-0"
-              onPointerDown={() => {
-                menuOpen[1](false);
-              }}
-            ></div>
-            <div class="relative">
+          {menu[0]() !== null ? (
+            <>
               <div
-                class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]"
-                onClick={() => {
-                  menuOpen[1](false);
-                  Velocity.getKeybind({ alias: "new_tab" })?.callback();
+                class="fixed w-full h-full top-0 left-0"
+                onPointerDown={() => {
+                  menu[1](null);
+                  submenuStack = [];
                 }}
-              >
-                <div class="grow flex flex-row items-center">New tab</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "new_tab")?.toString()}</div>
-              </div>
+              ></div>
 
               <div
-                class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]"
-                onClick={() => {
-                  menuOpen[1](false);
-                  Velocity.getKeybind({ alias: "new_window" })?.callback();
-                }}
+                ref={menuContainer}
+                class="top-9 right-0.5 display w-[22rem] text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
               >
-                <div class="grow flex flex-row items-center">New window</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "new_window")?.toString()}</div>
+                {...Object.values(menus)}
               </div>
-
-              <hr class="border-[#686868] my-1" />
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">Bookmarks</div>
-                <div class="fa-light fa-chevron-right"></div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">History</div>
-                <div class="fa-light fa-chevron-right"></div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                {/* prettier-ignore */ }
-                <div class="grow flex flex-row items-center">Downloads</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "open_downloads")?.toString()}</div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">Passwords</div>
-                <div></div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                {/* prettier-ignore */ }
-                <div class="grow flex flex-row items-center">Add-ons and themes</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "open_addons")?.toString()}</div>
-              </div>
-
-              <hr class="border-[#686868] my-1" />
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">Print...</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "print_page")?.toString()}</div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                {/* prettier-ignore */ }
-                <div class="grow flex flex-row items-center">Save page as...</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "save_page")?.toString()}</div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                {/* prettier-ignore */ }
-                <div class="grow flex flex-row items-center">Find in page...</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "search_page")?.toString()}</div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                {/* prettier-ignore */ }
-                <div class="grow flex flex-row items-center">Zoom</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "search_page")?.toString()}</div>
-              </div>
-
-              <hr class="border-[#686868] my-1" />
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">Settings</div>
-                <div class=""></div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">More tools</div>
-                <div class="fa-light fa-chevron-right"></div>
-              </div>
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                <div class="grow flex flex-row items-center">Help</div>
-                <div class="fa-light fa-chevron-right"></div>
-              </div>
-
-              <hr class="border-[#686868] my-1" />
-
-              <div class="w-full hover:bg-[#52525E] text-white px-2 flex flex-row items-center h-8 cursor-default select-none align-middle rounded pt-[0.1rem]">
-                {/* prettier-ignore */ }
-                <div class="grow flex flex-row items-center">Quit</div>
-                {/* prettier-ignore */ }
-                <div class="inline-block">{Velocity.getKeybinds().find((k) => k.alias === "quit")?.toString()}</div>
-              </div>
-            </div>
-          </div>
+            </>
+          ) : null}
         </div>
       </div>
     </div>

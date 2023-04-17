@@ -14,6 +14,8 @@ interface KeybindOptions {
   callback: (event?: KeyboardEvent) => void;
 }
 
+export type KeybindQuery = Partial<KeybindOptions>;
+
 export default class Keybind {
   id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
   alias!: string;

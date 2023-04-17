@@ -2,7 +2,7 @@ import ExtensionReader from "./AddonReader";
 import Bookmark from "./Bookmark";
 import ContextItem from "./ContextItem";
 import History from "./History";
-import Keybind from "./Keybind";
+import Keybind, { KeybindQuery } from "./Keybind";
 import Protocol from "./Protocol";
 import RuntimeModifier from "./RuntimeModifier";
 import Tab from "./Tab";
@@ -20,7 +20,7 @@ const velocity = new Proxy(
     ContextItem,
     Keybind,
     getKeybinds: keybinds,
-    getKeybind: (query: Partial<Keybind>) =>
+    getKeybind: (query: KeybindQuery) =>
       keybinds().find((keybind) => {
         for (let [k, v] of Object.entries(query)) {
           if (keybind[k as keyof Keybind] === v) return true;
