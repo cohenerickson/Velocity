@@ -124,7 +124,7 @@ export default function Utility(): JSX.Element {
 
   let Menu = (id: keyof typeof menus, ...children: JSX.Element[]) => (
     <div
-      class={`h-fit w-full grid row-start-1 col-start-1 ${
+      class={`h-full w-full flex flex-col row-start-1 col-start-1 ${
         menu[0]() === id ? "visible" : "invisible"
       }`}
     >
@@ -208,39 +208,47 @@ export default function Utility(): JSX.Element {
       Menu(
         "bookmarks",
         SubmenuHeader("Bookmarks"),
-        <div class="max-h-[32rem] overflow-y-auto overflow-x-hidden">
-          {KeybindMenuItem(true, "Bookmark current tab", {
-            alias: "bookmark_tab"
-          })}
-          {MenuItem(false, "Search bookmarks", null, () => {})}
-          {MenuItem(
-            true,
-            <>
-              {bookmarksShown()
-                ? "Hide bookmarks toolbar"
-                : "Show bookmarks toolbar"}
-            </>,
-            null,
-            () => {
-              setBookmarksShown(!bookmarksShown());
-            }
-          )}
-          {MenuSeparator("Recent Bookmarks")}
-          {bookmarks().length > 0
-            ? bookmarks().map((bookmark) =>
-                MenuItem(
-                  true,
-                  <>
-                    <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
-                      <img src={bookmark.icon} />
-                    </div>
-                    <div>{bookmark.name}</div>
-                  </>,
-                  null,
-                  () => new window.parent.Velocity.Tab(bookmark.url, true)
+        <div class="grow relative">
+          <div class="absolute w-full h-full overflow-y-auto overflow-x-hidden">
+            {KeybindMenuItem(true, "Bookmark current tab", {
+              alias: "bookmark_tab"
+            })}
+            {MenuItem(false, "Search bookmarks", null, () => {})}
+            {MenuItem(
+              true,
+              <>
+                {bookmarksShown()
+                  ? "Hide bookmarks toolbar"
+                  : "Show bookmarks toolbar"}
+              </>,
+              null,
+              () => {
+                setBookmarksShown(!bookmarksShown());
+              }
+            )}
+            {MenuSeparator("Recent Bookmarks")}
+            {bookmarks().length > 0
+              ? bookmarks().map((bookmark) =>
+                  MenuItem(
+                    true,
+                    <>
+                      <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                        <img src={bookmark.icon} />
+                      </div>
+                      <div>{bookmark.name}</div>
+                    </>,
+                    null,
+                    () => new window.parent.Velocity.Tab(bookmark.url, true)
+                  )
                 )
-              )
-            : MenuItem(false, "(Empty)", null, () => {}, "pointer-events-none")}
+              : MenuItem(
+                  false,
+                  "(Empty)",
+                  null,
+                  () => {},
+                  "pointer-events-none"
+                )}
+          </div>
         </div>,
 
         MenuSeparator(),
@@ -272,34 +280,42 @@ export default function Utility(): JSX.Element {
       Menu(
         "history",
         SubmenuHeader("History"),
+        <div class="grow relative">
+          <div class="absolute w-full h-full overflow-y-auto overflow-x-hidden">
+            {SubmenuMenuItem(false, "Recently closed tabs", "recentTabs")}
+            {SubmenuMenuItem(false, "Recently closed windows", "recentWindows")}
+            {MenuItem(false, "Restore previous session", null, () => {})}
+            {MenuSeparator()}
+            {/* reenable this after a clear data popup with time constraints is implemented */}
+            {MenuItem(false, "Clear Recent History", null, () => {})}
 
-        <div class="max-h-[32rem] overflow-y-auto overflow-x-hidden">
-          {SubmenuMenuItem(false, "Recently closed tabs", "recentTabs")}
-          {SubmenuMenuItem(false, "Recently closed windows", "recentWindows")}
-          {MenuItem(false, "Restore previous session", null, () => {})}
-          {MenuSeparator()}
-          {/* reenable this after a clear data popup with time constraints is implemented */}
-          {MenuItem(false, "Clear Recent History", null, () => {})}
-
-          {MenuSeparator("Recent History")}
-          {historyEntries[0]().length > 0
-            ? historyEntries[0]().map((entry) =>
-                MenuItem(
-                  true,
-                  <>
-                    <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
-                      <img src={entry.favicon} />
-                    </div>
-                    <div>{entry.title}</div>
-                  </>,
-                  null,
-                  () => new window.parent.Velocity.Tab(entry.url, true)
+            {MenuSeparator("Recent History")}
+            {historyEntries[0]().length > 0
+              ? historyEntries[0]().map((entry) =>
+                  MenuItem(
+                    true,
+                    <>
+                      <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                        <img src={entry.favicon} />
+                      </div>
+                      <div>{entry.title}</div>
+                    </>,
+                    null,
+                    () => new window.parent.Velocity.Tab(entry.url, true)
+                  )
                 )
-              )
-            : MenuItem(false, "(Empty)", null, () => {}, "pointer-events-none")}
+              : MenuItem(
+                  false,
+                  "(Empty)",
+                  null,
+                  () => {},
+                  "pointer-events-none"
+                )}
+          </div>
         </div>,
 
         MenuSeparator(),
+
         MenuItem(
           true,
           "Manage History",
