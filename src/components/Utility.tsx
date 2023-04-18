@@ -125,7 +125,7 @@ export default function Utility(): JSX.Element {
   let Menu = (id: keyof typeof menus, ...children: JSX.Element[]) => (
     <div
       class={`h-fit w-full grid row-start-1 col-start-1 ${
-        menu[0]() === id ? "display" : "hidden"
+        menu[0]() === id ? "visible" : "invisible"
       }`}
     >
       {...children}
@@ -415,7 +415,7 @@ export default function Utility(): JSX.Element {
 
               <div
                 ref={menuContainer}
-                class="top-9 right-0.5 display w-[22rem] text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
+                class="top-9 right-0.5 w-[22rem] text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
               >
                 {...Object.values(menus).map((m) => m[0]())}
               </div>
