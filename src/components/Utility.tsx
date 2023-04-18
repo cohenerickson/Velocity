@@ -276,7 +276,7 @@ export default function Utility(): JSX.Element {
         <div class="max-h-[32rem] overflow-y-auto overflow-x-hidden">
           {SubmenuMenuItem(false, "Recently closed tabs", "recentTabs")}
           {SubmenuMenuItem(false, "Recently closed windows", "recentWindows")}
-          {MenuItem(true, "Restore previous session", null, () => {})}
+          {MenuItem(false, "Restore previous session", null, () => {})}
           {MenuSeparator()}
           {/* reenable this after a clear data popup with time constraints is implemented */}
           {MenuItem(false, "Clear Recent History", null, () => {})}
@@ -306,6 +306,32 @@ export default function Utility(): JSX.Element {
           null,
           () => new Tab("about:history", true)
         )
+      )
+    );
+  });
+
+  createEffect(() => {
+    menus.tools[1](
+      Menu(
+        "tools",
+        SubmenuHeader("More Tools"),
+
+        MenuItem(false, "Customize toolbar...", null, () => {}),
+
+        MenuSeparator("Browser tools"),
+
+        KeybindMenuItem(true, "Web Developer Tools", {
+          alias: "open_devtools"
+        }),
+        MenuItem(false, "Task Manager", null, () => {}),
+        MenuItem(false, "Remote Debugging", null, () => {}),
+        MenuItem(false, "Browser Console", null, () => {}),
+        MenuItem(false, "Responsive Debugging", null, () => {}),
+        MenuItem(false, "Eyedropper", null, () => {}),
+        KeybindMenuItem(true, "Page Source", {
+          alias: "view_source"
+        }),
+        MenuItem(false, "Extensions for developers", null, () => {})
       )
     );
   });
@@ -400,3 +426,4 @@ export default function Utility(): JSX.Element {
     </div>
   );
 }
+
