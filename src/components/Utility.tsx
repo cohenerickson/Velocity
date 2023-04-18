@@ -3,6 +3,7 @@ import { KeybindQuery } from "~/API/Keybind";
 import Tab from "~/API/Tab";
 import Velocity from "~/API/index";
 import { bookmarks, bookmarksShown, setBookmarksShown } from "~/data/appState";
+import HistoryEntry from "~/types/HistoryEntry";
 import { engines, preferences } from "~/util/";
 import { getActiveTab } from "~/util/";
 import * as urlUtil from "~/util/url";
@@ -51,14 +52,15 @@ export default function Utility(): JSX.Element {
     enabled: boolean,
     left: JSX.Element,
     right: JSX.Element,
-    onClick: ((event: MouseEvent) => any) | (() => any) = () => {}
+    onClick: ((event: MouseEvent) => any) | (() => any) = () => {},
+    classes: string = ""
   ) => (
     <div
       class={`w-full ${
         enabled
           ? "hover:bg-[#52525E] text-white"
           : "pointer-events-none text-neutral-500"
-      } px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem]`}
+      } px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem] ${classes}`}
       onClick={(e) => (!!(onClick(e) ?? true) ? closeMenu() : null)}
     >
       <div class="grow flex flex-row items-center">{left}</div>
@@ -72,14 +74,18 @@ export default function Utility(): JSX.Element {
       "bookmarks",
       "history",
       "tools",
-      "help"
+      "help",
+      "recentTabs",
+      "recentWindows"
     ][number]]: Signal<JSX.Element>;
   } = {
     main: createSignal<JSX.Element>(""),
     bookmarks: createSignal<JSX.Element>(""),
     history: createSignal<JSX.Element>(""),
     tools: createSignal<JSX.Element>(""),
-    help: createSignal<JSX.Element>("")
+    help: createSignal<JSX.Element>(""),
+    recentTabs: createSignal<JSX.Element>(""),
+    recentWindows: createSignal<JSX.Element>("")
   };
 
   let SubmenuMenuItem = (
@@ -107,7 +113,7 @@ export default function Utility(): JSX.Element {
     <>
       <hr class="border-neutral-500 my-1" />
       {title !== null ? (
-        <div class="mt-1 mb-2 px-2 select-none text-xs text-neutral-500">
+        <div class="my-1 px-2 select-none text-xs text-neutral-500">
           {title}
         </div>
       ) : (
@@ -202,41 +208,40 @@ export default function Utility(): JSX.Element {
       Menu(
         "bookmarks",
         SubmenuHeader("Bookmarks"),
-        KeybindMenuItem(false, "Bookmark current tab", {
-          alias: "bookmark_tab"
-        }),
-        MenuItem(false, "Search bookmarks", null, () => {}),
-        MenuItem(
-          true,
-          <>
-            {bookmarksShown()
-              ? "Hide bookmarks toolbar"
-              : "Show bookmarks toolbar"}
-          </>,
-          null,
-          () => {
-            setBookmarksShown(!bookmarksShown());
-          }
-        ),
-
-        bookmarks().length > 0 ? (
-          <>
-            {MenuSeparator("Recent Bookmarks")}
-            {...bookmarks().map((bookmark) =>
-              MenuItem(
-                true,
-                <>
-                  <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
-                    <img src={bookmark.icon} />
-                  </div>
-                  <div>{bookmark.name}</div>
-                </>,
-                null,
-                () => new window.parent.Velocity.Tab(bookmark.url, true)
+        <div class="max-h-[32rem] overflow-y-auto overflow-x-hidden">
+          {KeybindMenuItem(true, "Bookmark current tab", {
+            alias: "bookmark_tab"
+          })}
+          {MenuItem(false, "Search bookmarks", null, () => {})}
+          {MenuItem(
+            true,
+            <>
+              {bookmarksShown()
+                ? "Hide bookmarks toolbar"
+                : "Show bookmarks toolbar"}
+            </>,
+            null,
+            () => {
+              setBookmarksShown(!bookmarksShown());
+            }
+          )}
+          {MenuSeparator("Recent Bookmarks")}
+          {bookmarks().length > 0
+            ? bookmarks().map((bookmark) =>
+                MenuItem(
+                  true,
+                  <>
+                    <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                      <img src={bookmark.icon} />
+                    </div>
+                    <div>{bookmark.name}</div>
+                  </>,
+                  null,
+                  () => new window.parent.Velocity.Tab(bookmark.url, true)
+                )
               )
-            )}
-          </>
-        ) : null,
+            : MenuItem(false, "(Empty)", null, () => {}, "pointer-events-none")}
+        </div>,
 
         MenuSeparator(),
 
@@ -245,6 +250,61 @@ export default function Utility(): JSX.Element {
           "Manage Bookmarks",
           null,
           () => new Tab("about:bookmarks", true)
+        )
+      )
+    );
+  });
+
+  const HISTORY_SUBMENU_RECENCY: number = 864e5; // 1 day
+  let historyEntries = createSignal<HistoryEntry[]>([]);
+  createEffect(() => {
+    if (menu[0]() === "history")
+      Velocity.history.get().then((history) => {
+        let timestamp = Date.now();
+        historyEntries[1](
+          history.filter(
+            (entry) =>
+              Math.abs(timestamp - entry.timestamp) <= HISTORY_SUBMENU_RECENCY // only include entries with specified recency
+          )
+        );
+      });
+    menus.history[1](
+      Menu(
+        "history",
+        SubmenuHeader("History"),
+
+        <div class="max-h-[32rem] overflow-y-auto overflow-x-hidden">
+          {SubmenuMenuItem(false, "Recently closed tabs", "recentTabs")}
+          {SubmenuMenuItem(false, "Recently closed windows", "recentWindows")}
+          {MenuItem(true, "Restore previous session", null, () => {})}
+          {MenuSeparator()}
+          {/* reenable this after a clear data popup with time constraints is implemented */}
+          {MenuItem(false, "Clear Recent History", null, () => {})}
+
+          {MenuSeparator("Recent History")}
+          {historyEntries[0]().length > 0
+            ? historyEntries[0]().map((entry) =>
+                MenuItem(
+                  true,
+                  <>
+                    <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                      <img src={entry.favicon} />
+                    </div>
+                    <div>{entry.title}</div>
+                  </>,
+                  null,
+                  () => new window.parent.Velocity.Tab(entry.url, true)
+                )
+              )
+            : MenuItem(false, "(Empty)", null, () => {}, "pointer-events-none")}
+        </div>,
+
+        MenuSeparator(),
+        MenuItem(
+          true,
+          "Manage History",
+          null,
+          () => new Tab("about:history", true)
         )
       )
     );
@@ -340,4 +400,3 @@ export default function Utility(): JSX.Element {
     </div>
   );
 }
-
