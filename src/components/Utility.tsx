@@ -1,8 +1,8 @@
-import { JSX, createSignal } from "solid-js";
+import { JSX, Signal, createEffect, createSignal } from "solid-js";
 import { KeybindQuery } from "~/API/Keybind";
 import Tab from "~/API/Tab";
 import Velocity from "~/API/index";
-import { bookmarksShown, setBookmarksShown } from "~/data/appState";
+import { bookmarks, bookmarksShown, setBookmarksShown } from "~/data/appState";
 import { engines, preferences } from "~/util/";
 import { getActiveTab } from "~/util/";
 import * as urlUtil from "~/util/url";
@@ -58,11 +58,11 @@ export default function Utility(): JSX.Element {
         enabled
           ? "hover:bg-[#52525E] text-white"
           : "pointer-events-none text-neutral-500"
-      } px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.1rem]`}
-      onClick={onClick}
+      } px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem]`}
+      onClick={(e) => (!!(onClick(e) ?? true) ? closeMenu() : null)}
     >
       <div class="grow flex flex-row items-center">{left}</div>
-      <div class="">{right}</div>
+      <div>{right}</div>
     </div>
   );
 
@@ -73,13 +73,13 @@ export default function Utility(): JSX.Element {
       "history",
       "tools",
       "help"
-    ][number]]: JSX.Element;
+    ][number]]: Signal<JSX.Element>;
   } = {
-    main: "",
-    bookmarks: "",
-    history: "",
-    tools: "",
-    help: ""
+    main: createSignal<JSX.Element>(""),
+    bookmarks: createSignal<JSX.Element>(""),
+    history: createSignal<JSX.Element>(""),
+    tools: createSignal<JSX.Element>(""),
+    help: createSignal<JSX.Element>("")
   };
 
   let SubmenuMenuItem = (
@@ -90,6 +90,7 @@ export default function Utility(): JSX.Element {
     MenuItem(enabled, left, <i class="fa-light fa-chevron-right"></i>, () => {
       submenuStack.push(target);
       menu[1](target);
+      return false; // prevent menu from auto-closing
     });
 
   let KeybindMenuItem = (
@@ -98,12 +99,22 @@ export default function Utility(): JSX.Element {
     query: KeybindQuery
   ) =>
     MenuItem(enabled, left, Velocity.getKeybind(query)?.toString(), () => {
-      menu[1](null);
-      submenuStack = [];
+      closeMenu();
       Velocity.getKeybind(query)?.callback();
     });
 
-  let MenuSeparator = () => <hr class="border-[#686868] my-1" />;
+  let MenuSeparator = (title: JSX.Element = null) => (
+    <>
+      <hr class="border-neutral-500 my-1" />
+      {title !== null ? (
+        <div class="mt-1 mb-2 px-2 select-none text-xs text-neutral-500">
+          {title}
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
+  );
 
   let Menu = (id: keyof typeof menus, ...children: JSX.Element[]) => (
     <div
@@ -139,67 +150,105 @@ export default function Utility(): JSX.Element {
     </>
   );
 
-  menus.main = Menu(
-    "main",
-    KeybindMenuItem(true, "New tab", { alias: "new_tab" }),
-    KeybindMenuItem(false, "New window", { alias: "new_window" }),
+  function closeMenu() {
+    menu[1](null);
+    submenuStack = [];
+  }
 
-    MenuSeparator(),
+  createEffect(() => {
+    menus.main[1](
+      Menu(
+        "main",
+        KeybindMenuItem(true, "New tab", { alias: "new_tab" }),
+        KeybindMenuItem(false, "New window", { alias: "new_window" }),
 
-    SubmenuMenuItem(true, "Bookmarks", "bookmarks"),
-    SubmenuMenuItem(true, "History", "history"),
+        MenuSeparator(),
 
-    KeybindMenuItem(false, "Downloads", { alias: "open_downloads" }),
-    MenuItem(false, "Passwords", null, () => {}),
-    KeybindMenuItem(false, "Add-ons and themes", { alias: "open_addons" }),
+        SubmenuMenuItem(true, "Bookmarks", "bookmarks"),
+        SubmenuMenuItem(true, "History", "history"),
 
-    MenuSeparator(),
+        KeybindMenuItem(false, "Downloads", { alias: "open_downloads" }),
+        MenuItem(false, "Passwords", null, () => {}),
+        KeybindMenuItem(false, "Add-ons and themes", { alias: "open_addons" }),
 
-    KeybindMenuItem(false, "Print...", { alias: "print_page" }),
-    KeybindMenuItem(false, "Save page as...", { alias: "save_page" }),
-    KeybindMenuItem(false, "Find in page...", { alias: "search_page" }),
+        MenuSeparator(),
 
-    MenuItem(false, "Zoom", null, () => {}),
+        KeybindMenuItem(false, "Print...", { alias: "print_page" }),
+        KeybindMenuItem(false, "Save page as...", { alias: "save_page" }),
+        KeybindMenuItem(false, "Find in page...", { alias: "search_page" }),
 
-    MenuSeparator(),
+        MenuItem(false, "Zoom", null, () => {}),
 
-    MenuItem(true, "Settings", null, () => new Tab("about:preferences", true)),
-    SubmenuMenuItem(true, "More tools", "tools"),
-    SubmenuMenuItem(false, "Help", "help"),
+        MenuSeparator(),
 
-    MenuSeparator(),
+        MenuItem(
+          true,
+          "Settings",
+          null,
+          () => new Tab("about:preferences", true)
+        ),
+        SubmenuMenuItem(true, "More tools", "tools"),
+        SubmenuMenuItem(false, "Help", "help"),
 
-    MenuItem(false, "Quit", null, () => {})
-  );
+        MenuSeparator(),
 
-  menus.bookmarks = Menu(
-    "bookmarks",
-    SubmenuHeader("Bookmarks"),
-    KeybindMenuItem(false, "Bookmark current tab", { alias: "bookmark_tab" }),
-    MenuItem(false, "Search bookmarks", null, () => {}),
-    MenuItem(
-      true,
-      <>
-        {bookmarksShown() ? "Hide bookmarks toolbar" : "Show bookmarks toolbar"}
-      </>,
-      null,
-      () => setBookmarksShown(!bookmarksShown())
-    ),
-    MenuSeparator(),
+        MenuItem(false, "Quit", null, () => {})
+      )
+    );
+  });
 
-    <div style="height: 100px; color: red;">
-      [placeholder]bookmarks go here
-    </div>,
+  createEffect(() => {
+    menus.bookmarks[1](
+      Menu(
+        "bookmarks",
+        SubmenuHeader("Bookmarks"),
+        KeybindMenuItem(false, "Bookmark current tab", {
+          alias: "bookmark_tab"
+        }),
+        MenuItem(false, "Search bookmarks", null, () => {}),
+        MenuItem(
+          true,
+          <>
+            {bookmarksShown()
+              ? "Hide bookmarks toolbar"
+              : "Show bookmarks toolbar"}
+          </>,
+          null,
+          () => {
+            setBookmarksShown(!bookmarksShown());
+          }
+        ),
 
-    MenuSeparator(),
+        bookmarks().length > 0 ? (
+          <>
+            {MenuSeparator("Recent Bookmarks")}
+            {...bookmarks().map((bookmark) =>
+              MenuItem(
+                true,
+                <>
+                  <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                    <img src={bookmark.icon} />
+                  </div>
+                  <div>{bookmark.name}</div>
+                </>,
+                null,
+                () => new window.parent.Velocity.Tab(bookmark.url, true)
+              )
+            )}
+          </>
+        ) : null,
 
-    MenuItem(
-      true,
-      "Manage Bookmarks",
-      null,
-      () => new Tab("about:bookmarks", true)
-    )
-  );
+        MenuSeparator(),
+
+        MenuItem(
+          true,
+          "Manage Bookmarks",
+          null,
+          () => new Tab("about:bookmarks", true)
+        )
+      )
+    );
+  });
 
   let menuContainer: HTMLDivElement | undefined;
   return (
@@ -265,9 +314,6 @@ export default function Utility(): JSX.Element {
         <div
           class="toolbarbutton-1 relative h-8 w-8 rounded flex items-center justify-center"
           onClick={(e) => {
-            let mk = menu[0]();
-            let m = mk === null ? null : menus[mk];
-
             if (menuContainer?.contains(e.target as Node)) return;
             menu[1]((m) => (m === null ? "main" : null));
             submenuStack.push("main");
@@ -278,17 +324,14 @@ export default function Utility(): JSX.Element {
             <>
               <div
                 class="fixed w-full h-full top-0 left-0"
-                onPointerDown={() => {
-                  menu[1](null);
-                  submenuStack = [];
-                }}
+                onPointerDown={() => closeMenu()}
               ></div>
 
               <div
                 ref={menuContainer}
                 class="top-9 right-0.5 display w-[22rem] text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
               >
-                {...Object.values(menus)}
+                {...Object.values(menus).map((m) => m[0]())}
               </div>
             </>
           ) : null}
