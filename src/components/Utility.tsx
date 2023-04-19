@@ -1,3 +1,4 @@
+import createMenu from "./AppMenu";
 import { JSX, Signal, createEffect, createSignal } from "solid-js";
 import { KeybindQuery } from "~/API/Keybind";
 import Tab from "~/API/Tab";
@@ -45,121 +46,29 @@ export default function Utility(): JSX.Element {
       }
     });
   }
-  let menu = createSignal<keyof typeof menus | null>(null);
-  let submenuStack: (keyof typeof menus)[] = [];
-
-  let MenuItem = (
-    enabled: boolean,
-    left: JSX.Element,
-    right: JSX.Element,
-    onClick: ((event: MouseEvent) => any) | (() => any) = () => {},
-    classes: string = ""
-  ) => (
-    <div
-      class={`appmenu-item w-full px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem] ${classes}`}
-      onClick={(e) => (!!(onClick(e) ?? true) ? closeMenu() : null)}
-      data-disabled={!enabled}
-    >
-      <div class="grow flex flex-row items-center">{left}</div>
-      <div>{right}</div>
-    </div>
-  );
-
-  let menus: {
-    [k in [
-      "main",
-      "bookmarks",
-      "history",
-      "tools",
-      "help",
-      "recentTabs",
-      "recentWindows"
-    ][number]]: Signal<JSX.Element>;
-  } = {
-    main: createSignal<JSX.Element>(""),
-    bookmarks: createSignal<JSX.Element>(""),
-    history: createSignal<JSX.Element>(""),
-    tools: createSignal<JSX.Element>(""),
-    help: createSignal<JSX.Element>(""),
-    recentTabs: createSignal<JSX.Element>(""),
-    recentWindows: createSignal<JSX.Element>("")
-  };
-
-  let SubmenuMenuItem = (
-    enabled: boolean,
-    left: JSX.Element,
-    target: keyof typeof menus
-  ) =>
-    MenuItem(enabled, left, <i class="fa-light fa-chevron-right"></i>, () => {
-      submenuStack.push(target);
-      menu[1](target);
-      return false; // prevent menu from auto-closing
-    });
-
-  let KeybindMenuItem = (
-    enabled: boolean,
-    left: JSX.Element,
-    query: KeybindQuery
-  ) =>
-    MenuItem(enabled, left, Velocity.getKeybind(query)?.toString(), () => {
-      closeMenu();
-      Velocity.getKeybind(query)?.callback();
-    });
-
-  let MenuSeparator = (title: JSX.Element = null) => (
-    <>
-      <hr class="appmenu-separator my-1" />
-      {title !== null ? (
-        <div class="my-1 px-2 select-none text-xs appmenu-separator-title">
-          {title}
-        </div>
-      ) : (
-        <></>
-      )}
-    </>
-  );
-
-  let Menu = (id: keyof typeof menus, ...children: JSX.Element[]) => (
-    <div
-      class={`h-full w-full flex flex-col row-start-1 col-start-1 ${
-        menu[0]() === id ? "visible" : "invisible"
-      }`}
-    >
-      {...children}
-    </div>
-  );
-
-  let SubmenuHeader = (title: JSX.Element) => (
-    <>
-      <div class="text-white relative bottom-0.5 flex flex-row items-center justify-center h-10 cursor-default select-none">
-        <div class="absolute left-0 flex items-center h-full w-8">
-          <div
-            class="appmenu-button flex items-center justify-center rounded h-8 w-8"
-            onClick={() => {
-              submenuStack.pop();
-              menu[1](submenuStack[submenuStack.length - 1]);
-            }}
-          >
-            <i class="fa-light fa-chevron-left"></i>
-          </div>
-        </div>
-        <div class="h-full flex flex-row items-center">
-          <div class="h-full flex flex-row justify-center items-center font-bold">
-            {title}
-          </div>
-        </div>{" "}
-      </div>
-      {MenuSeparator()}
-    </>
-  );
-
-  function closeMenu() {
-    menu[1](null);
-    submenuStack = [];
-  }
+  let {
+    close: closeMenu,
+    current: currentMenu,
+    stack: submenuStack,
+    submenus: submenus,
+    Menu,
+    MenuItem,
+    KeybindMenuItem,
+    SubmenuMenuItem,
+    MenuSeparator,
+    SubmenuHeader
+  } = createMenu([
+    "main",
+    "bookmarks",
+    "history",
+    "tools",
+    "help",
+    "recentTabs",
+    "recentWindows"
+  ]);
 
   createEffect(() => {
-    menus.main[1](
+    submenus.main[1](
       Menu(
         "main",
         KeybindMenuItem(true, "New tab", { alias: "new_tab" }),
@@ -201,7 +110,7 @@ export default function Utility(): JSX.Element {
   });
 
   createEffect(() => {
-    menus.bookmarks[1](
+    submenus.bookmarks[1](
       Menu(
         "bookmarks",
         SubmenuHeader("Bookmarks"),
@@ -263,7 +172,7 @@ export default function Utility(): JSX.Element {
   const HISTORY_SUBMENU_RECENCY: number = 864e5; // 1 day
   let historyEntries = createSignal<HistoryEntry[]>([]);
   createEffect(() => {
-    if (menu[0]() === "history")
+    if (currentMenu[0]() === "history")
       Velocity.history.get().then((history) => {
         let timestamp = Date.now();
         historyEntries[1](
@@ -273,7 +182,7 @@ export default function Utility(): JSX.Element {
           )
         );
       });
-    menus.history[1](
+    submenus.history[1](
       Menu(
         "history",
         SubmenuHeader("History"),
@@ -324,7 +233,7 @@ export default function Utility(): JSX.Element {
   });
 
   createEffect(() => {
-    menus.tools[1](
+    submenus.tools[1](
       Menu(
         "tools",
         SubmenuHeader("More Tools"),
@@ -414,12 +323,12 @@ export default function Utility(): JSX.Element {
           class="toolbarbutton-1 relative h-8 w-8 rounded flex items-center justify-center"
           onClick={(e) => {
             if (menuContainer?.contains(e.target as Node)) return;
-            menu[1]((m) => (m === null ? "main" : null));
+            currentMenu[1]((m) => (m === null ? "main" : null));
             submenuStack.push("main");
           }}
         >
           <i class="fa-light fa-bars mt-[2px] text-sm"></i>
-          {menu[0]() !== null ? (
+          {currentMenu[0]() !== null ? (
             <>
               <div
                 class="fixed w-full h-full top-0 left-0"
@@ -430,7 +339,7 @@ export default function Utility(): JSX.Element {
                 ref={menuContainer}
                 class="panel appmenu top-9 right-0.5 w-[22rem] text-[0.9rem] shadow-lg rounded-lg border px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
               >
-                {...Object.values(menus).map((m) => m[0]())}
+                {...Object.values(submenus).map((m) => m[0]())}
               </div>
             </>
           ) : null}
@@ -439,4 +348,3 @@ export default function Utility(): JSX.Element {
     </div>
   );
 }
-
