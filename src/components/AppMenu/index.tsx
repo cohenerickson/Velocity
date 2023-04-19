@@ -1,8 +1,7 @@
-import { createSignal, JSX, Signal } from "solid-js";
+import { createSignal, JSX, onMount, Signal } from "solid-js";
 import { KeybindQuery } from "~/API/Keybind";
 
-export default function createMenu(names: string[]) {
-  type SubmenuName = string;
+export default function createMenu(this: any, names: string[]) {
   let current = createSignal<string | null>(null);
   let stack: string[] = [];
 
@@ -62,7 +61,9 @@ export default function createMenu(names: string[]) {
   let Menu = (id: string, ...children: JSX.Element[]) => (
     <div
       class={`h-full w-full flex flex-col row-start-1 col-start-1 ${
-        current[0]() === id ? "visible" : "invisible"
+        [console.log(current[0]()), current[0]()][1] === id
+          ? "visible"
+          : "invisible"
       }`}
     >
       {...children}
@@ -74,7 +75,7 @@ export default function createMenu(names: string[]) {
       <div class="text-white relative bottom-0.5 flex flex-row items-center justify-center h-10 cursor-default select-none">
         <div class="absolute left-0 flex items-center h-full w-8">
           <div
-            class="appmenu-button flex items-center justify-center rounded h-8 w-8"
+            class="hover:bg-[color:var(--button-hover)] flex items-center justify-center rounded h-8 w-8"
             onClick={() => {
               stack.pop();
               current[1](stack[stack.length - 1]);
@@ -97,7 +98,28 @@ export default function createMenu(names: string[]) {
     current[1](null);
     stack = [];
   }
+  let container: HTMLDivElement = (
+    <div class="panel appmenu top-9 right-0.5 w-[22rem] text-[0.9rem] shadow-lg rounded-lg border px-2 py-2 z-30 absolute grid grid-cols-[1fr]">
+      {...Object.values(submenus).map((m) => m[0]())}
+    </div>
+  ) as HTMLDivElement;
+
   return {
+    container,
+    element: (
+      <>
+        {current[0]() !== null ? (
+          <>
+            <div
+              class="fixed w-full h-full top-0 left-0"
+              onPointerDown={() => close()}
+            ></div>
+
+            {container}
+          </>
+        ) : null}
+      </>
+    ),
     close,
     current,
     stack,
@@ -110,4 +132,3 @@ export default function createMenu(names: string[]) {
     SubmenuHeader
   };
 }
-

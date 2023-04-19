@@ -47,6 +47,8 @@ export default function Utility(): JSX.Element {
     });
   }
   let {
+    element: menu,
+    container: menuContainer,
     close: closeMenu,
     current: currentMenu,
     stack: submenuStack,
@@ -258,7 +260,6 @@ export default function Utility(): JSX.Element {
     );
   });
 
-  let menuContainer: HTMLDivElement | undefined;
   return (
     <div class="flex items-center gap-2 w-full h-10 p-2" id="browser-toolbar">
       <div class="flex gap-1 items-center">
@@ -322,29 +323,16 @@ export default function Utility(): JSX.Element {
         <div
           class="toolbarbutton-1 relative h-8 w-8 rounded flex items-center justify-center"
           onClick={(e) => {
-            if (menuContainer?.contains(e.target as Node)) return;
+            if (menuContainer.contains(e.target as Node)) return;
             currentMenu[1]((m) => (m === null ? "main" : null));
             submenuStack.push("main");
           }}
         >
           <i class="fa-light fa-bars mt-[2px] text-sm"></i>
-          {currentMenu[0]() !== null ? (
-            <>
-              <div
-                class="fixed w-full h-full top-0 left-0"
-                onPointerDown={() => closeMenu()}
-              ></div>
-
-              <div
-                ref={menuContainer}
-                class="panel appmenu top-9 right-0.5 w-[22rem] text-[0.9rem] shadow-lg rounded-lg border px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
-              >
-                {...Object.values(submenus).map((m) => m[0]())}
-              </div>
-            </>
-          ) : null}
+          {menu}
         </div>
       </div>
     </div>
   );
 }
+

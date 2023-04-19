@@ -135,9 +135,7 @@
   pointer-events: none;
 }
 .appmenu-item[data-disabled="false"]:hover,
-.appmenu-item[data-disabled="false"]:active,
-.appmenu-button[data-disabled="false"]:hover,
-.appmenu-button[data-disabled="false"]:active {
+.appmenu-item[data-disabled="false"]:active {
   background-color: var(--button-hover);
 }
 
