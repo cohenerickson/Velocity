@@ -7,14 +7,55 @@ import type AddonReader from "~/API/AddonReader";
 
 export const defaultTheme = {
   colors: {
+    tab_background_text: "#fbfbfe",
+    tab_selected: "rgb(66,65,77)",
+    tab_text: "rgb(251,251,254)",
+    icons: "rgb(251,251,254)",
     frame: "#1c1b22",
-    tab_selected: "#42414d",
-    tab_background_text: "white",
-    toolbar: "#2b2a33",
-    toolbar_text: "white",
-    toolbar_field: "#1C1B22",
-    toolbar_field_text: "white",
-    tab_line: "transparent"
+    popup: "rgb(66,65,77)",
+    popup_text: "rgb(251,251,254)",
+    popup_border: "rgb(82,82,94)",
+    popup_highlight: "rgb(43,42,51)",
+    tab_line: "transparent",
+    toolbar: "rgb(43,42,51)",
+    toolbar_top_separator: "transparent",
+    toolbar_bottom_separator: "hsl(240, 5%, 5%)",
+    toolbar_field: "rgb(28,27,34)",
+    toolbar_field_border: "transparent",
+    toolbar_field_text: "rgb(251,251,254)",
+    toolbar_field_focus: "rgb(66,65,77)",
+    toolbar_text: "rgb(251, 251, 254)",
+    ntp_background: "rgb(43, 42, 51)",
+    ntp_card_background: "rgb(66,65,77)",
+    ntp_text: "rgb(251, 251, 254)",
+    sidebar: "#38383D",
+    sidebar_text: "rgb(249, 249, 250)",
+    sidebar_border: "rgba(255, 255, 255, 0.1)",
+    button: "rgb(43,42,51)",
+    button_hover: "rgb(82,82,94)",
+    button_active: "rgb(91,91,102)",
+    button_primary: "rgb(0, 221, 255)",
+    button_primary_hover: "rgb(128, 235, 255)",
+    button_primary_active: "rgb(170, 242, 255)",
+    button_primary_color: "rgb(43, 42, 51)",
+    input_background: "#42414D",
+    input_color: "rgb(251,251,254)",
+    input_border: "#8f8f9d",
+    autocomplete_popup_separator: "rgb(82,82,94)",
+    appmenu_update_icon_color: "#54FFBD",
+    appmenu_info_icon_color: "#80EBFF",
+    tab_icon_overlay_stroke: "rgb(66,65,77)",
+    tab_icon_overlay_fill: "rgb(251,251,254)",
+
+    /*
+     * these properties are normally only adjustable with user stylesheets
+     * however Velocity's ui structure is different so user stylesheets won't work anyways
+     */
+    panel: "rgb(39, 39, 39)",
+    panel_text: "rgb(255, 255, 255)",
+    panel_text_disabled: "rgb(146, 146, 146)",
+    panel_border: "rgba(0,0,0,.4)",
+    panel_shadow: "hsla(0,0%,0%,.2)"
   }
 };
 
@@ -35,8 +76,17 @@ export async function updateCssVariables(theme: Theme, reader?: AddonReader) {
   root.setAttribute("style", "");
 
   for (let rule in theme.colors) {
-    if (rule === "accentcolor") rule = "frame";
-    if (rule === "textcolor") rule = "tab_background_text";
+    if (rule === "accentcolor") {
+      rule = "frame";
+      // prettier-ignore
+      console.warn("Using accentcolor in themes is deprecated since Firefox 70.");
+    }
+    if (rule === "textcolor") {
+      rule = "tab_background_text";
+      // prettier-ignore
+      console.warn("Using tab_background_text in themes is deprecated since Firefox 70.");
+    }
+    if (rule === "bookmark_text") rule = "toolbar_text"; // https://searchfox.org/mozilla-central/rev/31f5847a4494b3646edabbdd7ea39cb88509afe2/toolkit/components/extensions/schemas/theme.json#154
 
     const cssRule = `--${rule.replace(/_/g, "-")}`;
     root.style.setProperty(
@@ -100,3 +150,4 @@ function getMime(file: string): string {
   }
   return "text/plain";
 }
+

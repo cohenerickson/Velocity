@@ -14,7 +14,7 @@ export default function Preferences(): JSX.Element {
     <main class="flex w-full h-full text-white">
       <style>{`
         body {
-          background: #1C1B22;
+          background: var(--frame);
         }
       `}</style>
       <Title>Settings</Title>
@@ -52,3 +52,4 @@ export default function Preferences(): JSX.Element {
     </main>
   );
 }
+

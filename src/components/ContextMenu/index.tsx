@@ -81,7 +81,7 @@ export default function ContextMenu(): JSX.Element {
   return (
     <div
       id="context-menu"
-      class={`w-48 text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] py-2 z-30 fixed whitespace-nowrap overflow-hidden ${
+      class={`panel w-48 text-[0.9rem] shadow-lg rounded-lg border py-2 z-30 fixed whitespace-nowrap overflow-hidden ${
         visible() ? "display" : "hidden"
       }`}
       style={`left: ${x()}px; top: ${y()}px;`}
@@ -91,7 +91,9 @@ export default function ContextMenu(): JSX.Element {
       <For each={buttons()}>
         {(button: ContextItem): JSX.Element => {
           if (button.separator) {
-            return <hr class="border-[#686868] my-0" />;
+            return (
+              <hr class="border-[color:var(--panel-text-disabled)] my-0" />
+            );
           } else {
             return (
               <Button

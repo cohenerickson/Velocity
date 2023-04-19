@@ -56,12 +56,9 @@ export default function Utility(): JSX.Element {
     classes: string = ""
   ) => (
     <div
-      class={`w-full ${
-        enabled
-          ? "hover:bg-[#52525E] text-white"
-          : "pointer-events-none text-neutral-500"
-      } px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem] ${classes}`}
+      class={`appmenu-item w-full px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem] ${classes}`}
       onClick={(e) => (!!(onClick(e) ?? true) ? closeMenu() : null)}
+      data-disabled={!enabled}
     >
       <div class="grow flex flex-row items-center">{left}</div>
       <div>{right}</div>
@@ -111,9 +108,9 @@ export default function Utility(): JSX.Element {
 
   let MenuSeparator = (title: JSX.Element = null) => (
     <>
-      <hr class="border-neutral-500 my-1" />
+      <hr class="appmenu-separator my-1" />
       {title !== null ? (
-        <div class="my-1 px-2 select-none text-xs text-neutral-500">
+        <div class="my-1 px-2 select-none text-xs appmenu-separator-title">
           {title}
         </div>
       ) : (
@@ -137,7 +134,7 @@ export default function Utility(): JSX.Element {
       <div class="text-white relative bottom-0.5 flex flex-row items-center justify-center h-10 cursor-default select-none">
         <div class="absolute left-0 flex items-center h-full w-8">
           <div
-            class="flex items-center justify-center hover:bg-[#52525E] rounded h-8 w-8"
+            class="appmenu-button flex items-center justify-center rounded h-8 w-8"
             onClick={() => {
               submenuStack.pop();
               menu[1](submenuStack[submenuStack.length - 1]);
@@ -431,7 +428,7 @@ export default function Utility(): JSX.Element {
 
               <div
                 ref={menuContainer}
-                class="top-9 right-0.5 w-[22rem] text-[0.9rem] bg-[#222229] shadow-lg rounded-lg border border-[#161616] px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
+                class="panel appmenu top-9 right-0.5 w-[22rem] text-[0.9rem] shadow-lg rounded-lg border px-2 py-2 z-30 absolute grid grid-cols-[1fr]"
               >
                 {...Object.values(menus).map((m) => m[0]())}
               </div>

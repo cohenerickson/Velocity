@@ -15,13 +15,13 @@ export default function History(): JSX.Element {
   });
 
   return (
-    <main class="flex w-full h-full bg-[#1C1B22] text-white">
+    <main class="flex w-full h-full bg-[color:var(--frame)] text-white">
       <Title>History</Title>
       <Link rel="icon" href="/icons/clock.svg"></Link>
       {/*  */}
       <div class="w-[118px] sm:w-[240px] sm:items-end h-full flex flex-col items-center pt-[70px] text-2xl select-none">
         <div
-          class="cursor-pointer h-12 w-12 sm:w-[204px] px-[10px] rounded flex items-center justify-center sm:justify-start gap-[9px] hover:bg-[#52525E] transition-colors"
+          class="cursor-pointer h-12 w-12 sm:w-[204px] px-[10px] rounded flex items-center justify-center sm:justify-start gap-[9px] hover:bg-[color:var(--button-hover)] transition-colors"
           onClick={async () => {
             await window.Velocity.history.clear();
             setHistoryEntries(await window.Velocity.history.get());
@@ -47,7 +47,7 @@ export default function History(): JSX.Element {
                 {() => {
                   const date = new Date(entry.timestamp);
                   return (
-                    <span class="text-sm text-neutral-500">
+                    <span class="text-sm opacity-50">
                       {date.getHours() % 12}:{date.getMinutes()}{" "}
                       {date.getHours() >= 12 ? "PM" : "AM"}
                     </span>
@@ -68,7 +68,7 @@ export default function History(): JSX.Element {
                 </a>
               </div>
               <div class="hidden flex-1 justify-end lg:flex">
-                <span class="text-sm text-neutral-500">
+                <span class="text-sm opacity-50">
                   {entry.url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")}
                 </span>
               </div>
@@ -79,3 +79,4 @@ export default function History(): JSX.Element {
     </main>
   );
 }
+
