@@ -3,6 +3,7 @@ import { keybinds, setKeybinds } from "~/data/appState";
 
 interface KeybindOptions {
   id?: number;
+  alias?: string;
   name: string;
   description: string;
   key: string;
@@ -10,11 +11,14 @@ interface KeybindOptions {
   shift?: boolean;
   alt?: boolean;
   meta?: boolean;
-  callback: (event: KeyboardEvent) => void;
+  callback: (event?: KeyboardEvent) => void;
 }
+
+export type KeybindQuery = Partial<KeybindOptions>;
 
 export default class Keybind {
   id: number = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+  alias!: string;
   name!: string;
   description!: string;
   key!: string;
@@ -22,7 +26,7 @@ export default class Keybind {
   ctrl!: boolean;
   alt!: boolean;
   meta!: boolean;
-  callback!: (event: KeyboardEvent) => void;
+  callback!: (event?: KeyboardEvent) => void;
 
   constructor(options: KeybindOptions) {
     if (
@@ -32,6 +36,7 @@ export default class Keybind {
     ) {
       this.id =
         options.id ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+      this.alias = options.alias ?? "";
       this.name = options.name;
       this.description = options.description;
       this.key = options.key;
@@ -48,6 +53,7 @@ export default class Keybind {
       setKeybinds(
         keybinds().map((keybind: Keybind) => {
           if (keybind.id === options.id) {
+            this.alias = options.alias ?? "";
             keybind.name = options.name ?? keybind.name;
             keybind.description = options.description ?? keybind.description;
             keybind.key = options.key ?? keybind.key;
@@ -97,3 +103,4 @@ export default class Keybind {
     return str;
   }
 }
+

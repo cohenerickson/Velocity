@@ -34,11 +34,11 @@ export default function ViewSource(): JSX.Element {
     });
 
   return (
-    <main class="w-full h-full bg-[#282C34] text-white text-sm line-numbers">
+    <main class="w-full h-full bg-[color:var(--frame)] text-white text-sm line-numbers">
       <style>
         {`
           * {
-            background: #282C34;
+            background: var(--frame);
           }
         `}
       </style>
@@ -55,3 +55,4 @@ export default function ViewSource(): JSX.Element {
     </main>
   );
 }
+

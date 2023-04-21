@@ -2,14 +2,14 @@ import ExtensionReader from "./AddonReader";
 import Bookmark from "./Bookmark";
 import ContextItem from "./ContextItem";
 import History from "./History";
-import Keybind from "./Keybind";
+import Keybind, { KeybindQuery } from "./Keybind";
 import Protocol from "./Protocol";
 import RuntimeModifier from "./RuntimeModifier";
 import Tab from "./Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { bookmarks, protocols, tabs, keybinds } from "~/data/appState";
 
-const Velocity = new Proxy(
+const velocity = new Proxy(
   {
     Tab,
     getTabs: tabs,
@@ -20,6 +20,13 @@ const Velocity = new Proxy(
     ContextItem,
     Keybind,
     getKeybinds: keybinds,
+    getKeybind: (query: KeybindQuery) =>
+      keybinds().find((keybind) => {
+        for (let [k, v] of Object.entries(query)) {
+          if (keybind[k as keyof Keybind] === v) return true;
+        }
+        return false;
+      }),
     bindIFrameMousemove,
     history: new History(),
     postManifest: false,
@@ -40,11 +47,13 @@ const Velocity = new Proxy(
 );
 
 declare global {
+  var Velocity: typeof velocity;
   interface Window {
-    Velocity: typeof Velocity;
+    Velocity: typeof velocity;
   }
 }
+globalThis.Velocity = velocity;
+if (!import.meta.env.SSR) window.Velocity = velocity;
 
-window.Velocity = Velocity;
+export default velocity;
 
-export default Velocity;
