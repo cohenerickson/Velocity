@@ -76,7 +76,7 @@ export default function Header(): JSX.Element {
       id="tabs"
       style="width: env(titlebar-area-width, 100%); min-height: env(titlebar-area-height, auto);margin-left: env(titlebar-area-x, 0);"
     >
-      <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1">
+      <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1 overflow-hidden">
         <DragDropProvider
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
