@@ -81,9 +81,9 @@ export default function ContextMenu(): JSX.Element {
   return (
     <div
       id="context-menu"
-      class={`panel w-48 text-[0.9rem] shadow-lg rounded-lg border py-2 z-30 fixed whitespace-nowrap overflow-hidden ${
+      class={`popup fixed ${
         visible() ? "display" : "hidden"
-      }`}
+      } w-48 shadow-lg rounded border py-1`}
       style={`left: ${x()}px; top: ${y()}px;`}
       onContextMenu={cancelEvent}
       onClick={cancelEvent}
@@ -91,9 +91,7 @@ export default function ContextMenu(): JSX.Element {
       <For each={buttons()}>
         {(button: ContextItem): JSX.Element => {
           if (button.separator) {
-            return (
-              <hr class="border-[color:var(--panel-text-disabled)] my-0" />
-            );
+            return <hr class="my-1 mx-2" />;
           } else {
             return (
               <Button
@@ -110,4 +108,3 @@ export default function ContextMenu(): JSX.Element {
     </div>
   );
 }
-

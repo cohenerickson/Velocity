@@ -9,42 +9,29 @@ import Tab from "./Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { bookmarks, protocols, tabs, keybinds } from "~/data/appState";
 
-const velocity = new Proxy(
-  {
-    Tab,
-    getTabs: tabs,
-    Protocol,
-    getProtocols: protocols,
-    Bookmark,
-    getBookmarks: bookmarks,
-    ContextItem,
-    Keybind,
-    getKeybinds: keybinds,
-    getKeybind: (query: KeybindQuery) =>
-      keybinds().find((keybind) => {
-        for (let [k, v] of Object.entries(query)) {
-          if (keybind[k as keyof Keybind] === v) return true;
-        }
-        return false;
-      }),
-    bindIFrameMousemove,
-    history: new History(),
-    postManifest: false,
-    ExtensionReader,
-    RuntimeModifier
-  },
-  {
-    get(target, prop: string, reciever) {
-      if (!["RuntimeModifier", "history"].includes(prop)) {
-        console.warn(
-          `Using Velocity.${prop} is deprecated, please use RuntimeModifier instead.`
-        );
+const velocity = {
+  Tab,
+  getTabs: tabs,
+  Protocol,
+  getProtocols: protocols,
+  Bookmark,
+  getBookmarks: bookmarks,
+  ContextItem,
+  Keybind,
+  getKeybinds: keybinds,
+  getKeybind: (query: KeybindQuery) =>
+    keybinds().find((keybind) => {
+      for (let [k, v] of Object.entries(query)) {
+        if (keybind[k as keyof Keybind] === v) return true;
       }
-
-      return Reflect.get(target, prop, reciever);
-    }
-  }
-);
+      return false;
+    }),
+  bindIFrameMousemove,
+  history: new History(),
+  postManifest: false,
+  ExtensionReader,
+  RuntimeModifier
+};
 
 declare global {
   var Velocity: typeof velocity;
@@ -56,4 +43,3 @@ globalThis.Velocity = velocity;
 if (!import.meta.env.SSR) window.Velocity = velocity;
 
 export default velocity;
-

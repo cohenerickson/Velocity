@@ -8,11 +8,10 @@ interface ButtonProps {
 export default function Button(props: ButtonProps): JSX.Element {
   return (
     <div
-      class="h-7 px-8 w-full cursor-default select-none text-[color:var(--panel-text)] hover:bg-[color:var(--button-hover)] flex flex-row items-center pt-[0.15rem]"
+      class="popup-button w-full text-[12px] px-2 py-1.5 cursor-default select-none"
       onClick={props.onClick}
     >
       {props.text}
     </div>
   );
 }
-

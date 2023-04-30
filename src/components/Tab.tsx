@@ -20,8 +20,8 @@ export default function Tab(props: TabProps): JSX.Element {
       class={`h-9 ${
         props.tab.pinned() || props.tab.small() ? "" : "w-48"
       } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden`}
-      onMouseDown={() => {
-        props.tab.focus = true;
+      onMouseDown={(event) => {
+        if (event.button === 0) props.tab.focus = true;
       }}
       oncontextmenu={(event: MouseEvent & { data?: ContextItem[] }): void => {
         event.data = [

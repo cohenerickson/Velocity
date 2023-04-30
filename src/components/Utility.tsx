@@ -1,6 +1,5 @@
 import createMenu from "./AppMenu";
-import { JSX, Signal, createEffect, createSignal } from "solid-js";
-import { KeybindQuery } from "~/API/Keybind";
+import { JSX, createEffect, createSignal } from "solid-js";
 import Tab from "~/API/Tab";
 import Velocity from "~/API/index";
 import { bookmarks, bookmarksShown, setBookmarksShown } from "~/data/appState";

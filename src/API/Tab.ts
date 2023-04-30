@@ -32,7 +32,7 @@ export default class Tab extends EventEmitter {
     super();
     contentScriptManager.subscribe(this);
     // initialize iframe
-    this.iframe.classList.add("w-full", "h-full", "border-0");
+    this.iframe.classList.add("w-full", "h-full", "border-0", "select-none");
     if (!isActive) this.iframe.classList.add("hidden");
     document
       .querySelector<HTMLDivElement>("#content")
