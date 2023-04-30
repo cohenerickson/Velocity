@@ -14,7 +14,9 @@ export default function createMenu(this: any, names: string[]) {
   ) => (
     <div
       class={`popup-button text-[12px] w-full px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem] ${classes}`}
-      onClick={(e) => (!!(onClick(e) ?? true) ? close() : null)}
+      onClick={(e) =>
+        enabled ? (!!(onClick(e) ?? true) ? close() : null) : null
+      }
       data-disabled={!enabled}
     >
       <div class="grow flex flex-row items-center">{left}</div>
@@ -61,7 +63,7 @@ export default function createMenu(this: any, names: string[]) {
   let Menu = (id: string, ...children: JSX.Element[]) => (
     <div
       class={`h-full w-full flex flex-col row-start-1 col-start-1 ${
-        current[0]() === id ? "visible" : "invisible"
+        current[0]() === id ? "" : "hidden"
       }`}
     >
       {...children}
@@ -93,8 +95,8 @@ export default function createMenu(this: any, names: string[]) {
   );
 
   function close() {
-    current[1](null);
-    stack = [];
+    current[1]("main");
+    stack = ["main"];
   }
   let container: HTMLDivElement = (
     <div class="popup top-9 right-0.5 w-72 text-[0.9rem] shadow-lg rounded-lg border px-2 py-2 z-30 absolute grid grid-cols-[1fr]">

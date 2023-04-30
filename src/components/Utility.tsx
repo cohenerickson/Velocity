@@ -115,8 +115,8 @@ export default function Utility(): JSX.Element {
       Menu(
         "bookmarks",
         SubmenuHeader("Bookmarks"),
-        <div class="grow relative">
-          <div class="absolute w-full h-full overflow-y-auto overflow-x-hidden">
+        <div class="grow">
+          <div class="w-full h-full">
             {KeybindMenuItem(true, "Bookmark current tab", {
               alias: "bookmark_tab"
             })}
@@ -171,24 +171,28 @@ export default function Utility(): JSX.Element {
   });
 
   const HISTORY_SUBMENU_RECENCY: number = 864e5; // 1 day
+  const HISTORY_SUBMENU_MAX_ENTRIES: number = 10;
   let historyEntries = createSignal<HistoryEntry[]>([]);
   createEffect(() => {
     if (currentMenu[0]() === "history")
       Velocity.history.get().then((history) => {
         let timestamp = Date.now();
         historyEntries[1](
-          history.filter(
-            (entry) =>
-              Math.abs(timestamp - entry.timestamp) <= HISTORY_SUBMENU_RECENCY // only include entries with specified recency
-          )
+          history
+            .filter(
+              (entry) =>
+                Math.abs(timestamp - entry.timestamp) <= HISTORY_SUBMENU_RECENCY
+            )
+            .sort((a, b) => b.timestamp - a.timestamp)
+            .slice(0, HISTORY_SUBMENU_MAX_ENTRIES)
         );
       });
     submenus.history[1](
       Menu(
         "history",
         SubmenuHeader("History"),
-        <div class="grow relative">
-          <div class="absolute w-full h-full overflow-y-auto overflow-x-hidden">
+        <div class="grow">
+          <div class="w-full h-full">
             {SubmenuMenuItem(false, "Recently closed tabs", "recentTabs")}
             {SubmenuMenuItem(false, "Recently closed windows", "recentWindows")}
             {MenuItem(false, "Restore previous session", null, () => {})}
@@ -334,4 +338,3 @@ export default function Utility(): JSX.Element {
     </div>
   );
 }
-

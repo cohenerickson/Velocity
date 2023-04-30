@@ -153,6 +153,14 @@
   );
 }
 
+.popup .popup-button[data-disabled="true"] {
+  color: color-mix(in srgb, var(--popup-text, white) 40%, transparent);
+}
+
+.popup .popup-button[data-disabled="true"]:hover {
+  background-color: transparent;
+}
+
 /* New tab page */
 #ntp {
   color: var(--ntp-text, white);
