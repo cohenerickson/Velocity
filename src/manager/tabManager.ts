@@ -45,7 +45,7 @@ function registerEvents(tab: Tab): void {
     }
   );
   tab.iframe.contentWindow?.addEventListener("DOMContentLoaded", () => {
-    injectabtory(tab);
+    injectHistory(tab);
     tab.emit("document_end", normalizeURL(tab.url()));
   });
   tab.iframe.contentWindow?.addEventListener("load", async () => {
@@ -85,7 +85,7 @@ function registerEvents(tab: Tab): void {
   bindIFrameMousemove(tab.iframe);
 }
 
-function injectabtory(tab: Tab): void {
+function injectHistory(tab: Tab): void {
   if (tab.iframe.contentWindow) {
     tab.iframe.contentWindow.history.pushState = new Proxy(
       tab.iframe.contentWindow.history.pushState,
