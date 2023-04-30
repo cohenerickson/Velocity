@@ -1,6 +1,6 @@
+import { open } from "./clickManager";
 import ContextItem from "~/API/ContextItem";
 import Tab from "~/API/Tab";
-import { open } from "./clickManager";
 import { getActiveTab } from "~/util/";
 
 export default function generateContextButtons(

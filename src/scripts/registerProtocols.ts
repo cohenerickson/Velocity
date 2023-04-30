@@ -11,4 +11,3 @@ about.register("history", "/internal/history");
 const viewSource = new Protocol("view-source");
 
 viewSource.register("*", "/internal/view-source");
-

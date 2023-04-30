@@ -167,4 +167,3 @@ new Keybind({
 keybinds.map((keybind) => {
   new Keybind(keybind);
 });
-

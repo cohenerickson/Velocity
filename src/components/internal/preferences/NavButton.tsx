@@ -20,4 +20,3 @@ export default function NavButton(props: NavButtonProps): JSX.Element {
     </div>
   );
 }
-

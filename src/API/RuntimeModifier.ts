@@ -26,6 +26,4 @@ export default class RuntimeModifier extends EventEmitter {
   getInjects(): Inject[] {
     return this.#injects;
   }
-
-  
 }

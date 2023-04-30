@@ -52,4 +52,3 @@ export default function Preferences(): JSX.Element {
     </main>
   );
 }
-

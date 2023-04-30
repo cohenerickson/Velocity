@@ -10,4 +10,3 @@ export default function Bookmarks(): JSX.Element {
     </main>
   );
 }
-

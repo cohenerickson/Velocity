@@ -1,6 +1,5 @@
 import { bookmarks, setBookmarks } from "~/data/appState";
 
-
 interface BookmarkOptions {
   name: string;
   url: string;
@@ -30,7 +29,7 @@ export default class Bookmark {
     this.#updateStorage();
   }
 
-  #updateStorage () {
+  #updateStorage() {
     localStorage.setItem("bookmarks", JSON.stringify(Array.from(bookmarks())));
   }
 }

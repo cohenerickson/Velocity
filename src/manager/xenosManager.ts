@@ -1,7 +1,10 @@
 import BareClient from "@tomphttp/bare-client";
 import { bareClient, setBareClient } from "~/data/appState";
 
-export default async function xenosPostManifest(manifestURL: string, meta: string) {
+export default async function xenosPostManifest(
+  manifestURL: string,
+  meta: string
+) {
   if (!bareClient()) {
     const server =
       typeof window.__uv$config.bare === "string"

@@ -1,6 +1,6 @@
-import { getActiveTab } from "~/util/";
 import Tab from "~/API/Tab";
 import type Preferences from "~/types/Preferences";
+import { getActiveTab } from "~/util/";
 
 export default function clickHandler(event: MouseEvent) {
   const element = getAnchor(event.target);

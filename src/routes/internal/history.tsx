@@ -79,4 +79,3 @@ export default function History(): JSX.Element {
     </main>
   );
 }
-
