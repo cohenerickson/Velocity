@@ -99,7 +99,6 @@ export default function createMenu(this: any, names: string[]) {
   );
 
   function close() {
-    console.log("CLOSE");
     current[1](null);
     stack = ["main"];
   }
