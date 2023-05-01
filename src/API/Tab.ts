@@ -41,6 +41,11 @@ export default class Tab extends EventEmitter {
     this.navigate(url || "about:newTab");
     requestAnimationFrame(this.#updateDetails.bind(this));
 
+    if ((!url || url === "about:newTab") && (isActive ?? true)) {
+      document.querySelector<HTMLInputElement>("#url_bar")?.focus();
+      this.search = "";
+    }
+
     // Add tab to stack
     setTabs([...tabs(), this]);
     if (isActive) {
@@ -71,6 +76,7 @@ export default class Tab extends EventEmitter {
   }
 
   navigate(query: string) {
+    this.iframe.title = query;
     let url = urlUtil.generateProxyUrl(query);
 
     this.iframe.onload = () => {

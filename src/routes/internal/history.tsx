@@ -15,13 +15,13 @@ export default function History(): JSX.Element {
   });
 
   return (
-    <main class="flex w-full h-full bg-[color:var(--frame)] text-white">
+    <main class="flex w-full h-full bg-[#1C1B22] text-white">
       <Title>History</Title>
       <Link rel="icon" href="/icons/clock.svg"></Link>
       {/*  */}
       <div class="w-[118px] sm:w-[240px] sm:items-end h-full flex flex-col items-center pt-[70px] text-2xl select-none">
         <div
-          class="cursor-pointer h-12 w-12 sm:w-[204px] px-[10px] rounded flex items-center justify-center sm:justify-start gap-[9px] hover:bg-[color:var(--button-hover)] transition-colors"
+          class="cursor-pointer h-12 w-12 sm:w-[204px] px-[10px] rounded flex items-center justify-center sm:justify-start gap-[9px] hover:bg-[#52525E] transition-colors"
           onClick={async () => {
             await window.Velocity.history.clear();
             setHistoryEntries(await window.Velocity.history.get());

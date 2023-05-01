@@ -315,6 +315,7 @@ export default function Utility(): JSX.Element {
       <div class="flex gap-1 items-center">
         <a
           target="_blank"
+          aria-label="View source code on GitHub."
           href="https://github.com/cohenerickson/Velocity"
           class="cursor-default"
         >

@@ -14,7 +14,7 @@ export default function Preferences(): JSX.Element {
     <main class="flex w-full h-full text-white">
       <style>{`
         body {
-          background: var(--frame);
+          background: #1C1B22;
         }
       `}</style>
       <Title>Settings</Title>

@@ -14,9 +14,13 @@ export default function createMenu(this: any, names: string[]) {
   ) => (
     <div
       class={`popup-button text-[12px] w-full px-2 flex flex-row items-center h-8 cursor-default select-none rounded pt-[0.15rem] ${classes}`}
-      onClick={(e) =>
-        enabled ? (!!(onClick(e) ?? true) ? close() : null) : null
-      }
+      onClick={(e) => {
+        if (enabled) {
+          if (onClick(e) ?? true) {
+            close();
+          }
+        }
+      }}
       data-disabled={!enabled}
     >
       <div class="grow flex flex-row items-center">{left}</div>
@@ -95,7 +99,8 @@ export default function createMenu(this: any, names: string[]) {
   );
 
   function close() {
-    current[1]("main");
+    console.log("CLOSE");
+    current[1](null);
     stack = ["main"];
   }
   let container: HTMLDivElement = (
