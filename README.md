@@ -8,7 +8,7 @@ Velocity is a fully featured tabbed proxy with a **seamless browsing experience*
 
 [Features](#features) •
 [Deployment](#deployment) •
-[Contributing](./contributing)
+[Contributing](./CONTRIBUTING.md)
 
 ![Velocity](./.github/banner.png)
 
