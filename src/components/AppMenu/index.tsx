@@ -1,4 +1,4 @@
-import { createSignal, JSX, onMount, Signal } from "solid-js";
+import { createSignal, JSX, Signal } from "solid-js";
 import { KeybindQuery } from "~/API/Keybind";
 
 export default function createMenu(this: any, names: string[]) {

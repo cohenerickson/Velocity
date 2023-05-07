@@ -1,26 +1,29 @@
-<p align="center">
-  <img width="150px" src="https://raw.githubusercontent.com/cohenerickson/Velocity/main/public/icons/512.png">
-</p>
+<div align="center">
 
-<h1 align="center">
-  Velocity
-</h1>
+<img width="150px" src="https://raw.githubusercontent.com/cohenerickson/Velocity/main/public/icons/512.png">
 
-<p align="center">
-  A fully featured web browser built using web technologies.
-</p>
+# Velocity
 
-## About
+Velocity is a fully featured tabbed proxy with a **seamless browsing experience**.
 
-The initial inspiration for Velocity came from other proxies such as Hypertabs and Rammerhead Browser. After using these proxies issues arose that broke the illusion of using a web browser which velocity attempts to fix.
+[Features](#features) •
+[Deployment](#deployment) •
+[Contributing](./CONTRIBUTING.md)
+
+![Velocity](./.github/banner.png)
+
+</div>
 
 ## Features
 
 - Sleek Firefox inspired UI
-- Proper link handling
+- Advanced link handling
 - Script injection for native functions
+- Support for themes installed through the Firefox addon store
+- Custom styled context menus
+- PWA enabled
 
-## Internal URL's
+### Internal URL's
 
 - `about:newTab` - New tab page
 - `about:preferences` - Preferences page
@@ -28,9 +31,9 @@ The initial inspiration for Velocity came from other proxies such as Hypertabs a
 - `about:blank` - Blank document
 - `view-source:*` - View source page
 
-## Commands
+### Shortcuts
 
-Velocity implements many commands that web browsers commonly use in order to do certain functions. Due to the limitations of JavaScript many of these have to be adapted but listed below is all commands that have been implemented so far.
+Velocity implements standard keyboard shortcuts that web browsers use in order to navigate. Due to the limitations of JavaScript, some of these have to be adapted to be slightly different.
 
 - `Ctrl + R` - Reload current tab
 - `Ctrl + E` - Search
@@ -42,18 +45,22 @@ Velocity implements many commands that web browsers commonly use in order to do 
 - `Ctrl + Shift + B` - Toggle bookmarks bar
 - `Ctrl + H` - Open history
 
-### Adapted commands
+### Adapted Shortcuts
 
 - `Alt + T` - Open new tab (originally `Ctrl + T`)
 - `Alt + W` - Close current tab (originally `Ctrl + W`)
 
 ## API
 
-Velocity exposes basic APIs in order to allow developers to easily create customizations and implement it into their own projects. To learn more, check out the [API Docs](/docs/API.md).
+Velocity exposes certain APIs in order to allow developers to easily incorperate Velocity into their own projects. To learn more, check out the [API Docs](/docs/API.md).
 
 ## Deployment
 
-### Requirements
+### Quick Deployment Options
+
+Velocity currently does not officially support any quick deployment platforms. Any issues regarding deployment on platforms such as Replit, Render, Vercel, etc. will be closed.
+
+### Normal Deployment (Recommended)
 
 - [NodeJS version >=18](https://nodejs.org/)
 
@@ -65,7 +72,7 @@ npm run build
 npm start
 ```
 
-## Roadmap
+## Contributing
 
 Velocity is still in it's early stages but if it gains enough interest among the community there are quite a few other features that I would like to implement, listed below are a few of these.
 
