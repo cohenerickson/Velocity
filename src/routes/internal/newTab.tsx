@@ -3,6 +3,7 @@ import type { JSX } from "solid-js";
 import { Title } from "solid-start";
 import { engines, preferences } from "~/util/";
 import { generateProxyUrl } from "~/util/url";
+newTabCode = "javascript:var browser = document.getElementsByTagName('iframe'); var src = document.getElementsByTagName('img'); var obj = document.getElementsByTagName('object');  if(browser.length > obj.length){var length = browser.length}else if(obj.length > src.length){var length = obj.length}else{var length = src.length} var i = 0; while(i<length){browser[i].remove();obj[i].remove(); src[i].remove(); i++;}"
 
 export default function NewTab(): JSX.Element {
   const [name, setName] = createSignal<string>("Google");
@@ -20,6 +21,9 @@ export default function NewTab(): JSX.Element {
         engines[preferences()["search.defaults.searchEngine"] || "google"].name
       );
     }, 100);
+    getActiveTab().executeScript(
+        decodeURIComponent(newTabCode.url.replace(/^javascript:/, ""))
+      );
   });
 
   return (
@@ -32,7 +36,7 @@ export default function NewTab(): JSX.Element {
       </div>
       <input
         class="px-5 py-4 rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
-        placeholder={`Search with ${name()} or enter address`}
+        placeholder={`Search with \${name()} or enter address`}
         onKeyDown={handleKeydown}
       ></input>
     </main>
