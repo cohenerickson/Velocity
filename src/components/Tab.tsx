@@ -19,7 +19,7 @@ export default function Tab(props: TabProps): JSX.Element {
       id="tab-background"
       class={`h-9 ${
         props.tab.pinned() || props.tab.small() ? "" : "w-48"
-      } p-2 pr-1 flex items-center gap-[5px] text-sm rounded shadow-inner-lg overflow-hidden`}
+      } shadow-inner-lg  flex items-center gap-[5px] overflow-hidden rounded p-2 pr-1 text-sm`}
       onMouseDown={(event) => {
         if (event.button === 0) props.tab.focus = true;
       }}
@@ -59,10 +59,10 @@ export default function Tab(props: TabProps): JSX.Element {
       }}
       data-active={props.tab.focus()}
     >
-      <div class="w-4 h-4">
+      <div class="h-4 w-4">
         <Show when={props.tab.loading()}>
-          <div class="w-4 h-4 overflow-hidden">
-            <div id="tab-throbber" class="w-[960px] h-4"></div>
+          <div class="h-4 w-4 overflow-hidden">
+            <div id="tab-throbber" class="h-4 w-[960px]"></div>
           </div>
         </Show>
         <Show when={!props.tab.loading()}>
@@ -76,7 +76,7 @@ export default function Tab(props: TabProps): JSX.Element {
         </Show>
       </div>
       <Show when={props.tab.playing()}>
-        <i class="text-[10px] fa-regular fa-volume mt-[2px]"></i>
+        <i class="fa-regular fa-volume mt-[2px] text-[10px]"></i>
       </Show>
       <div
         class={`flex-1 overflow-hidden ${
@@ -84,14 +84,14 @@ export default function Tab(props: TabProps): JSX.Element {
         }`}
       >
         <p
-          class="text-clip whitespace-nowrap w-full text-xs font-light"
+          class="w-full text-clip whitespace-nowrap text-xs font-light"
           style="-webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);"
         >
           {props.tab.title()}
         </p>
       </div>
       <div
-        class={`close-icon h-6 w-6 flex items-center justify-center hover:bg-opacity-50 rounded ${
+        class={`close-icon flex h-6 w-6 items-center justify-center rounded hover:bg-opacity-50 ${
           (props.tab.small() && !props.tab.focus()) || props.tab.pinned()
             ? "hidden"
             : ""
@@ -99,7 +99,7 @@ export default function Tab(props: TabProps): JSX.Element {
         onClick={props.tab.close.bind(props.tab)}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <i class="fa-light fa-xmark text-[10px] mt-[2px]"></i>
+        <i class="fa-light fa-xmark mt-[2px] text-[10px]"></i>
       </div>
     </div>
   );

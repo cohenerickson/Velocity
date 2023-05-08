@@ -11,7 +11,7 @@ export default function KeybindInput(props: KeybindProps): JSX.Element {
       <input
         value={props.value.toString()}
         type="text"
-        class="bg-[#2A2A32] rounded py-[7px] px-[15px]"
+        class="rounded bg-[#2A2A32] py-[7px] px-[15px]"
         onKeyDown={(event) => {
           event.preventDefault();
           event.stopImmediatePropagation();

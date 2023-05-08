@@ -34,7 +34,7 @@ export default function ViewSource(): JSX.Element {
     });
 
   return (
-    <main class="w-full h-full text-white text-sm line-numbers">
+    <main class="line-numbers h-full w-full text-sm text-white">
       <style>
         {`
           * {

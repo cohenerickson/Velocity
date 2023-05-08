@@ -37,7 +37,7 @@ export default function Home(): JSX.Element {
   });
 
   return (
-    <main class="h-full flex flex-col overflow-hidden">
+    <main class="flex h-full flex-col overflow-hidden">
       <Title>Velocity</Title>
       <div id="navigator-toolbox-background">
         <div id="navigator-toolbox">
@@ -47,7 +47,7 @@ export default function Home(): JSX.Element {
         </div>
       </div>
       <ContextMenu />
-      <main id="content" class="w-full bg-white flex-1"></main>
+      <main id="content" class="w-full flex-1 bg-white"></main>
     </main>
   );
 }

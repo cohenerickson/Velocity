@@ -11,7 +11,7 @@ export default function Preferences(): JSX.Element {
   const [activeSection, setActiveSection] = createSignal<string>("general");
 
   return (
-    <main class="flex w-full h-full text-white">
+    <main class="flex h-full w-full text-white">
       <style>{`
         body {
           background: #1C1B22;
@@ -20,7 +20,7 @@ export default function Preferences(): JSX.Element {
       <Title>Settings</Title>
       <Link rel="icon" href="/icons/gear.svg"></Link>
       {/*  */}
-      <div class="w-[118px] sm:w-[240px] sm:items-end h-full flex flex-col items-center pt-[70px] text-2xl select-none">
+      <div class="flex h-full w-[118px] select-none flex-col items-center pt-[70px] text-2xl sm:w-[240px] sm:items-end">
         <NavButton
           active={[activeSection, setActiveSection]}
           title="General"
@@ -43,7 +43,7 @@ export default function Preferences(): JSX.Element {
         />
       </div>
       <div class="flex-1">
-        <div class="w-full h-[82px]">{/* Search box */}</div>
+        <div class="h-[82px] w-full">{/* Search box */}</div>
         <General id="general" active={activeSection} />
         <Home id="home" active={activeSection} />
         <Search id="search" active={activeSection} />

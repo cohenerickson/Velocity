@@ -10,14 +10,14 @@ interface GeneralProps {
 export default function Search(props: GeneralProps): JSX.Element {
   return (
     <div
-      class={`w-full flex flex-col gap-5 px-7 ${
+      class={`flex w-full flex-col gap-5 px-7 ${
         props.id === props.active() ? "" : "hidden"
       }`}
     >
-      <h1 class="font-light text-[1.46em] leading-[1.3em]">Search</h1>
+      <h1 class="text-[1.46em] font-light leading-[1.3em]">Search</h1>
       <section>
-        <h2 class="font-semibold text-lg">Default Search Engine</h2>
-        <div class="flex flex-col gap-2 my-2">
+        <h2 class="text-lg font-semibold">Default Search Engine</h2>
+        <div class="my-2 flex flex-col gap-2">
           <Dropdown
             id="search.defaults.searchEngine"
             default={"google"}
@@ -27,8 +27,8 @@ export default function Search(props: GeneralProps): JSX.Element {
         </div>
       </section>
       <section>
-        <h2 class="font-semibold text-lg">Default https</h2>
-        <div class="flex flex-col gap-2 my-2">
+        <h2 class="text-lg font-semibold">Default https</h2>
+        <div class="my-2 flex flex-col gap-2">
           <Toggle
             id="search.defaults.useHttps"
             default={false}
@@ -37,8 +37,8 @@ export default function Search(props: GeneralProps): JSX.Element {
         </div>
       </section>
       <section>
-        <h2 class="font-semibold text-lg">Default Proxy</h2>
-        <div class="flex flex-col gap-2 my-2">
+        <h2 class="text-lg font-semibold">Default Proxy</h2>
+        <div class="my-2 flex flex-col gap-2">
           <Dropdown
             id="search.defaults.proxy"
             default={"ultraviolet"}

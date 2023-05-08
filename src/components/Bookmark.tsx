@@ -34,7 +34,7 @@ export default function Bookmark(props: BookmarkProps): JSX.Element {
       // @ts-ignore
       use:sortable
       onClick={handleClick}
-      class="toolbarbutton-1 h-6 flex items-center gap-1 rounded cursor-default px-1 select-none"
+      class="toolbarbutton-1 flex h-6 cursor-default select-none items-center gap-1 rounded px-1"
       oncontextmenu={(event: MouseEvent & { data?: ContextItem[] }): void => {
         event.data = [
           new ContextItem({
@@ -58,7 +58,7 @@ export default function Bookmark(props: BookmarkProps): JSX.Element {
         ];
       }}
     >
-      <div class="w-[15px] h-[15px]">
+      <div class="h-[15px] w-[15px]">
         <Favicon src={createSignal<string>(bookmark.icon)[0]}></Favicon>
       </div>
       {bookmark.name}

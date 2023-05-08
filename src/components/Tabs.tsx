@@ -76,7 +76,7 @@ export default function Header(): JSX.Element {
       id="tabs"
       style="width: env(titlebar-area-width, 100%); min-height: env(titlebar-area-height, auto);margin-left: env(titlebar-area-x, 0);"
     >
-      <div class="flex w-full items-center h-11  px-[2px] cursor-default select-none gap-1 overflow-hidden">
+      <div class="flex h-11 w-full cursor-default  select-none items-center gap-1 overflow-hidden px-[2px]">
         <DragDropProvider
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
@@ -100,10 +100,10 @@ export default function Header(): JSX.Element {
 
         <div class="flex items-center justify-center" id="opentab">
           <div
-            class="toolbarbutton-1 h-9 w-9 rounded flex items-center justify-center"
+            class="toolbarbutton-1 flex h-9 w-9 items-center justify-center rounded"
             onClick={makeTab}
           >
-            <i class="fa-regular fa-plus text-xs mt-[2px]" />
+            <i class="fa-regular fa-plus mt-[2px] text-xs" />
           </div>
         </div>
       </div>

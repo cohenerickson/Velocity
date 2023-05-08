@@ -9,14 +9,14 @@ interface GeneralProps {
 export default function General(props: GeneralProps): JSX.Element {
   return (
     <div
-      class={`w-full flex flex-col gap-5 px-7 ${
+      class={`flex w-full flex-col gap-5 px-7 ${
         props.id === props.active() ? "" : "hidden"
       }`}
     >
-      <h1 class="font-light text-[1.46em] leading-[1.3em]">General</h1>
+      <h1 class="text-[1.46em] font-light leading-[1.3em]">General</h1>
       <section>
-        <h2 class="font-semibold text-lg">Startup</h2>
-        <div class="flex flex-col gap-2 my-2">
+        <h2 class="text-lg font-semibold">Startup</h2>
+        <div class="my-2 flex flex-col gap-2">
           <Toggle
             id="general.startup.openPreviousTabs"
             default={true}
@@ -25,8 +25,8 @@ export default function General(props: GeneralProps): JSX.Element {
         </div>
       </section>
       <section>
-        <h2 class="font-semibold text-lg">Tabs</h2>
-        <div class="flex flex-col gap-2 my-2">
+        <h2 class="text-lg font-semibold">Tabs</h2>
+        <div class="my-2 flex flex-col gap-2">
           <Toggle
             id="general.tabs.openWindowLinksInTab"
             default={true}

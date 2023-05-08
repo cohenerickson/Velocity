@@ -7,8 +7,8 @@ import {
   closestCenter,
   createSortable
 } from "@thisbeyond/solid-dnd";
-import { For, Show } from "solid-js";
 import type { JSX } from "solid-js";
+import { For, Show } from "solid-js";
 import type BookmarkAPI from "~/API/Bookmark";
 import ContextItem from "~/API/ContextItem";
 import { bookmarks, setBookmarks } from "~/data/appState";
@@ -42,7 +42,7 @@ export default function Bookmarks(): JSX.Element {
     <Show when={bookmarksShown()}>
       <div
         id="PersonalToolbar"
-        class="flex items-center h-7 w-full text-[11px] px-2 gap-2"
+        class="flex h-7 w-full items-center gap-2 px-2 text-[11px]"
         oncontextmenu={(event: MouseEvent & { data?: ContextItem[] }): void => {
           if (!event.data) event.data = [];
           event.data.push(

@@ -15,27 +15,27 @@ export default function History(): JSX.Element {
   });
 
   return (
-    <main class="flex w-full h-full bg-[#1C1B22] text-white">
+    <main class="flex h-full w-full bg-[#1C1B22] text-white">
       <Title>History</Title>
       <Link rel="icon" href="/icons/clock.svg"></Link>
       {/*  */}
-      <div class="w-[118px] sm:w-[240px] sm:items-end h-full flex flex-col items-center pt-[70px] text-2xl select-none">
+      <div class="flex h-full w-[118px] select-none flex-col items-center pt-[70px] text-2xl sm:w-[240px] sm:items-end">
         <div
-          class="cursor-pointer h-12 w-12 sm:w-[204px] px-[10px] rounded flex items-center justify-center sm:justify-start gap-[9px] hover:bg-[#52525E] transition-colors"
+          class="flex h-12 w-12 cursor-pointer items-center justify-center gap-[9px] rounded px-[10px] transition-colors hover:bg-[#52525E] sm:w-[204px] sm:justify-start"
           onClick={async () => {
             await window.Velocity.history.clear();
             setHistoryEntries(await window.Velocity.history.get());
           }}
         >
-          <i class="w-6 h-6 fa-light fa-trash"></i>
-          <span class="hidden sm:block text-base">Clear Browsing Data</span>
+          <i class="fa-light fa-trash h-6 w-6"></i>
+          <span class="hidden text-base sm:block">Clear Browsing Data</span>
         </div>
       </div>
-      <div class="flex-1 flex flex-col mx-24 my-16">
-        <h1 class="text-2xl mb-5">History</h1>
+      <div class="mx-24 my-16 flex flex-1 flex-col">
+        <h1 class="mb-5 text-2xl">History</h1>
         <For each={historyEntries()}>
           {(entry) => (
-            <div class="flex items-center border-b border-white justify-between px-5 py-2">
+            <div class="flex items-center justify-between border-b border-white px-5 py-2">
               <div class="flex flex-1 gap-5">
                 <i
                   class="fa-light fa-trash mt-[2px]"
@@ -59,9 +59,9 @@ export default function History(): JSX.Element {
                     e.preventDefault();
                     new window.parent.Velocity.Tab(entry.url, true);
                   }}
-                  class="flex gap-2 items-center"
+                  class="flex items-center gap-2"
                 >
-                  <div class="h-4 w-4 mt-[2px]">
+                  <div class="mt-[2px] h-4 w-4">
                     <Favicon src={createSignal(entry.favicon)[0]} />
                   </div>
                   <span class="text-sm">{entry.title}</span>

@@ -23,15 +23,15 @@ export default function NewTab(): JSX.Element {
   });
 
   return (
-    <main class="flex flex-col w-full h-full items-center" id="ntp">
+    <main class="flex h-full w-full flex-col items-center" id="ntp">
       <Title>New Tab</Title>
       {/*  */}
-      <div class="flex items-center gap-5 m-5 mt-32">
+      <div class="m-5 mt-32 flex items-center gap-5">
         <div class="h-20 w-20" id="logo"></div>
         <h1 class="text-4xl font-semibold">Velocity</h1>
       </div>
       <input
-        class="px-5 py-4 rounded-md text-sm m-5 md:w-1/2 focus:ring-0 focus:outline-none shadow-lg focus:shadow-2xl"
+        class="m-5 rounded-md px-5 py-4 text-sm shadow-lg focus:shadow-2xl focus:outline-none focus:ring-0 md:w-1/2"
         placeholder={`Search with ${name()} or enter address`}
         onKeyDown={handleKeydown}
       ></input>

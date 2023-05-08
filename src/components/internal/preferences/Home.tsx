@@ -8,11 +8,11 @@ interface HomeProps {
 export default function Home(props: HomeProps): JSX.Element {
   return (
     <div
-      class={`w-full flex flex-col gap-5 px-7 ${
+      class={`flex w-full flex-col gap-5 px-7 ${
         props.id === props.active() ? "" : "hidden"
       }`}
     >
-      <h1 class="font-light text-[1.46em] leading-[1.3em]">Home</h1>
+      <h1 class="text-[1.46em] font-light leading-[1.3em]">Home</h1>
     </div>
   );
 }

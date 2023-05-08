@@ -116,7 +116,7 @@ export default function Utility(): JSX.Element {
         "bookmarks",
         SubmenuHeader("Bookmarks"),
         <div class="grow">
-          <div class="w-full h-full">
+          <div class="h-full w-full">
             {KeybindMenuItem(true, "Bookmark current tab", {
               alias: "bookmark_tab"
             })}
@@ -139,7 +139,7 @@ export default function Utility(): JSX.Element {
                   MenuItem(
                     true,
                     <>
-                      <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                      <div class="mb-0.5 mr-2 flex h-4 w-4 flex-row items-center">
                         <img src={bookmark.icon} />
                       </div>
                       <div>{bookmark.name}</div>
@@ -192,7 +192,7 @@ export default function Utility(): JSX.Element {
         "history",
         SubmenuHeader("History"),
         <div class="grow">
-          <div class="w-full h-full">
+          <div class="h-full w-full">
             {SubmenuMenuItem(false, "Recently closed tabs", "recentTabs")}
             {SubmenuMenuItem(false, "Recently closed windows", "recentWindows")}
             {MenuItem(false, "Restore previous session", null, () => {})}
@@ -206,7 +206,7 @@ export default function Utility(): JSX.Element {
                   MenuItem(
                     true,
                     <>
-                      <div class="w-4 h-4 mb-0.5 mr-2 flex flex-row items-center">
+                      <div class="mb-0.5 mr-2 flex h-4 w-4 flex-row items-center">
                         <img src={entry.favicon} />
                       </div>
                       <div>{entry.title}</div>
@@ -264,22 +264,22 @@ export default function Utility(): JSX.Element {
   });
 
   return (
-    <div class="flex items-center gap-2 w-full h-10 p-2" id="browser-toolbar">
-      <div class="flex gap-1 items-center">
+    <div class="flex h-10 w-full items-center gap-2 p-2" id="browser-toolbar">
+      <div class="flex items-center gap-1">
         <div
-          class="toolbarbutton-1 h-8 w-8 rounded flex items-center justify-center"
+          class="toolbarbutton-1 flex h-8 w-8 items-center justify-center rounded"
           onClick={back}
         >
           <i class="fa-light fa-arrow-left mt-[2px]"></i>
         </div>
         <div
-          class="toolbarbutton-1 h-8 w-8 rounded flex items-center justify-center"
+          class="toolbarbutton-1 flex h-8 w-8 items-center justify-center rounded"
           onClick={forward}
         >
           <i class="fa-light fa-arrow-right mt-[2px]"></i>
         </div>
         <div
-          class="toolbarbutton-1 h-8 w-8 rounded flex items-center justify-center"
+          class="toolbarbutton-1 flex h-8 w-8 items-center justify-center rounded"
           onClick={reload}
         >
           <i
@@ -290,17 +290,17 @@ export default function Utility(): JSX.Element {
         </div>
       </div>
       <div
-        class="flex items-center flex-1 h-[32px] text-sm rounded"
+        class="flex h-[32px] flex-1 items-center rounded text-sm"
         id="urlbar"
       >
-        <div class="flex h-8 w-8 rounded items-center justify-center mx-[2px]">
+        <div class="mx-[2px] flex h-8 w-8 items-center justify-center rounded">
           <i class="fa-light fa-magnifying-glass mt-[2px]"></i>
         </div>
         <input
           ref={urlBar}
           id="url_bar"
           autocomplete="off"
-          class="flex-1 flex items-center leading-8 h-full text-sm rounded bg-transparent focus:outline-none"
+          class="flex h-full flex-1 items-center rounded bg-transparent text-sm leading-8 focus:outline-none"
           value={
             getActiveTab()?.search() !== false
               ? (getActiveTab()?.search() as string)
@@ -312,20 +312,20 @@ export default function Utility(): JSX.Element {
           } or enter address`}
         ></input>
       </div>
-      <div class="flex gap-1 items-center">
+      <div class="flex items-center gap-1">
         <a
           target="_blank"
           aria-label="View source code on GitHub."
           href="https://github.com/cohenerickson/Velocity"
           class="cursor-default"
         >
-          <div class="toolbarbutton-1 h-8 w-8 rounded flex items-center justify-center">
+          <div class="toolbarbutton-1 flex h-8 w-8 items-center justify-center rounded">
             <i class="fa-brands fa-github mt-[2px] text-sm"></i>
           </div>
         </a>
 
         <div
-          class="toolbarbutton-1 relative h-8 w-8 rounded flex items-center justify-center"
+          class="toolbarbutton-1 relative flex h-8 w-8 items-center justify-center rounded"
           onClick={(e) => {
             if (menuContainer.contains(e.target as Node)) return;
             currentMenu[1]((m) => (m === null ? "main" : null));

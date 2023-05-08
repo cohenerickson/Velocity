@@ -60,7 +60,7 @@ export default function Favicon(props: FaviconProps): JSX.Element {
 
   return (
     <div
-      class={`w-full h-full bg-cover bg-no-repeat`}
+      class={`h-full w-full bg-cover bg-no-repeat`}
       style={`background-image: url("${icon()}")`}
     ></div>
   );

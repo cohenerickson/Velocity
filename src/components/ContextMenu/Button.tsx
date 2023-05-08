@@ -8,7 +8,7 @@ interface ButtonProps {
 export default function Button(props: ButtonProps): JSX.Element {
   return (
     <div
-      class="popup-button w-full text-[12px] px-2 py-1.5 cursor-default select-none"
+      class="popup-button w-full cursor-default select-none px-2 py-1.5 text-[12px]"
       onClick={props.onClick}
     >
       {props.text}

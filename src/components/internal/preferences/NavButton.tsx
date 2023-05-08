@@ -10,13 +10,13 @@ export default function NavButton(props: NavButtonProps): JSX.Element {
   return (
     <div
       title={props.title}
-      class={`h-12 w-12 sm:w-[204px] px-[10px] rounded flex items-center justify-center sm:justify-start gap-[9px] hover:bg-[color:var(--button-hover)] transition-colors cursor-default ${
+      class={`flex h-12 w-12 cursor-default items-center justify-center gap-[9px] rounded px-[10px] transition-colors hover:bg-[color:var(--button-hover)] sm:w-[204px] sm:justify-start ${
         props.title.toLowerCase() === props.active[0]() ? "text-[#0df]" : ""
       }`}
       onClick={() => props.active[1](props.title.toLowerCase())}
     >
-      <i class={`w-6 h-6 fa-light fa-${props.icon}`}></i>
-      <span class="hidden sm:block text-base">{props.title}</span>
+      <i class={`fa-light h-6 w-6 fa-${props.icon}`}></i>
+      <span class="hidden text-base sm:block">{props.title}</span>
     </div>
   );
 }

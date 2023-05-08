@@ -42,11 +42,11 @@ export default function Toggle(props: ToggleProps): JSX.Element {
         ref={onChange}
       />
       <label
-        class={`flex items-center gap-[6px] font-light before:content-[\s] before:rounded-[2px] before:inline-block before:h-4 before:w-4 ${
+        class={`flex items-center gap-[6px] font-light before:inline-block before:h-4 before:w-4 before:rounded-[2px] before:content-[\s] ${
           getState()
-            ? "before:bg-[#0df] hover:before:bg-[#80EBFF] before:bg-[url('/icons/check.svg')]"
-            : "before:bg-[#2B2A33] hover:before:bg-[#52525E] before:outline before:outline-1 before:outline-[#7A7A81]"
-        } before:bg-center before:bg-norepeat`}
+            ? "before:bg-[#0df] before:bg-[url('/icons/check.svg')] hover:before:bg-[#80EBFF]"
+            : "before:bg-[#2B2A33] before:outline before:outline-1 before:outline-[#7A7A81] hover:before:bg-[#52525E]"
+        } before:bg-norepeat before:bg-center`}
         style="-moz-box-align: center;"
         for={props.id}
       >

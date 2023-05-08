@@ -10,13 +10,13 @@ interface KeybindsProps {
 export default function Keybinds(props: KeybindsProps): JSX.Element {
   return (
     <div
-      class={`w-full flex flex-col gap-5 px-7 ${
+      class={`flex w-full flex-col gap-5 px-7 ${
         props.id === props.active() ? "" : "hidden"
       }`}
     >
-      <h1 class="font-light text-[1.46em] leading-[1.3em]">Keybinds</h1>
+      <h1 class="text-[1.46em] font-light leading-[1.3em]">Keybinds</h1>
       <section>
-        <div class="flex flex-col gap-5 my-2 overflow-auto">
+        <div class="my-2 flex flex-col gap-5 overflow-auto">
           <For each={window.parent.Velocity.getKeybinds()}>
             {(keybind: Keybind) => <KeybindInput value={keybind} />}
           </For>

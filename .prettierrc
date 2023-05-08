@@ -3,5 +3,10 @@
   "useTabs": false,
   "singleQuote": false,
   "endOfLine": "crlf",
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "pluginSearchDirs": false
 }
