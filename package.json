@@ -1,6 +1,6 @@
 {
   "name": "velocity",
-  "description": "A fully featured web browser built using web technologies.",
+  "description": "Velocity is a fully featured tabbed proxy with a seamless browsing experience.",
   "version": "1.3.0",
   "scripts": {
     "dev": "concurrently \"rollup -c --environment BUILD:development\" \"solid-start dev --host\" \"bare-server-node --host=localhost --port=8080\"",
@@ -49,6 +49,6 @@
     "solid-start": "^0.2.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": "18.x"
   }
 }

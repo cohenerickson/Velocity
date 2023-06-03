@@ -3,6 +3,7 @@ import type { JSX } from "solid-js";
 import { Title } from "solid-start";
 import Bookmarks from "~/components/Bookmarks";
 import ContextMenu from "~/components/ContextMenu";
+import Popups from "~/components/Popup";
 import Tabs from "~/components/Tabs";
 import Utility from "~/components/Utility";
 import { tabs } from "~/data/appState";
@@ -47,7 +48,9 @@ export default function Home(): JSX.Element {
         </div>
       </div>
       <ContextMenu />
-      <main id="content" class="w-full flex-1 bg-white"></main>
+      <main id="content" class="relative w-full flex-1 bg-white">
+        <Popups />
+      </main>
     </main>
   );
 }

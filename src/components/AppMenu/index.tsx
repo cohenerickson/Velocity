@@ -103,7 +103,7 @@ export default function createMenu(this: any, names: string[]) {
     stack = ["main"];
   }
   let container: HTMLDivElement = (
-    <div class="popup absolute top-9 right-0.5 z-30 grid w-72 grid-cols-[1fr] rounded-lg border px-2 py-2 text-[0.9rem] shadow-lg">
+    <div class="popup absolute top-9 right-0.5 z-30 grid w-72 grid-cols-[1fr] rounded-lg border px-2 py-2 text-[0.9rem]">
       {...Object.values(submenus).map((m) => m[0]())}
     </div>
   ) as HTMLDivElement;

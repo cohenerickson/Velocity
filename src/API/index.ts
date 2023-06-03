@@ -3,11 +3,13 @@ import Bookmark from "./Bookmark";
 import ContextItem from "./ContextItem";
 import History from "./History";
 import Keybind, { KeybindQuery } from "./Keybind";
+import Popup from "./Popup";
 import Protocol from "./Protocol";
 import RuntimeModifier from "./RuntimeModifier";
 import Tab from "./Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { bookmarks, protocols, tabs, keybinds } from "~/data/appState";
+import { getActiveTab } from "~/util";
 
 const velocity = {
   Tab,
@@ -30,7 +32,9 @@ const velocity = {
   history: new History(),
   postManifest: false,
   ExtensionReader,
-  RuntimeModifier
+  RuntimeModifier,
+  Popup,
+  getActiveTab
 };
 
 declare global {

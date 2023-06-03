@@ -137,9 +137,10 @@
 
 /* Popups */
 .popup {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 14px 0px;
   background-color: var(--popup, #2b2a33);
   border-color: var(--popup-border, #b5b5b5);
-  color: var(--popup-text, white);
+  color: var(--popup-text, #fbfbfe);
 }
 
 .popup hr {

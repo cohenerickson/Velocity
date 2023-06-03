@@ -76,6 +76,8 @@ export default class Tab extends EventEmitter {
   }
 
   navigate(query: string) {
+    this.emit("navigate", query);
+
     this.iframe.title = query;
     let url = urlUtil.generateProxyUrl(query);
 
@@ -89,6 +91,8 @@ export default class Tab extends EventEmitter {
   }
 
   close(event?: MouseEvent): void {
+    this.emit("close");
+
     if (event) {
       event.stopPropagation();
     }

@@ -62,6 +62,7 @@ class AddonManager extends EventTarget {
                 .catch(() => {});
             },
             setEnabled: (state: boolean) => {
+              // TODO: implement state toggles
               if (state) {
                 this.dispatchEvent(new AddonEvent("onEnabling", id));
                 setTimeout(() => {

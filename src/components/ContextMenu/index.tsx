@@ -83,7 +83,7 @@ export default function ContextMenu(): JSX.Element {
       id="context-menu"
       class={`popup fixed ${
         visible() ? "display" : "hidden"
-      } w-48 rounded border py-1 shadow-lg`}
+      } w-48 rounded border py-1`}
       style={`left: ${x()}px; top: ${y()}px;`}
       onContextMenu={cancelEvent}
       onClick={cancelEvent}
