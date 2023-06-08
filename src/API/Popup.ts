@@ -33,7 +33,7 @@ export default class Popup extends EventEmitter {
 
     this.linkedTab = tab;
 
-    tab.on("close", this.close);
+    tab.on("closed", this.close);
     tab.on("navigate", this.close);
 
     if (type !== undefined) {

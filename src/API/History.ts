@@ -16,7 +16,7 @@ export default class History extends EventEmitter {
   }
 
   async #init(): Promise<IDBPDatabase> {
-    const db = await openDB("history", 1, {
+    const db = await openDB("Velocity", 1, {
       upgrade(db) {
         db.createObjectStore("history", { keyPath: "id" });
       }

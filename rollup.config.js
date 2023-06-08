@@ -1,3 +1,5 @@
+import commonjs from "@rollup/plugin-commonjs";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 
@@ -12,7 +14,15 @@ export default {
   },
   watch: process.env.BUILD === "development",
   plugins: [
+    nodeResolve(),
+    commonjs(),
     typescript(),
-    process.env.BUILD !== "development" ? terser() : undefined
+    process.env.BUILD !== "development"
+      ? terser({
+          format: {
+            comments: false
+          }
+        })
+      : undefined
   ]
 };

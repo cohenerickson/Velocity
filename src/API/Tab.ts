@@ -91,7 +91,7 @@ export default class Tab extends EventEmitter {
   }
 
   close(event?: MouseEvent): void {
-    this.emit("close");
+    this.emit("closed");
 
     if (event) {
       event.stopPropagation();

@@ -46,8 +46,7 @@ export function install(reader: AddonReader, url: string): Promise<string> {
           Add {manifest.short_name ?? manifest.name}? This extension will have
           permission to:
           <br></br>
-          <br></br>
-          - xyz
+          <br></br>- xyz
           <br></br>
           <a
             class=""
@@ -176,6 +175,29 @@ async function initAddon(
           reader
         );
       }
+
+      const addonWorker = new Worker("/addon/worker.js", {
+        type: "module",
+        name: manifest.short_name || manifest.name
+      });
+
+      addonWorker.onmessage = ({ data }: MessageEvent) => {
+        if (data.isRequest) {
+
+        } else if (data.isResponse) {
+          
+        }
+      }
+
+      // addonWorker.postMessage({
+      //   action: "post.manifest",
+      //   data: manifest
+      // });
+
+      // addonWorker.postMessage({
+      //   action: "post.script",
+      //   data: "console.log('hello world');"
+      // });
     }
   }
 }
