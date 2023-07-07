@@ -1,7 +1,7 @@
 import AddonReader from "~/API/AddonReader";
 import RuntimeModifier from "~/API/RuntimeModifier";
 import { addons } from "~/data/appState";
-import { install, uninstall } from "~/manager/addonManager";
+import { install, uninstall } from "~/manager/addonStateManager";
 
 const addonStoreModifier = new RuntimeModifier("addonstore");
 

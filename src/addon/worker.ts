@@ -1,5 +1,6 @@
 // @ts-nocheck
-import "polyfill.js";
+import bindingUtil from "./bindingUtil";
+import "./polyfill";
 
 self.browser = getBrowserObject({
   permissions: []

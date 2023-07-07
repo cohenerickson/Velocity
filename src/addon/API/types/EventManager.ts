@@ -1,9 +1,9 @@
 import bindingUtil from "~/addon/bindingUtil";
 
-type Listener<T> = (data: T) => void;
+type Listener = (...args: any) => void;
 
-export default class Event<T> {
-  #listeners: Listener<T>[] = [];
+export default class Event {
+  #listeners: Listener[] = [];
 
   constructor(event: string) {
     bindingUtil.on(event, (data) => {
@@ -11,21 +11,21 @@ export default class Event<T> {
     });
   }
 
-  addListener(listener: Listener<T>): void {
+  addListener(listener: Listener): void {
     this.#listeners.push(listener);
   }
 
-  removeListener(listener: Listener<T>): void {
+  removeListener(listener: Listener): void {
     this.#listeners = this.#listeners.filter((x) => x !== listener);
   }
 
-  hasListener(listener: Listener<T>): boolean {
+  hasListener(listener: Listener): boolean {
     return this.#listeners.includes(listener);
   }
 
-  #dispatch(event: T): void {
+  #dispatch(...args: any[]): void {
     this.#listeners.forEach((listener) => {
-      listener(event);
+      listener(...args);
     });
   }
 }

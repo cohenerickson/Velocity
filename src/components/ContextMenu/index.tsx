@@ -96,9 +96,9 @@ export default function ContextMenu(): JSX.Element {
             return (
               <Button
                 text={button.text as string}
-                onClick={() => {
+                onClick={(e: MouseEvent) => {
                   setVisible(false);
-                  button.onClick!();
+                  button.onClick!(e);
                 }}
               />
             );

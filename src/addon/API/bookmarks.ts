@@ -4,14 +4,14 @@ import EventManager from "./types/EventManager";
 import { openDB, DBSchema } from "idb";
 import { v4 } from "uuid";
 
-interface BookmarkDB extends DBSchema {
+export interface BookmarkDB extends DBSchema {
   bookmarks: {
     key: string;
     value: BookmarkTreeNode;
   };
 }
 
-type BookmarkTreeNode = {
+export type BookmarkTreeNode = {
   children?: BookmarkTreeNode[];
   dateAdded?: number;
   dateGroupModified?: number;
@@ -23,9 +23,10 @@ type BookmarkTreeNode = {
   type: BookmarkTreeNodeType;
   unmodifiable?: BookmarkTreeNodeUnmodifiable;
   url?: string;
+  icon?: string;
 };
 
-type CreateDetails = {
+export type CreateDetails = {
   index?: number;
   parentId?: string;
   title?: string;
@@ -33,8 +34,8 @@ type CreateDetails = {
   url: string;
 };
 
-type BookmarkTreeNodeType = "bookmark" | "folder" | "separator";
-type BookmarkTreeNodeUnmodifiable = "managed";
+export type BookmarkTreeNodeType = "bookmark" | "folder" | "separator";
+export type BookmarkTreeNodeUnmodifiable = "managed";
 
 type BookmarkLocation = {
   index?: number;

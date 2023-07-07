@@ -31,7 +31,10 @@ type GDNSAnswer = {
   data: string;
 };
 
-export async function resolve(hostname: string, flags: Flag[]): Promise<DNSRecord> {
+export async function resolve(
+  hostname: string,
+  flags: Flag[]
+): Promise<DNSRecord> {
   let cname = "";
   let url = `https://dns.google/resolve?name=${hostname}&type=A`;
 

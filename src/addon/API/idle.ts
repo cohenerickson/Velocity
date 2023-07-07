@@ -2,9 +2,18 @@ import bindingUtil from "../bindingUtil";
 import callbackWrapper from "../callbackWrapper";
 import EventManager from "./types/EventManager";
 
-type IdleState = "active" | "idle" | "locked";
+export type IdleState = "active" | "idle" | "locked";
+type StateUpdate = {
+  time: number;
+  state: IdleState;
+};
 
-let idleState: IdleState = "active";
+const idleUpdates: StateUpdate[] = [
+  {
+    time: Date.now(),
+    state: "active"
+  }
+];
 
 export const getAutoLockDelay = callbackWrapper($getAutoLockDelay);
 
@@ -12,20 +21,34 @@ function $getAutoLockDelay(): number {
   return 0;
 }
 
-export async function queryState(
-  detectionIntervalInSeconds: number,
-  callback: (newState: IdleState) => void
+export const queryState = callbackWrapper($queryState);
+
+async function $queryState(
+  detectionIntervalInSeconds: number
 ): Promise<IdleState> {
-  callback(idleState);
-  return idleState;
+  let time = Date.now() - detectionIntervalInSeconds * 1000;
+  let state = idleUpdates[0];
+
+  idleUpdates.forEach((update) => {
+    if (time <= update.time) {
+      state = update;
+    }
+  });
+
+  return state.state;
 }
 
-export function setDetectionInterval(intervalInSeconds: number): void {}
+export function setDetectionInterval(intervalInSeconds: number): void {
+  bindingUtil.emit("idle.setDetectionInterval", intervalInSeconds);
+}
 
-export const onStateChanged = new EventManager<IdleState>(
-  "idle.onStateChanged"
-);
+export const onStateChanged = new EventManager("idle.onStateChanged");
 
-bindingUtil.on<IdleState>("idle.onStateChanged", (data) => {
-  idleState = data;
+bindingUtil.on("idle.onStateChanged", (data) => {
+  idleUpdates.unshift({
+    time: Date.now(),
+    state: data
+  });
+
+  if (idleUpdates.length > 1000) idleUpdates.length = 1000;
 });

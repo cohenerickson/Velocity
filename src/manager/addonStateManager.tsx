@@ -1,3 +1,4 @@
+import registerWorker from "./addonWorkerManager";
 import { register } from "./contentScriptManager";
 import type { ContentScript } from "./contentScriptManager";
 import setTheme from "./themeManager";
@@ -38,14 +39,12 @@ export function install(reader: AddonReader, url: string): Promise<string> {
         <>
           This site would like to install an add-on in Velocity:
           <br></br>
-          <br></br>
           <b>{manifest.short_name ?? manifest.name}</b>
         </>
       ) : (
         <>
           Add {manifest.short_name ?? manifest.name}? This extension will have
           permission to:
-          <br></br>
           <br></br>- xyz
           <br></br>
           <a
@@ -176,28 +175,18 @@ async function initAddon(
         );
       }
 
-      const addonWorker = new Worker("/addon/worker.js", {
+      const addonWorker = new Worker("/addon/backgroundWorker.js", {
         type: "module",
         name: manifest.short_name || manifest.name
       });
 
-      addonWorker.onmessage = ({ data }: MessageEvent) => {
-        if (data.isRequest) {
+      registerWorker(addonWorker);
 
-        } else if (data.isResponse) {
-          
-        }
-      }
+      addonWorker.postMessage({
+        manifest
+      });
 
-      // addonWorker.postMessage({
-      //   action: "post.manifest",
-      //   data: manifest
-      // });
-
-      // addonWorker.postMessage({
-      //   action: "post.script",
-      //   data: "console.log('hello world');"
-      // });
+      
     }
   }
 }

@@ -1,5 +1,4 @@
 import ExtensionReader from "./AddonReader";
-import Bookmark from "./Bookmark";
 import ContextItem from "./ContextItem";
 import History from "./History";
 import Keybind, { KeybindQuery } from "./Keybind";
@@ -16,7 +15,6 @@ const velocity = {
   getTabs: tabs,
   Protocol,
   getProtocols: protocols,
-  Bookmark,
   getBookmarks: bookmarks,
   ContextItem,
   Keybind,

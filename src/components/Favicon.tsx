@@ -49,7 +49,24 @@ export default function Favicon(props: FaviconProps): JSX.Element {
           setIcon(obj);
           return obj;
         }
-      } catch {}
+      } catch {
+        try {
+          const outgoing = await (bareClient() as BareClient).fetch(
+            `https://www.google.com/s2/favicons?domain=${props.src()}&sz=64`,
+            {
+              signal: abort.signal
+            }
+          );
+          const blob = await outgoing.blob();
+          if (!/image/.test(blob.type)) {
+            setIcon("/icons/earth.svg");
+          } else {
+            const obj = URL.createObjectURL(blob);
+            setIcon(obj);
+            return obj;
+          }
+        } catch {}
+      }
     })();
 
     onCleanup(() => {

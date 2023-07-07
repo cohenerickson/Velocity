@@ -2,6 +2,7 @@ import type Tab from "./Tab";
 import EventEmitter from "events";
 import type { IDBPDatabase } from "idb";
 import { openDB } from "idb";
+import { isServer } from "solid-js/web";
 import protocols from "~/manager/protocolManager";
 import type HistoryEntry from "~/types/HistoryEntry";
 
@@ -15,16 +16,16 @@ export default class History extends EventEmitter {
     });
   }
 
-  async #init(): Promise<IDBPDatabase> {
-    const db = await openDB("Velocity", 1, {
-      upgrade(db) {
-        db.createObjectStore("history", { keyPath: "id" });
-      }
-    });
+  async #init(): Promise<IDBPDatabase<unknown>> {
+    if (!isServer) {
+      this.#db = await openDB("history", 1, {
+        upgrade(db) {
+          db.createObjectStore("history", { keyPath: "id" });
+        }
+      });
+    }
 
-    this.#db = db;
-
-    return db;
+    return this.#db as IDBPDatabase<unknown>;
   }
 
   async add(tab: Tab): Promise<any> {

@@ -2,7 +2,7 @@ import type { JSX } from "solid-js";
 
 interface ButtonProps {
   text: string;
-  onClick: () => void;
+  onClick: (e: MouseEvent) => void;
 }
 
 export default function Button(props: ButtonProps): JSX.Element {

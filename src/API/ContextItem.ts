@@ -1,7 +1,7 @@
 type ContextItemOptions =
   | {
       text: string;
-      onClick: () => void;
+      onClick: (e: MouseEvent) => void;
     }
   | {
       separator: true;
@@ -9,7 +9,7 @@ type ContextItemOptions =
 
 export default class ContextItem {
   #text?: string;
-  #onClick?: () => void;
+  #onClick?: (e: MouseEvent) => void;
   #separator?: boolean;
 
   constructor(options: ContextItemOptions) {
@@ -25,7 +25,7 @@ export default class ContextItem {
     return this.#text;
   }
 
-  get onClick(): (() => void) | undefined {
+  get onClick(): ((e: MouseEvent) => void) | undefined {
     return this.#onClick;
   }
 

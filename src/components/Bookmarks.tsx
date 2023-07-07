@@ -9,8 +9,8 @@ import {
 } from "@thisbeyond/solid-dnd";
 import type { JSX } from "solid-js";
 import { For, Show } from "solid-js";
-import type BookmarkAPI from "~/API/Bookmark";
 import ContextItem from "~/API/ContextItem";
+import { BookmarkTreeNode } from "~/addon/API/bookmarks";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 
@@ -21,10 +21,10 @@ export default function Bookmarks(): JSX.Element {
     if (draggable && droppable) {
       const currentItems = bookmarks();
       const fromIndex = currentItems.findIndex(
-        (bookmark: BookmarkAPI) => bookmark.id === draggable.id
+        (bookmark: BookmarkTreeNode) => bookmark.id === draggable.id
       );
       const toIndex = currentItems.findIndex(
-        (bookmark: BookmarkAPI) => bookmark.id === droppable.id
+        (bookmark: BookmarkTreeNode) => bookmark.id === droppable.id
       );
       if (fromIndex !== toIndex) {
         const updatedItems = currentItems.slice();
@@ -64,7 +64,7 @@ export default function Bookmarks(): JSX.Element {
           <DragDropSensors />
           <SortableProvider ids={bookmarks().map((x) => x.id)}>
             <For each={bookmarks()}>
-              {(bookmark: BookmarkAPI) => {
+              {(bookmark: BookmarkTreeNode) => {
                 const sortable = createSortable(bookmark.id);
                 return <Bookmark sortable={sortable} bookmark={bookmark} />;
               }}

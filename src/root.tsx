@@ -1,8 +1,10 @@
 // @refresh reload
-import Bookmark from "./API/Bookmark";
+import { BookmarkDB } from "./addon/API/bookmarks";
 import "./browser.css";
 import SEO from "./components/SEO";
-import { Suspense, createEffect, onMount } from "solid-js";
+import { globalBindingUtil } from "./manager/addonWorkerManager";
+import { openDB } from "idb";
+import { Suspense, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import {
   Body,
@@ -13,13 +15,7 @@ import {
   Routes,
   Scripts
 } from "solid-start";
-import {
-  bookmarks,
-  bookmarksShown,
-  setBookmarks,
-  setBookmarksShown,
-  tabs
-} from "~/data/appState";
+import { setBookmarks, setBookmarksShown } from "~/data/appState";
 import { defaultTheme, updateCssVariables } from "~/manager/themeManager";
 import { preferences } from "~/util/";
 
@@ -36,11 +32,19 @@ export default function Root(): JSX.Element {
       if (event.key === "theme") await updateTheme(event.newValue!);
     });
 
-    setBookmarks(
-      JSON.parse(localStorage.getItem("bookmarks") || "[]").map(
-        (x: any) => new Bookmark(x)
-      )
-    );
+    const db = await openDB<BookmarkDB>("bookmarks", 1, {
+      upgrade(db) {
+        db.createObjectStore("bookmarks", {
+          keyPath: "id"
+        });
+      }
+    });
+
+    setBookmarks(await db.getAll("bookmarks"));
+
+    globalBindingUtil.on("bookmarks.reload", async () => {
+      setBookmarks(await db.getAll("bookmarks"));
+    });
 
     setBookmarksShown((preferences()["bookmarks.shown"] as boolean) ?? true);
 
