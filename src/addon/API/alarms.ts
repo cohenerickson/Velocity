@@ -60,14 +60,18 @@ async function $create(
     if (eventAlarm === alarm) {
       if (alarm.periodInMinutes) {
         setTimeout(() => {
-          bindingUtil.emit("alarms.onAlarm", alarm);
+          if (Alarms.includes(alarm)) {
+            bindingUtil.emit("alarms.onAlarm", alarm);
+          }
         }, alarm.periodInMinutes * 1000);
       }
     }
   });
 
   setTimeout(() => {
-    bindingUtil.emit("alarms.onAlarm", alarm);
+    if (Alarms.includes(alarm)) {
+      bindingUtil.emit("alarms.onAlarm", alarm);
+    }
   }, alarm.scheduledTime - Date.now());
 }
 
