@@ -1,6 +1,6 @@
-import bindingUtil from "../bindingUtil";
-import callbackWrapper from "../callbackWrapper";
-import EventManager from "./types/EventManager";
+import EventManager from "../types/EventManager";
+import bindingUtil from "../util/bindingUtil";
+import callbackWrapper from "../util/callbackWrapper";
 import { openDB, DBSchema } from "idb";
 import { v4 } from "uuid";
 

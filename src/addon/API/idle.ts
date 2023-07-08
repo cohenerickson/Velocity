@@ -1,6 +1,6 @@
-import bindingUtil from "../bindingUtil";
-import callbackWrapper from "../callbackWrapper";
-import EventManager from "./types/EventManager";
+import EventManager from "../types/EventManager";
+import bindingUtil from "../util/bindingUtil";
+import callbackWrapper from "../util/callbackWrapper";
 
 export type IdleState = "active" | "idle" | "locked";
 type StateUpdate = {

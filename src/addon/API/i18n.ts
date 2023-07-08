@@ -1,4 +1,4 @@
-import callbackWrapper from "../callbackWrapper";
+import callbackWrapper from "../util/callbackWrapper";
 import { loadModule, CldFactory } from "cld3-asm";
 
 let cldFactory: CldFactory;

@@ -1,4 +1,4 @@
-import bindingUtil from "~/addon/bindingUtil";
+import bindingUtil from "~/addon/util/bindingUtil";
 
 type Listener = (...args: any) => void;
 
@@ -6,8 +6,8 @@ export default class Event {
   #listeners: Listener[] = [];
 
   constructor(event: string) {
-    bindingUtil.on(event, (data) => {
-      this.#dispatch(data);
+    bindingUtil.on(event, (...data: any[]) => {
+      this.#dispatch(...data);
     });
   }
 

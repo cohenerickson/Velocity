@@ -1,4 +1,6 @@
+import * as alarms from "./API/alarms";
 import * as bookmarks from "./API/bookmarks";
+import * as captivePortal from "./API/captivePortal";
 import * as dns from "./API/dns";
 import * as dom from "./API/dom";
 import * as i18n from "./API/i18n";
@@ -37,9 +39,21 @@ self.getBrowserObject = (manifest: Manifest): any => {
     i18n
   };
 
+  if (manifest.permissions?.includes("alarms")) {
+    Object.assign(browser, {
+      alarms
+    });
+  }
+
   if (manifest.permissions?.includes("bookmarks")) {
     Object.assign(browser, {
       bookmarks
+    });
+  }
+
+  if (manifest.permissions?.includes("captivePortal")) {
+    Object.assign(browser, {
+      captivePortal
     });
   }
 
