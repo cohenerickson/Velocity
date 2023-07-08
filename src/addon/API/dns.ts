@@ -64,8 +64,9 @@ export async function resolve(
     const data = await response.json();
 
     if (updateAddresses) {
-      cached.addresses =
-        data.Answer.filter((x: Answer) => x.type === 28 || x.type === 1) ?? [];
+      cached.addresses = (
+        data.Answer.filter((x: Answer) => x.type === 28 || x.type === 1) ?? []
+      ).map((x: Answer) => x.data);
     }
 
     if (updateCname) {
