@@ -1,8 +1,8 @@
 import Favicon from "./Favicon";
 import { Show } from "solid-js";
 import type { JSX } from "solid-js";
-import ContextItem from "~/API/ContextItem";
-import TabData from "~/API/Tab";
+import ContextItem from "~/api/ContextItem";
+import TabData from "~/api/Tab";
 
 interface TabProps {
   tab: TabData;

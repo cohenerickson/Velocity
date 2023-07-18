@@ -1,7 +1,7 @@
 import createMenu from "./AppMenu";
 import { JSX, createEffect, createSignal } from "solid-js";
-import Tab from "~/API/Tab";
-import Velocity from "~/API/index";
+import Tab from "~/api/Tab";
+import Velocity from "~/api/index";
 import { bookmarks, bookmarksShown, setBookmarksShown } from "~/data/appState";
 import HistoryEntry from "~/types/HistoryEntry";
 import { engines, preferences } from "~/util/";

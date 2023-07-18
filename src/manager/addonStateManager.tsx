@@ -6,9 +6,9 @@ import { updateCssVariables, defaultTheme } from "./themeManager";
 import type { IDBPDatabase } from "idb";
 import { openDB } from "idb";
 import Manifest, { ContentScripts, Permissions } from "webextension-manifest";
-import AddonReader from "~/API/AddonReader";
-import Popup from "~/API/Popup";
-import Tab from "~/API/Tab";
+import AddonReader from "~/api/AddonReader";
+import Popup from "~/api/Popup";
+import Tab from "~/api/Tab";
 import { addons, setAddons } from "~/data/appState";
 import type AddonEntry from "~/types/AddonEntry";
 import { getActiveTab } from "~/util";
@@ -185,8 +185,6 @@ async function initAddon(
       addonWorker.postMessage({
         manifest
       });
-
-      
     }
   }
 }

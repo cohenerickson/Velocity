@@ -1,9 +1,9 @@
 import Favicon from "./Favicon";
 import { createSignal } from "solid-js";
 import type { JSX } from "solid-js";
-import ContextItem from "~/API/ContextItem";
-import Tab from "~/API/Tab";
-import { BookmarkTreeNode } from "~/addon/API/bookmarks";
+import { BookmarkTreeNode } from "~/addon/api/bookmarks";
+import ContextItem from "~/api/ContextItem";
+import Tab from "~/api/Tab";
 import { remove, run } from "~/manager/bookmarkManager";
 import { open } from "~/manager/clickManager";
 import { getActiveTab } from "~/util";

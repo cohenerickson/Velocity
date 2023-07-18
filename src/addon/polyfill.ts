@@ -1,10 +1,10 @@
-import * as alarms from "./API/alarms";
-import * as bookmarks from "./API/bookmarks";
-import * as captivePortal from "./API/captivePortal";
-import * as dns from "./API/dns";
-import * as dom from "./API/dom";
-import * as i18n from "./API/i18n";
-import * as idle from "./API/idle";
+import * as alarms from "./api/alarms";
+import * as bookmarks from "./api/bookmarks";
+import * as captivePortal from "./api/captivePortal";
+import * as dns from "./api/dns";
+import * as dom from "./api/dom";
+import * as i18n from "./api/i18n";
+import * as idle from "./api/idle";
 import BareClient from "@tomphttp/bare-client";
 import Manifest from "webextension-manifest";
 

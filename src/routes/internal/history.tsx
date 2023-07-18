@@ -8,7 +8,7 @@ export default function History(): JSX.Element {
   const [historyEntries, setHistoryEntries] = createSignal<HistoryEntry[]>([]);
 
   onMount(async () => {
-    await import("~/API");
+    await import("~/api");
     window.Velocity.history.on("ready", async () => {
       setHistoryEntries(await window.Velocity.history.get());
     });

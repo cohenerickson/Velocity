@@ -2,12 +2,12 @@ import { globalBindingUtil } from "./addonWorkerManager";
 import { IDBPDatabase, openDB } from "idb";
 import { isServer } from "solid-js/web";
 import { v4 } from "uuid";
-import Tab from "~/API/Tab";
 import {
   BookmarkDB,
   BookmarkTreeNode,
   CreateDetails
-} from "~/addon/API/bookmarks";
+} from "~/addon/api/bookmarks";
+import Tab from "~/api/Tab";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import { getActiveTab } from "~/util";
 

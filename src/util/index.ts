@@ -1,4 +1,4 @@
-import type Tab from "~/API/Tab";
+import type Tab from "~/api/Tab";
 import { tabStack } from "~/data/appState";
 import type Preferences from "~/types/Preferences";
 

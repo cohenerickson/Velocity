@@ -1,4 +1,4 @@
-import Tab from "../API/Tab";
+import Tab from "../api/Tab";
 import ConstrainDragAxis from "./ConstrainDragAxis";
 import {
   DragDropProvider,

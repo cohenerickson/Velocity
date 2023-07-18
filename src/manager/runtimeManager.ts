@@ -1,5 +1,5 @@
-import type RuntimeModifier from "~/API/RuntimeModifier";
-import type Tab from "~/API/Tab";
+import type RuntimeModifier from "~/api/RuntimeModifier";
+import type Tab from "~/api/Tab";
 import { patternToRegExp } from "~/util";
 
 const modifiers: RuntimeModifier[] = [];

@@ -1,4 +1,4 @@
-import Tab from "~/API/Tab";
+import Tab from "~/api/Tab";
 import type Preferences from "~/types/Preferences";
 import { getActiveTab } from "~/util/";
 

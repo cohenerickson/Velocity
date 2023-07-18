@@ -1,5 +1,5 @@
 import { createSignal, JSX, Signal } from "solid-js";
-import { KeybindQuery } from "~/API/Keybind";
+import { KeybindQuery } from "~/api/Keybind";
 
 export default function createMenu(this: any, names: string[]) {
   let current = createSignal<string | null>(null);

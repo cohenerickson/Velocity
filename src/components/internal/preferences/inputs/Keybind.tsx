@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import type Keybind from "~/API/Keybind";
+import type Keybind from "~/api/Keybind";
 
 interface KeybindProps {
   value: Keybind;

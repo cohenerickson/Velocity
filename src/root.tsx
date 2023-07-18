@@ -1,5 +1,5 @@
 // @refresh reload
-import { BookmarkDB } from "./addon/API/bookmarks";
+import { BookmarkDB } from "./addon/api/bookmarks";
 import "./browser.css";
 import SEO from "./components/SEO";
 import { globalBindingUtil } from "./manager/addonWorkerManager";

@@ -1,6 +1,6 @@
 import KeybindInput from "./inputs/Keybind";
 import { Accessor, For, JSX } from "solid-js";
-import type Keybind from "~/API/Keybind";
+import type Keybind from "~/api/Keybind";
 
 interface KeybindsProps {
   id: string;

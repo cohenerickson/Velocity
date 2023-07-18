@@ -3,7 +3,7 @@ import mimeDB from "mime-db";
 import { isServer } from "solid-js/web";
 import type Manifest from "webextension-manifest";
 import type { Theme } from "webextension-manifest";
-import type AddonReader from "~/API/AddonReader";
+import type AddonReader from "~/api/AddonReader";
 
 export const defaultTheme = {
   colors: {

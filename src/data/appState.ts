@@ -1,11 +1,11 @@
 import type BareClient from "@tomphttp/bare-client";
 import { createSignal } from "solid-js";
-import type Keybind from "~/API/Keybind";
-import Popup from "~/API/Popup";
-import type Protocol from "~/API/Protocol";
-import type Tab from "~/API/Tab";
-import { BookmarkTreeNode } from "~/addon/API/bookmarks";
-import { IdleState } from "~/addon/API/idle";
+import { BookmarkTreeNode } from "~/addon/api/bookmarks";
+import { IdleState } from "~/addon/api/idle";
+import type Keybind from "~/api/Keybind";
+import Popup from "~/api/Popup";
+import type Protocol from "~/api/Protocol";
+import type Tab from "~/api/Tab";
 import type AddonEntry from "~/types/AddonEntry";
 
 export const [tabs, setTabs] = createSignal<Tab[]>([]);

@@ -1,4 +1,4 @@
-import Protocol from "~/API/Protocol";
+import Protocol from "~/api/Protocol";
 
 const about = new Protocol("about");
 

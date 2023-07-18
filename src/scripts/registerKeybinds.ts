@@ -1,6 +1,6 @@
 import { IDBPDatabase, openDB } from "idb";
-import Keybind from "~/API/Keybind";
-import Tab from "~/API/Tab";
+import Keybind from "~/api/Keybind";
+import Tab from "~/api/Tab";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 import { preferences } from "~/util/";
 import { getActiveTab } from "~/util/";

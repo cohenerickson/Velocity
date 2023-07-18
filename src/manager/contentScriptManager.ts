@@ -1,5 +1,5 @@
 import { ContentScripts, Permissions } from "webextension-manifest";
-import Tab from "~/API/Tab";
+import Tab from "~/api/Tab";
 import { patternToRegExp } from "~/util/";
 
 export type ContentScript = ContentScripts[0] & {

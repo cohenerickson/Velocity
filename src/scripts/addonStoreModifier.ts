@@ -1,5 +1,5 @@
-import AddonReader from "~/API/AddonReader";
-import RuntimeModifier from "~/API/RuntimeModifier";
+import AddonReader from "~/api/AddonReader";
+import RuntimeModifier from "~/api/RuntimeModifier";
 import { addons } from "~/data/appState";
 import { install, uninstall } from "~/manager/addonStateManager";
 

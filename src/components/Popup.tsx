@@ -1,5 +1,5 @@
 import { JSX, For, Show } from "solid-js";
-import Popup from "~/API/Popup";
+import Popup from "~/api/Popup";
 import { popups } from "~/data/appState";
 import { getActiveTab } from "~/util";
 

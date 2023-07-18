@@ -9,8 +9,8 @@ import {
 } from "@thisbeyond/solid-dnd";
 import type { JSX } from "solid-js";
 import { For, Show } from "solid-js";
-import ContextItem from "~/API/ContextItem";
-import { BookmarkTreeNode } from "~/addon/API/bookmarks";
+import { BookmarkTreeNode } from "~/addon/api/bookmarks";
+import ContextItem from "~/api/ContextItem";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
 

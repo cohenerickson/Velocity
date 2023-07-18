@@ -1,6 +1,6 @@
 import { registerTab } from "./runtimeManager";
-import type ContextItem from "~/API/ContextItem";
-import Tab from "~/API/Tab";
+import type ContextItem from "~/api/ContextItem";
+import Tab from "~/api/Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import handleClick from "~/manager/clickManager";
 import generateContextButtons from "~/manager/contextManager";
