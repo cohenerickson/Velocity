@@ -5,6 +5,8 @@ import * as dns from "./api/dns";
 import * as dom from "./api/dom";
 import * as i18n from "./api/i18n";
 import * as idle from "./api/idle";
+import * as runtime from "./api/runtime";
+import * as storage from "./api/storage";
 import BareClient from "@tomphttp/bare-client";
 import Manifest from "webextension-manifest";
 
@@ -36,7 +38,8 @@ self.getBrowserObject = (manifest: Manifest): any => {
 
   const browser = {
     dom,
-    i18n
+    i18n,
+    runtime
   };
 
   if (manifest.permissions?.includes("alarms")) {
@@ -66,6 +69,12 @@ self.getBrowserObject = (manifest: Manifest): any => {
   if (manifest.permissions?.includes("idle")) {
     Object.assign(browser, {
       idle
+    });
+  }
+
+  if (manifest.permissions?.includes("storage")) {
+    Object.assign(browser, {
+      storage
     });
   }
 

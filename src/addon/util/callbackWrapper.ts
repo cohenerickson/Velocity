@@ -1,7 +1,7 @@
 // Add callback argument to async function while still supporting async/await
 export default function callbackWrapper<
   T extends (...args: any[]) => Promise<any> | any
->(func: T): (...args: Parameters<T>) => Promise<ReturnType<T>> | ReturnType<T> {
+>(func: T): (...args: Parameters<T>) => ReturnType<T> {
   return (...args: Parameters<T>) => {
     const callbackIndex = func.length;
     const callback = args[callbackIndex];

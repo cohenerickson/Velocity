@@ -15,7 +15,15 @@ function on(event: string, listener: (...args: any) => void): void {
   eventListeners.set(event, listeners);
 }
 
-function emit(event: string, ...args: any[]): void {
+function emit(event: string | string[], ...args: any[]): void {
+  if (Array.isArray(event)) {
+    event.forEach((event) => {
+      emit(event, ...args);
+    });
+
+    return;
+  }
+
   const listeners = eventListeners.get(event) ?? [];
 
   listeners.forEach((listener) => {
