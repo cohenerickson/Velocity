@@ -1,6 +1,7 @@
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import solid from "solid-start/vite";
 import { defineConfig } from "vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
@@ -20,6 +21,13 @@ export default defineConfig({
           dest: "addon"
         }
       ]
+    }),
+    nodePolyfills({
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true
+      }
     }),
     solid({ ssr: false })
   ],

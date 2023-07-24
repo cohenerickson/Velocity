@@ -1,3 +1,4 @@
+import { ADDON_DIR, ADDON_STORE_DIR } from "./constants";
 import getBrowserObject from "./polyfill";
 // @ts-ignore
 import Filer from "Filer";
@@ -11,16 +12,20 @@ if (!id) self.close();
 
 const fileSystem = new Filer.FileSystem();
 const fs = fileSystem.promises;
-const __dirname = `/Velocity/addons/${id}`;
+const __dirname = path.join(ADDON_DIR, id);
 
 const manifest: Manifest = JSON.parse(
   await fs.readFile(path.join(__dirname, "manifest.json"), "utf8")
 );
 
+const meta = JSON.parse(
+  await fs.readFile(path.join(ADDON_STORE_DIR, id, "meta.json"), "utf8")
+);
+
 if (manifest.background) {
   manifest.background.scripts?.forEach(async (script: string) => {
     // @ts-ignore
-    globalThis.browser = getBrowserObject(manifest, id);
+    globalThis.browser = getBrowserObject(meta.grantedPermissions, id);
     // @ts-ignore
     globalThis.chrome = globalThis.browser;
 

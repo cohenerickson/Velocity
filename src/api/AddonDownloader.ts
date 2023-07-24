@@ -4,17 +4,20 @@ import EventEmitter from "events";
 import Filer from "filer";
 import mime from "mime-types";
 import path from "path";
-import { v4 } from "uuid";
+import { promisify } from "util";
 import Manifest from "webextension-manifest";
+import {
+  ADDON_DIR,
+  ADDON_STORE_DIR,
+  MOZILLA_RSA_PATH
+} from "~/addon/constants";
+import getLatestversion from "~/addon/util/getLatestVersion";
 import bareClient from "~/util/bareClient";
-
-const __dirname = "/Velocity/addons/";
 
 export default class AddonDownloader extends EventEmitter {
   bareClient = bareClient;
   fs: any;
   sh: any;
-  id: string;
   dirname?: string;
 
   constructor(url: string) {
@@ -24,15 +27,30 @@ export default class AddonDownloader extends EventEmitter {
     this.fs = fileSystem.promises;
     this.sh = new fileSystem.Shell();
 
-    this.id = v4();
-
     this.emit("downloadStart");
 
     this.#start(url);
   }
 
   async #start(url: string) {
-    const request = await this.bareClient.fetch(url);
+    let isUrl: boolean;
+
+    try {
+      new URL(url);
+      isUrl = true;
+    } catch {
+      isUrl = false;
+    }
+
+    let downloadUrl: string;
+
+    if (isUrl) {
+      downloadUrl = url;
+    } else {
+      downloadUrl = (await getLatestversion(url)).file.url;
+    }
+
+    const request = await this.bareClient.fetch(downloadUrl);
 
     this.emit("downloadEnd");
 
@@ -55,11 +73,53 @@ export default class AddonDownloader extends EventEmitter {
       await manifestEntry.getData!<string>(writer)
     );
 
+    let id: string | undefined;
+
     if (manifest.browser_specific_settings?.gecko.id) {
-      this.id = manifest.browser_specific_settings.gecko.id.toString();
+      id = manifest.browser_specific_settings.gecko.id.toString();
+    } else {
+      const entry = zipEntries.find((x) => x.filename === MOZILLA_RSA_PATH)!;
+      const content = await entry.getData!<string>(new zip.TextWriter());
+      id = content.match(
+        /(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}/
+      )![0];
     }
 
-    this.dirname = path.join(__dirname, this.id);
+    this.dirname = path.join(ADDON_DIR, id);
+
+    const exists = await this.#exists(this.dirname);
+
+    if (exists) {
+      await promisify(this.sh.rm.bind(this.sh))(this.dirname, {
+        recursive: true
+      });
+    }
+
+    await promisify(this.sh.mkdirp.bind(this.sh))(this.dirname);
+    await promisify(this.sh.mkdirp.bind(this.sh))(
+      path.join(ADDON_STORE_DIR, id)
+    );
+
+    const metaPath = path.join(ADDON_STORE_DIR, id, "meta.json");
+
+    if (!exists) {
+      await this.fs.writeFile(
+        metaPath,
+        JSON.stringify({
+          enabled: true,
+          version: manifest.version,
+          updateURL: downloadUrl,
+          grantedPermissions: []
+        })
+      );
+    } else {
+      const meta = JSON.parse(await this.fs.readFile(metaPath, "utf8"));
+
+      meta.version = manifest.version;
+      meta.updateURL = downloadUrl;
+
+      await this.fs.writeFile(metaPath, JSON.stringify(meta));
+    }
 
     for (const entry of zipEntries) {
       const charset = mime.charset(mime.lookup(entry.filename) || "text/plain");
@@ -74,7 +134,7 @@ export default class AddonDownloader extends EventEmitter {
 
       const filePath = path.join(this.dirname!, entry.filename);
 
-      this.sh.mkdirp(path.dirname(filePath));
+      await promisify(this.sh.mkdirp.bind(this.sh))(path.dirname(filePath));
 
       const data: string | Uint8Array = await entry.getData!<
         string | Uint8Array
@@ -88,5 +148,16 @@ export default class AddonDownloader extends EventEmitter {
     zipReader.close();
 
     this.emit("close");
+  }
+
+  #exists(dir: string): Promise<boolean> {
+    return new Promise(async (accept, reject) => {
+      try {
+        await this.fs.stat(dir);
+        accept(true);
+      } catch {
+        accept(false);
+      }
+    });
   }
 }
