@@ -1,11 +1,11 @@
 import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 import path from "path";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 const __dirname = process.cwd();
 
 export default {
   entry: {
-    polyfill: "./src/addon/polyfill.ts",
     worker: "./src/addon/worker.ts"
   },
   output: {
@@ -27,5 +27,5 @@ export default {
       "~": path.resolve(__dirname, "./src")
     }
   },
-  plugins: [new NodePolyfillPlugin()]
+  plugins: [new NodePolyfillPlugin(), new BundleAnalyzerPlugin()]
 };
