@@ -1,3 +1,4 @@
+import NodePolyfillPlugin from "node-polyfill-webpack-plugin";
 import path from "path";
 
 const __dirname = process.cwd();
@@ -11,7 +12,6 @@ export default {
     path: path.resolve(__dirname, "./out"),
     filename: "[name].js"
   },
-  devtool: "source-map",
   module: {
     rules: [
       {
@@ -26,5 +26,6 @@ export default {
     alias: {
       "~": path.resolve(__dirname, "./src")
     }
-  }
+  },
+  plugins: [new NodePolyfillPlugin()]
 };

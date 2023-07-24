@@ -1,12 +1,8 @@
 import EventManager from "../types/EventManager";
 import bindingUtil from "../util/bindingUtil";
 import callbackWrapper from "../util/callbackWrapper";
-import { setError } from "../util/error";
+import runtime from "./runtime";
 import { openDB, DBSchema } from "idb";
-
-// TODO: Get extension id
-// requires file system access
-const EXT_ID = "extensionId";
 
 type AccessLevel = "TRUSTED_CONTEXTS" | "TRUSTED_AND_UNTRUSTED_CONTEXTS";
 type StorageZone = "local" | "session" | "sync" | "managed";
@@ -49,7 +45,7 @@ const db = await openDB<LocalStorageDB>("ext$store", 1, {
 
 // Clear session store after each reload
 db.put(`ext$sessionStore`, {
-  id: EXT_ID,
+  id: runtime.id,
   value: {}
 });
 
@@ -105,7 +101,7 @@ function $clear(zone: StorageZone) {
     const bk = await local.get();
 
     await db.put(`ext$${zone}Store`, {
-      id: EXT_ID,
+      id: runtime.id,
       value: {}
     });
 
@@ -128,7 +124,7 @@ function $get(zone: StorageZone) {
   ): Promise<{
     [key: string]: any;
   }> {
-    const data = (await db.get(`ext$${zone}Store`, EXT_ID)) ?? {};
+    const data = (await db.get(`ext$${zone}Store`, runtime.id)) ?? {};
     return storageGet(data.value, keys);
   };
 }
@@ -157,7 +153,7 @@ function $remove(zone: StorageZone) {
     });
 
     await db.put(`ext$${zone}Store`, {
-      id: EXT_ID,
+      id: runtime.id,
       value: data
     });
 
@@ -185,7 +181,7 @@ function $set(zone: StorageZone) {
       local.QUOTA_BYTES
     ) {
       const error = new Error("The maximum amount of data has been reached.");
-      setError(error);
+      runtime.lastError = error;
       throw error;
     }
 
@@ -195,7 +191,7 @@ function $set(zone: StorageZone) {
     Object.assign(data, items);
 
     await db.put(`ext$${zone}Store`, {
-      id: EXT_ID,
+      id: runtime.id,
       value: data
     });
 

@@ -1,3 +1,4 @@
-import { lastError } from "../util/error";
+let lastError: Error | undefined;
+let id: string = "";
 
-export { lastError };
+export default { lastError, id };

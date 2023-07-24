@@ -5,19 +5,13 @@ import * as dns from "./api/dns";
 import * as dom from "./api/dom";
 import * as i18n from "./api/i18n";
 import * as idle from "./api/idle";
-import * as runtime from "./api/runtime";
+import runtime from "./api/runtime";
 import * as storage from "./api/storage";
-import BareClient from "@tomphttp/bare-client";
 import Manifest from "webextension-manifest";
 
 declare global {
-  var _$permissions: string[] | undefined;
-  var _$extensionId: string | undefined;
-  var _$bareClient: BareClient;
-  var getBrowserObject: (manifest: Manifest) => any;
+  var getBrowserObject: (manifest: Manifest, id: string) => any;
 }
-
-self._$bareClient = new BareClient("https://uv.radon.games/");
 
 function deepFreeze(object: any): any {
   const propNames = Reflect.ownKeys(object);
@@ -33,14 +27,14 @@ function deepFreeze(object: any): any {
   return Object.freeze(object);
 }
 
-self.getBrowserObject = (manifest: Manifest): any => {
-  self._$permissions = manifest.permissions;
-
+self.getBrowserObject = (manifest: Manifest, id: string): any => {
   const browser = {
     dom,
     i18n,
     runtime
   };
+
+  runtime.id = id;
 
   if (manifest.permissions?.includes("alarms")) {
     Object.assign(browser, {
@@ -82,3 +76,5 @@ self.getBrowserObject = (manifest: Manifest): any => {
 
   return browser;
 };
+
+export default getBrowserObject;

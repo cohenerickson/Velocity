@@ -64,7 +64,7 @@ export default class AddonReader {
         break;
     }
 
-    const data = await entry.getData(writer);
+    const data = await entry.getData!(writer);
 
     await zipReader.close();
 

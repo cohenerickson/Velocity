@@ -1,5 +1,5 @@
 import Color from "color";
-import mimeDB from "mime-db";
+import mime from "mime-types";
 import { isServer } from "solid-js/web";
 import type Manifest from "webextension-manifest";
 import type { Theme } from "webextension-manifest";
@@ -95,20 +95,7 @@ export async function updateCssVariables(theme: Theme, reader?: AddonReader) {
 }
 
 async function extractBlob(url: string, reader: AddonReader): Promise<Blob> {
-  const blob = await reader.extractFile(url, getMime(url));
+  const blob = await reader.extractFile(url, mime.lookup(url) || "text/plain");
   if (typeof blob === "string") throw new Error("Unable to extract file.");
   return blob!;
-}
-
-function getMime(file: string): string {
-  const extension = file.split(/\./i).at(-1) || "txt";
-  for (const mime in mimeDB) {
-    if (
-      mimeDB[mime].extensions &&
-      mimeDB[mime].extensions?.includes(extension)
-    ) {
-      return mime;
-    }
-  }
-  return "text/plain";
 }

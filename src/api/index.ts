@@ -1,3 +1,4 @@
+import AddonDownloader from "./AddonDownloader";
 import ExtensionReader from "./AddonReader";
 import ContextItem from "./ContextItem";
 import History from "./History";
@@ -30,6 +31,7 @@ const velocity = {
   history: new History(),
   postManifest: false,
   ExtensionReader,
+  AddonDownloader,
   RuntimeModifier,
   Popup,
   getActiveTab
