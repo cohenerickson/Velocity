@@ -44,15 +44,11 @@ export default function History(): JSX.Element {
                     setHistoryEntries(await window.Velocity.history.get());
                   }}
                 ></i>
-                {() => {
-                  const date = new Date(entry.timestamp);
-                  return (
-                    <span class="text-sm opacity-50">
-                      {date.getHours() % 12}:{date.getMinutes()}{" "}
-                      {date.getHours() >= 12 ? "PM" : "AM"}
-                    </span>
-                  );
-                }}
+                <span class="text-sm opacity-50">
+                  {new Date(entry.timestamp).getHours() % 12}:
+                  {new Date(entry.timestamp).getMinutes()}{" "}
+                  {new Date(entry.timestamp).getHours() >= 12 ? "PM" : "AM"}
+                </span>
                 <a
                   href={entry.url}
                   onClick={(e) => {
