@@ -21,11 +21,22 @@ import { preferences } from "~/util/";
 
 export default function Root(): JSX.Element {
   onMount(async () => {
-    ["/uv/uv.config.js", "/uv/uv.bundle.js"].forEach((_) => {
-      const s = document.createElement("script");
-      s.src = _;
-      document.head.appendChild(s);
-    });
+    const fontawesome = document.createElement("script");
+    fontawesome.src = "/pro.fontawesome.js";
+    document.head.appendChild(fontawesome);
+
+    const bundle = document.createElement("script");
+    bundle.charset = "UTF-8";
+    bundle.src = "/uv/uv.bundle.js";
+
+    bundle.onload = () => {
+      const config = document.createElement("script");
+      config.src = "/uv/uv.config.js";
+      document.head.appendChild(config);
+    };
+
+    document.head.appendChild(bundle);
+
     await updateTheme(localStorage.getItem("theme")!);
 
     window.addEventListener("storage", async (event: StorageEvent) => {
@@ -59,9 +70,6 @@ export default function Root(): JSX.Element {
   return (
     <Html lang="en">
       <Head>
-        <script src="/pro.fontawesome.js" defer></script>
-        <script src="/uv/uv.bundle.js"></script>
-        <script src="/uv/uv.config.js"></script>
         <SEO />
       </Head>
       <Body class="h-screen">
