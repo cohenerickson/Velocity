@@ -1,7 +1,7 @@
 import { ADDON_DIR, ADDON_STORE_DIR } from "./constants";
 import getBrowserObject from "./polyfill";
 // @ts-ignore
-import Filer from "Filer";
+import Filer from "filer";
 import path from "path";
 import Manifest from "webextension-manifest";
 
