@@ -78,4 +78,5 @@ Velocity is still in it's early stages but if it gains enough interest among the
 
 - Bookmarklet support
 - Extension support
+- registerProtocolHandler support
 - And more...

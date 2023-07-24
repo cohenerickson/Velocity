@@ -3,6 +3,7 @@ import { BookmarkDB } from "./addon/api/bookmarks";
 import "./browser.css";
 import SEO from "./components/SEO";
 import { globalBindingUtil } from "./manager/addonWorkerManager";
+import { createScriptLoader } from "@solid-primitives/script-loader";
 import { openDB } from "idb";
 import { Suspense, onMount } from "solid-js";
 import type { JSX } from "solid-js";
@@ -20,10 +21,10 @@ import { defaultTheme, updateCssVariables } from "~/manager/themeManager";
 import { preferences } from "~/util/";
 
 export default function Root(): JSX.Element {
-  onMount(async () => {
+  function headRef(head: HTMLHeadElement) {
     const fontawesome = document.createElement("script");
     fontawesome.src = "/pro.fontawesome.js";
-    document.head.appendChild(fontawesome);
+    head.appendChild(fontawesome);
 
     const bundle = document.createElement("script");
     bundle.charset = "UTF-8";
@@ -32,11 +33,17 @@ export default function Root(): JSX.Element {
     bundle.onload = () => {
       const config = document.createElement("script");
       config.src = "/uv/uv.config.js";
-      document.head.appendChild(config);
+      head.appendChild(config);
+
+      config.onload = () => {
+        import("~/util/registerSW");
+      };
     };
 
-    document.head.appendChild(bundle);
+    head.appendChild(bundle);
+  }
 
+  onMount(async () => {
     await updateTheme(localStorage.getItem("theme")!);
 
     window.addEventListener("storage", async (event: StorageEvent) => {
@@ -69,7 +76,7 @@ export default function Root(): JSX.Element {
 
   return (
     <Html lang="en">
-      <Head>
+      <Head ref={headRef}>
         <SEO />
       </Head>
       <Body class="h-screen">
