@@ -1,3 +1,4 @@
+import { createScriptLoader } from "@solid-primitives/script-loader";
 import { onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import { Title } from "solid-start";
@@ -12,6 +13,21 @@ import type Preferences from "~/types/Preferences";
 
 export default function Home(): JSX.Element {
   onMount(async () => {
+    createScriptLoader({
+      src: "https://www.googletagmanager.com/gtag/js?id=G-8TFXC6CJTR",
+      onLoad() {
+        // @ts-ignore
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          // @ts-ignore
+          window.dataLayer.push(arguments);
+        }
+        // @ts-ignore
+        gtag("js", new Date());
+        // @ts-ignore
+        gtag("config", "G-8TFXC6CJTR");
+      }
+    });
     await import("~/scripts/registerKeybinds");
     await import("~/scripts/addonStoreModifier");
     await import("~/api");
