@@ -91,7 +91,7 @@ export default function ContextMenu(): JSX.Element {
       <For each={buttons()}>
         {(button: ContextItem): JSX.Element => {
           if (button.separator) {
-            return <hr class="my-1 mx-2" />;
+            return <hr class="mx-2 my-1" />;
           } else {
             return (
               <Button

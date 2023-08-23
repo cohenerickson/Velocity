@@ -1,7 +1,7 @@
 import Tab from "./Tab";
 import EventEmitter from "events";
-import { popups, setPopups } from "~/data/appState";
 import { JSX } from "solid-js";
+import { popups, setPopups } from "~/data/appState";
 
 export type Text = {
   type?: "text";

@@ -40,7 +40,7 @@ export default function Toggle(props: ToggleProps): JSX.Element {
         value={getState()}
         ref={onChange}
         id={props.id}
-        class="rounded bg-[#2A2A32] py-[7px] px-[15px]"
+        class="rounded bg-[#2A2A32] px-[15px] py-[7px]"
       >
         {props.values.map(
           (value): JSX.Element => (
