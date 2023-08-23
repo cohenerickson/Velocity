@@ -3,10 +3,7 @@ import { createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 import { BookmarkTreeNode } from "~/addon/api/bookmarks";
 import ContextItem from "~/api/ContextItem";
-import Tab from "~/api/Tab";
 import { remove, run } from "~/manager/bookmarkManager";
-import { open } from "~/manager/clickManager";
-import { getActiveTab } from "~/util";
 
 interface BookmarkProps {
   sortable: any;

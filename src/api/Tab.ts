@@ -110,7 +110,8 @@ export default class Tab extends EventEmitter {
     create({
       type: "bookmark",
       title: this.title(),
-      url: this.url()
+      url: this.url(),
+      icon: this.icon()
     });
   }
 

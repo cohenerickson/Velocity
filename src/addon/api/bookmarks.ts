@@ -32,6 +32,7 @@ export type CreateDetails = {
   title?: string;
   type?: BookmarkTreeNodeType;
   url: string;
+  icon?: string;
 };
 
 export type BookmarkTreeNodeType = "bookmark" | "folder" | "separator";

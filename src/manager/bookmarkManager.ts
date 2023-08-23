@@ -32,7 +32,8 @@ export async function create(bookmark: CreateDetails) {
     parentId: bookmark.parentId,
     title: bookmark.title || bookmark.url || "New Folder",
     type: bookmark.type ?? "folder",
-    url: bookmark.url
+    url: bookmark.url,
+    icon: bookmark.icon
   };
 
   setBookmarks([...bookmarks(), node]);
@@ -66,9 +67,9 @@ export async function run(
       );
     } else {
       if (event?.ctrlKey || ctrlOverride) {
-        new Tab(node.url, false);
+        new Tab(node.url || "about:newTab", false);
       } else {
-        getActiveTab().navigate(node.url);
+        getActiveTab().navigate(node.url || "about:newTab");
       }
     }
   }
