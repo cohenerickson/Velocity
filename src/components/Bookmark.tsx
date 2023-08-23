@@ -51,7 +51,9 @@ export default function Bookmark(props: BookmarkProps): JSX.Element {
           src={createSignal<string>(bookmark.icon || "about:newTab")[0]}
         ></Favicon>
       </div>
-      {bookmark.title}
+      {bookmark.title.length > 20
+        ? bookmark.title.substring(0, 18) + "..."
+        : bookmark.title}
     </div>
   );
 }
