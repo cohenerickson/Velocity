@@ -89,9 +89,7 @@ export default class AddonDownloader extends EventEmitter {
     }
 
     await promisify(sh.mkdirp.bind(sh))(this.dirname);
-    await promisify(sh.mkdirp.bind(sh))(
-      path.join(ADDON_STORE_DIR, id)
-    );
+    await promisify(sh.mkdirp.bind(sh))(path.join(ADDON_STORE_DIR, id));
 
     const metaPath = path.join(ADDON_STORE_DIR, id, "meta.json");
 

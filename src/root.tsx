@@ -1,4 +1,5 @@
 // @refresh reload
+import { BookmarkTreeNode, getChildren } from "./addon/api/bookmarks";
 import "./browser.css";
 import SEO from "./components/SEO";
 import { globalBindingUtil } from "./manager/addonWorkerManager";
@@ -48,19 +49,10 @@ export default function Root(): JSX.Element {
       if (event.key === "theme") await updateTheme(event.newValue!);
     });
 
-    sh.mkdirp("/Velocity");
-    if (await sh.exists("/Velocity/bookmarks.json")) {
-      setBookmarks(
-        JSON.parse(await fs.readFile("/Velocity/bookmarks.json", "utf8"))
-      );
-    } else {
-      setBookmarks([]);
-    }
+    setBookmarks(await getChildren("root________"));
 
     globalBindingUtil.on("bookmarks.reload", async () => {
-      setBookmarks(
-        JSON.parse(await fs.readFile("/Velocity/bookmarks.json", "utf8"))
-      );
+      setBookmarks(await getChildren("root________"));
     });
 
     setBookmarksShown((preferences()["bookmarks.shown"] as boolean) ?? true);

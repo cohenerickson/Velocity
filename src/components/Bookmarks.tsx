@@ -9,7 +9,7 @@ import {
 } from "@thisbeyond/solid-dnd";
 import type { JSX } from "solid-js";
 import { For, Show } from "solid-js";
-import { BookmarkTreeNode } from "~/addon/api/bookmarks";
+import { BookmarkTreeNode, move } from "~/addon/api/bookmarks";
 import ContextItem from "~/api/ContextItem";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import { bookmarksShown, setBookmarksShown } from "~/data/appState";
@@ -28,6 +28,9 @@ export default function Bookmarks(): JSX.Element {
       );
       if (fromIndex !== toIndex) {
         const updatedItems = currentItems.slice();
+        move(draggable.id, {
+          index: toIndex
+        });
         updatedItems.splice(toIndex, 0, ...updatedItems.splice(fromIndex, 1));
         setBookmarks(updatedItems);
       }
