@@ -40,8 +40,11 @@ function registerEvents(tab: Tab): void {
   tab.iframe.contentWindow?.addEventListener(
     "contextmenu",
     (event: Event & { data?: ContextItem[] }) => {
-      if (event.target)
-        event.data = generateContextButtons(event.target as HTMLElement);
+      if (!event.defaultPrevented) {
+        if (event.target) {
+          event.data = generateContextButtons(event.target as HTMLElement);
+        }
+      }
     }
   );
   tab.iframe.contentWindow?.addEventListener("DOMContentLoaded", () => {
