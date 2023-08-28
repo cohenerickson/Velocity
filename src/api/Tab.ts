@@ -2,7 +2,7 @@ import EventEmitter from "events";
 import { createSignal } from "solid-js";
 import type { Accessor, Setter } from "solid-js";
 import { setTabStack, setTabs, tabStack, tabs } from "~/data/appState";
-import { create } from "~/manager/bookmarkManager";
+import { createNode } from "~/manager/bookmarkManager";
 import * as contentScriptManager from "~/manager/contentScriptManager";
 import * as tabManager from "~/manager/tabManager";
 import { getActiveTab } from "~/util";
@@ -107,10 +107,10 @@ export default class Tab extends EventEmitter {
   }
 
   bookmark() {
-    create({
+    createNode({
       type: "bookmark",
       title: this.title(),
-      url: this.url(),
+      url: this.url() || "about:newTab",
       icon: this.icon()
     });
   }

@@ -1,52 +1,27 @@
 import { globalBindingUtil } from "./addonWorkerManager";
-import { IDBPDatabase, openDB } from "idb";
-import { isServer } from "solid-js/web";
-import { v4 } from "uuid";
 import {
-  BookmarkDB,
   BookmarkTreeNode,
-  CreateDetails
+  CreateDetails,
+  remove,
+  create,
+  update
 } from "~/addon/api/bookmarks";
 import Tab from "~/api/Tab";
 import { bookmarks, setBookmarks } from "~/data/appState";
 import { getActiveTab } from "~/util";
 
-let db: IDBPDatabase<BookmarkDB>;
-if (!isServer) {
-  db = await openDB<BookmarkDB>("bookmarks", 1, {
-    upgrade(db) {
-      db.createObjectStore("bookmarks", {
-        keyPath: "id"
-      });
-    }
-  });
-}
-
-export async function create(bookmark: CreateDetails) {
-  const node: BookmarkTreeNode = {
-    dateAdded: Date.now(),
-    dateGroupModified: Date.now(),
-    dateLastUsed: bookmark.type !== "folder" ? Date.now() : undefined,
-    id: v4(),
-    index: bookmark.index,
-    parentId: bookmark.parentId,
-    title: bookmark.title || bookmark.url || "New Folder",
-    type: bookmark.type ?? "folder",
-    url: bookmark.url,
-    icon: bookmark.icon
-  };
+export async function createNode(bookmark: CreateDetails) {
+  const node = await create(bookmark);
 
   setBookmarks([...bookmarks(), node]);
-
-  await db.put("bookmarks", node);
 
   globalBindingUtil.emit("bookmarks.create", node.id, node);
 }
 
-export async function remove(node: BookmarkTreeNode) {
-  setBookmarks(bookmarks().filter((x) => x.id !== node.id));
+export async function removeNode(node: BookmarkTreeNode) {
+  await remove(node.id);
 
-  await db.delete("bookmarks", node.id);
+  setBookmarks(bookmarks().filter((x) => x.id !== node.id));
 
   globalBindingUtil.emit("bookmarks.onRemoved", node.id, {
     index: node.index,
@@ -73,4 +48,57 @@ export async function run(
       }
     }
   }
+}
+
+export async function edit(node: BookmarkTreeNode) {
+  const popup = new Velocity.Popup(Velocity.getActiveTab());
+
+  popup.addComponent({
+    type: "text",
+    content: "Name"
+  });
+  popup.addComponent({
+    type: "input",
+    id: "title",
+    value: node.title
+  });
+
+  popup.addComponent({
+    type: "text",
+    content: "URL"
+  });
+  popup.addComponent({
+    type: "input",
+    id: "url",
+    value: node.url
+  });
+
+  popup.addButton({
+    style: 0,
+    text: "Save",
+    id: "save"
+  });
+  popup.addButton({
+    style: 1,
+    text: "Cancel",
+    id: "cancel"
+  });
+
+  popup.on("save", (data) => {
+    update(node.id, {
+      title: data.title,
+      url: data.url
+    });
+
+    // TODO: Fix
+    setBookmarks([
+      ...bookmarks().filter((x) => x.id !== node.id),
+      Object.assign({}, node, {
+        title: data.title,
+        url: data.url
+      })
+    ]);
+  });
+
+  popup.push();
 }

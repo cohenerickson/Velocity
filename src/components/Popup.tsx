@@ -1,5 +1,5 @@
 import { JSX, For, Show } from "solid-js";
-import Popup from "~/api/Popup";
+import Popup, { Input } from "~/api/Popup";
 import { popups } from "~/data/appState";
 import { getActiveTab } from "~/util";
 
@@ -24,13 +24,54 @@ export default function Popups(): JSX.Element {
                       .url()
                       .replace(/^https?:\/\/.*?\/(.*)$/, (m, g1) =>
                         m.replace(g1, "")
-                      ) || "about:newTab"}
+                      )}
                   </span>
                 </div>
 
-                <For each={popup.components.filter((x) => x.type === "text")}>
-                  {(component: any) => <p class="">{component.content}</p>}
-                </For>
+                <div class="flex flex-col">
+                  <For
+                    each={popup.components.filter((x) => x.type !== "button")}
+                  >
+                    {(component) => {
+                      if (component.type === "text") {
+                        return <p>{component.content}</p>;
+                      } else if (component.type === "input") {
+                        return (
+                          <input
+                            type="text"
+                            value={component.value ?? ""}
+                            id={`_${popup.id}_${component.id}`}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && !e.shiftKey) {
+                                popup.emit(
+                                  (
+                                    popup.components.filter(
+                                      (x) => x.type === "button"
+                                    )[0] as Input
+                                  ).id,
+                                  Object.fromEntries(
+                                    (
+                                      popup.components.filter(
+                                        (x) => x.type === "input"
+                                      ) as Input[]
+                                    ).map((x) => [
+                                      x.id,
+                                      document.querySelector<HTMLInputElement>(
+                                        `#_${popup.id}_${x.id}`
+                                      )!.value
+                                    ])
+                                  )
+                                );
+                                popup.close();
+                              }
+                            }}
+                            class="m-1 rounded bg-[rgba(251,251,254,0.07)] px-[15px] py-[7px] focus:outline focus:outline-[1.6px] focus:outline-offset-2 focus:outline-[#00ddff]"
+                          ></input>
+                        );
+                      }
+                    }}
+                  </For>
+                </div>
 
                 <div class="flex justify-end">
                   <For
@@ -44,8 +85,22 @@ export default function Popups(): JSX.Element {
                             : "bg-[rgba(251,251,254,0.07)]"
                         }`}
                         onClick={() => {
+                          popup.emit(
+                            component.id,
+                            Object.fromEntries(
+                              (
+                                popup.components.filter(
+                                  (x) => x.type === "input"
+                                ) as Input[]
+                              ).map((x) => [
+                                x.id,
+                                document.querySelector<HTMLInputElement>(
+                                  `#_${popup.id}_${x.id}`
+                                )!.value
+                              ])
+                            )
+                          );
                           popup.close();
-                          popup.emit(component.id);
                         }}
                       >
                         {component.text}

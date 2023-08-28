@@ -1,10 +1,8 @@
 // @refresh reload
-import { BookmarkDB } from "./addon/api/bookmarks";
 import "./browser.css";
 import SEO from "./components/SEO";
 import { globalBindingUtil } from "./manager/addonWorkerManager";
-import { createScriptLoader } from "@solid-primitives/script-loader";
-import { openDB } from "idb";
+import { fs, sh } from "./util/fs";
 import { Suspense, onMount } from "solid-js";
 import type { JSX } from "solid-js";
 import {
@@ -50,18 +48,19 @@ export default function Root(): JSX.Element {
       if (event.key === "theme") await updateTheme(event.newValue!);
     });
 
-    const db = await openDB<BookmarkDB>("bookmarks", 1, {
-      upgrade(db) {
-        db.createObjectStore("bookmarks", {
-          keyPath: "id"
-        });
-      }
-    });
-
-    setBookmarks(await db.getAll("bookmarks"));
+    sh.mkdirp("/Velocity");
+    if (await sh.exists("/Velocity/bookmarks.json")) {
+      setBookmarks(
+        JSON.parse(await fs.readFile("/Velocity/bookmarks.json", "utf8"))
+      );
+    } else {
+      setBookmarks([]);
+    }
 
     globalBindingUtil.on("bookmarks.reload", async () => {
-      setBookmarks(await db.getAll("bookmarks"));
+      setBookmarks(
+        JSON.parse(await fs.readFile("/Velocity/bookmarks.json", "utf8"))
+      );
     });
 
     setBookmarksShown((preferences()["bookmarks.shown"] as boolean) ?? true);

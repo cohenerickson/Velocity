@@ -7,10 +7,10 @@ import * as i18n from "./api/i18n";
 import * as idle from "./api/idle";
 import runtime from "./api/runtime";
 import * as storage from "./api/storage";
-import Manifest from "webextension-manifest";
+import { Permissions } from "webextension-manifest";
 
 declare global {
-  var getBrowserObject: (manifest: Manifest["permissions"], id: string) => any;
+  var getBrowserObject: (manifest: Permissions, id: string) => any;
 }
 
 function deepFreeze(object: any): any {
@@ -27,10 +27,7 @@ function deepFreeze(object: any): any {
   return Object.freeze(object);
 }
 
-self.getBrowserObject = (
-  permissions: Manifest["permissions"],
-  id: string
-): any => {
+self.getBrowserObject = (permissions: Permissions, id: string): any => {
   const browser = {
     dom,
     i18n,
@@ -39,37 +36,37 @@ self.getBrowserObject = (
 
   runtime.id = id;
 
-  if (permissions?.includes("alarms")) {
+  if (permissions.includes("alarms")) {
     Object.assign(browser, {
       alarms
     });
   }
 
-  if (permissions?.includes("bookmarks")) {
+  if (permissions.includes("bookmarks")) {
     Object.assign(browser, {
       bookmarks
     });
   }
 
-  if (permissions?.includes("captivePortal")) {
+  if (permissions.includes("captivePortal")) {
     Object.assign(browser, {
       captivePortal
     });
   }
 
-  if (permissions?.includes("dns")) {
+  if (permissions.includes("dns")) {
     Object.assign(browser, {
       dns
     });
   }
 
-  if (permissions?.includes("idle")) {
+  if (permissions.includes("idle")) {
     Object.assign(browser, {
       idle
     });
   }
 
-  if (permissions?.includes("storage")) {
+  if (permissions.includes("storage")) {
     Object.assign(browser, {
       storage
     });

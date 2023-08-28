@@ -7,7 +7,8 @@ const __dirname = process.cwd();
 export default (env, argv) => {
   return {
     entry: {
-      worker: "./src/addon/worker.ts"
+      worker: "./src/addon/worker.ts",
+      polyfill: "./src/addon/polyfill.ts"
     },
     output: {
       path: path.resolve(__dirname, "./out"),

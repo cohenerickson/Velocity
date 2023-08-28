@@ -10,6 +10,7 @@ import Tab from "./Tab";
 import { bindIFrameMousemove } from "~/components/ContextMenu";
 import { bookmarks, protocols, tabs, keybinds } from "~/data/appState";
 import { getActiveTab } from "~/util";
+import { fs, sh } from "~/util/fs";
 
 const velocity = {
   Tab,
@@ -34,7 +35,9 @@ const velocity = {
   AddonDownloader,
   RuntimeModifier,
   Popup,
-  getActiveTab
+  getActiveTab,
+  fs,
+  sh
 };
 
 declare global {

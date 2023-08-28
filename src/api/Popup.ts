@@ -1,6 +1,7 @@
 import Tab from "./Tab";
 import EventEmitter from "events";
 import { JSX } from "solid-js";
+import { v4 } from "uuid";
 import { popups, setPopups } from "~/data/appState";
 
 export type Text = {
@@ -16,6 +17,7 @@ export type Button = {
 export type Input = {
   type?: "input";
   id: string;
+  value?: string;
 };
 
 type Component = Text | Button | Input;
@@ -27,10 +29,12 @@ export default class Popup extends EventEmitter {
 
   components: Component[] = [];
   linkedTab: Tab;
+  id: string;
 
   constructor(tab: Tab, type?: number, content: string = "") {
     super();
 
+    this.id = v4();
     this.linkedTab = tab;
 
     tab.on("closed", this.close);

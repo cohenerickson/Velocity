@@ -1,18 +1,16 @@
 import { ADDON_DIR, ADDON_STORE_DIR } from "./constants";
 import getBrowserObject from "./polyfill";
-// @ts-ignore
-import Filer from "filer";
 import path from "path";
 import Manifest from "webextension-manifest";
+import { fs, sh } from "~/util/fs";
 
 const params = new URLSearchParams(location.search);
 const id = params.get("id")!;
 
 if (!id) self.close();
 
-const fileSystem = new Filer.FileSystem();
-const fs = fileSystem.promises;
 const __dirname = path.join(ADDON_DIR, id);
+sh.mkdirp(__dirname);
 
 const manifest: Manifest = JSON.parse(
   await fs.readFile(path.join(__dirname, "manifest.json"), "utf8")
