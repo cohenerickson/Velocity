@@ -16,7 +16,7 @@ export default function Popups(): JSX.Element {
         {(popup: Popup): JSX.Element => (
           <Show when={popup.linkedTab === getActiveTab()}>
             <div class={`flex h-full w-full items-center justify-center`}>
-              <div class="top-50 left-50 relative min-w-[408px] flex-none rounded-lg bg-[#42414d] px-3 py-4 text-[#fbfbfe]">
+              <div class="popup relative min-w-[408px] flex-none rounded-md border px-3 py-4">
                 <div class="mb-2 select-none font-semibold">
                   <i class="fa-light fa-globe mr-2"></i>
                   <span>
