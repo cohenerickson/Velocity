@@ -74,7 +74,7 @@ npm start
 
 ## Contributing
 
-Velocity is still in it's early stages but if it gains enough interest among the community there are quite a few other features that I would like to implement, listed below are a few of these.
+Velocity is still in its early stages but if it gains enough interest among the community there are quite a few other features that I would like to implement, listed below are a few of these.
 
 - Bookmarklet support
 - Extension support
