@@ -5,7 +5,6 @@ import { bindIFrameMousemove } from "~/components/ContextMenu";
 import handleClick from "~/manager/clickManager";
 import generateContextButtons from "~/manager/contextManager";
 import keybind from "~/manager/keybindManager";
-import xenosPostManifest from "~/manager/xenosManager";
 import * as urlUtil from "~/util/url";
 
 export function register(tab: Tab): void {
@@ -65,15 +64,6 @@ function registerEvents(tab: Tab): void {
       )
         tab.historyId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
       window.Velocity.history.add(tab);
-    }
-    if ("xen" in window) {
-      const manifest =
-        tab.iframe.contentDocument?.querySelector<HTMLLinkElement>(
-          "link[rel='manifest']"
-        )?.href;
-      if (manifest) {
-        xenosPostManifest(manifest, tab.url());
-      }
     }
   });
 

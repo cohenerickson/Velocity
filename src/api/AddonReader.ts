@@ -1,8 +1,7 @@
-import BareClient from "@tomphttp/bare-client";
 import * as zip from "@zip.js/zip.js";
 import type * as ManifestTypes from "webextension-manifest";
-import { bareClient, setBareClient } from "~/data/appState";
 import { ADDON_NORMALIZE_REGEX } from "~/util";
+import bareClient from "~/util/bareClient";
 
 export default class AddonReader {
   blob?: Blob;
@@ -10,16 +9,6 @@ export default class AddonReader {
   ready: Promise<boolean>;
 
   constructor(url: string) {
-    if (!bareClient()) {
-      const server =
-        typeof window.__uv$config.bare === "string"
-          ? window.__uv$config.bare
-          : window.__uv$config.bare[
-              Math.floor(Math.random() * window.__uv$config.bare.length)
-            ];
-      setBareClient(new BareClient(new URL(server, location.toString())));
-    }
-
     this.ready = new Promise((accept, reject) => {
       this.download(url)
         .then(() => {
@@ -32,7 +21,7 @@ export default class AddonReader {
   }
 
   async download(url: string): Promise<void> {
-    const request = await bareClient()!.fetch(url);
+    const request = await bareClient.fetch(url);
     const blob = await request.blob();
 
     this.blob = blob;
