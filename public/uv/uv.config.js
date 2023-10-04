@@ -3,7 +3,7 @@ self.__uv$config = {
     ? "/bare/"
     : ["/bare1/", "/bare2/", "/bare3/", "/bare4/"].map(
         (x) =>
-          `https://uv.${location.host.replace(/^www\./, "")}${x}`
+          `https://uv.${location.host.replace(/^[^.]*\.(?=\w+\.\w+$)/, "")}${x}`
       ),
   prefix: "/~/uv/",
   encodeUrl: Ultraviolet.codec.xor.encode,
