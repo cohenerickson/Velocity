@@ -1,53 +1,50 @@
-import * as bookmarks from "../addon/api/bookmarks";
-import AddonDownloader from "./AddonDownloader";
-import ExtensionReader from "./AddonReader";
-import ContextItem from "./ContextItem";
-import History from "./History";
-import Keybind, { KeybindQuery } from "./Keybind";
-import Popup from "./Popup";
-import Protocol from "./Protocol";
-import RuntimeModifier from "./RuntimeModifier";
-import Tab from "./Tab";
-import { bindIFrameMousemove } from "~/components/ContextMenu";
-import { protocols, tabs, keybinds } from "~/data/appState";
-import { getActiveTab } from "~/util";
-import { fs, sh } from "~/util/fs";
-
-const velocity = {
-  Tab,
-  getTabs: tabs,
-  Protocol,
-  getProtocols: protocols,
-  ContextItem,
-  Keybind,
-  getKeybinds: keybinds,
-  getKeybind: (query: KeybindQuery) =>
-    keybinds().find((keybind) => {
-      for (let [k, v] of Object.entries(query)) {
-        if (keybind[k as keyof Keybind] === v) return true;
-      }
-      return false;
-    }),
-  bindIFrameMousemove,
-  history: new History(),
-  postManifest: false,
-  ExtensionReader,
-  AddonDownloader,
-  RuntimeModifier,
-  Popup,
-  getActiveTab,
-  fs,
-  sh,
-  bookmarks
+// Types
+export type ImageDetails = {
+  format?: ImageFormat;
+  quality?: number;
+  rect?: Rect;
+  scale?: number;
 };
 
-declare global {
-  var Velocity: typeof velocity;
-  interface Window {
-    Velocity: typeof velocity;
-  }
-}
-globalThis.Velocity = velocity;
-if (!import.meta.env.SSR) window.Velocity = velocity;
+export type ImageFormat = "jpeg" | "png";
 
-export default velocity;
+export type Rect = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type InjectDetails = {
+  allFrames?: boolean;
+  code?: string;
+  cssOrigin?: CSSOrigin;
+  file?: string;
+  frameId?: number;
+  matchAboutBlank?: boolean;
+  runAt?: RunAt;
+};
+
+export type CSSOrigin = "author" | "user";
+
+export type DeleteInjectionDetails = {
+  allFrames?: boolean;
+  code?: string;
+  cssOrigin?: CSSOrigin;
+  file?: string;
+  frameId?: number;
+  matchAboutBlank?: boolean;
+};
+
+export type RunAt = "document_start" | "document_end" | "document_idle";
+
+export * as declarativeContent from "./declarativeContent";
+export * as dns from "./dns";
+export * as dom from "./dom";
+export * as extension from "./extension";
+export * as i18n from "./i18n";
+export * as pageAction from "./pageAction";
+export * as permissions from "./permissions";
+export * as runtime from "./runtime";
+export * as tabs from "./tabs";
+export * as windows from "./windows";

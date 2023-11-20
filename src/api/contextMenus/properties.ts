@@ -1,0 +1,1 @@
+export const ACTION_MENU_TOP_LEVEL_LIMIT = 6;

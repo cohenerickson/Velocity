@@ -1,0 +1,14 @@
+{
+  "name": "Velocity",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "./512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "display_override": ["window-controls-overlay", "fullscreen"],
+  "display": "standalone"
+}

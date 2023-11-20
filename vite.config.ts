@@ -1,43 +1,11 @@
-import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
-import solid from "solid-start/vite";
+import preact from "@preact/preset-vite";
+import million from "million/compiler";
 import { defineConfig } from "vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
-import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
-  plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: `${uvPath}/.`.replace(/\\/g, "/"),
-          dest: "uv"
-        },
-        {
-          src: "public/uv/uv.config.js",
-          dest: "uv"
-        },
-        {
-          src: "./out/.",
-          dest: "addon"
-        }
-      ]
-    }),
-    nodePolyfills({
-      globals: {
-        Buffer: true,
-        global: true,
-        process: true
-      }
-    }),
-    solid({ ssr: false })
-  ],
-  server: {
-    proxy: {
-      "^/bare/*": {
-        rewrite: (path: string) => path.replace(/^\/bare/, ""),
-        target: "http://localhost:8080/",
-        ws: true
-      }
-    }
+  base: "./",
+  plugins: [million.vite({ auto: true }), preact()],
+  build: {
+    target: "esnext"
   }
 });

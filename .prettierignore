@@ -1,5 +1,2 @@
-node_modules
 dist
-out
-.solid
-public/pro.fontawesome.js
+node_modules

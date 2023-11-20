@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  color: rgb(251, 251, 254);
+}
+
+.toolbar {
+  background: rgb(28, 27, 34);
+}
+
+.toolbar .navBar {
+  background-color: rgb(43, 42, 51);
+
+  .button:hover {
+    background-color: rgba(207, 207, 216, 0.2);
+  }
+}
+
+.tab {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.tab .favicon {
+  image-rendering: -moz-crisp-edges;
+}
+
+.tabToolbar {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.tabContainer {
+  width: env(titlebar-area-width, 100%);
+  min-height: env(titlebar-area-height, auto);
+  margin-left: env(titlebar-area-x, 0);
+}
+
+.tabContainer .newTabBtn:hover {
+  background-color: rgba(207, 207, 216, 0.2);
+}
+
+.tab:not(.active):hover {
+  color: rgb(251, 251, 254);
+  background-color: color-mix(in srgb, currentColor 11%, transparent);
+}
+
+.tab.active {
+  background-image: linear-gradient(rgb(66, 65, 77), rgb(66, 65, 77)),
+    linear-gradient(rgb(43, 42, 51), rgb(43, 42, 51)),
+    var(--lwt-header-image, none);
+}
+
+.tab .close:hover {
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+}
