@@ -1,4 +1,8 @@
-import { DeleteInjectionDetails, ImageDetails, InjectDetails } from "..";
+import {
+  DeleteInjectionDetails,
+  ImageDetails,
+  InjectDetails
+} from "../extensionTypes";
 import { getMeta } from "../util/meta";
 import serial from "../util/serial";
 import { Window } from "../windows";

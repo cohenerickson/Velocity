@@ -1,6 +1,6 @@
 import serial from "./serial";
 
-type ExtensionMeta = {
+export type ExtensionMeta = {
   type: "chrome" | "firefox";
   version: string;
   nonGrantedPermissions: string[];

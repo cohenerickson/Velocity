@@ -1,21 +1,27 @@
 import type { Tab } from "../tabs";
 
-export type ContextType =
-  | "all"
-  | "page"
-  | "frame"
-  | "selection"
-  | "link"
-  | "editable"
-  | "image"
-  | "video"
-  | "audio"
-  | "launcher"
-  | "browser_action"
-  | "page_action"
-  | "action";
+export enum ContextType {
+  ALL = "all",
+  PAGE = "page",
+  FRAME = "frame",
+  SELECTION = "selection",
+  LINK = "link",
+  EDITABLE = "editable",
+  IMAGE = "image",
+  VIDEO = "video",
+  AUDIO = "audio",
+  LAUNCHER = "launcher",
+  BROWSER_ACTION = "browser_action",
+  PAGE_ACTION = "page_action",
+  ACTION = "action"
+}
 
-export type ItemType = "normal" | "checkbox" | "radio" | "separator";
+export enum ItemType {
+  NORMAL = "normal",
+  CHECKBOX = "checkbox",
+  RADIO = "radio",
+  SEPARATOR = "separator"
+}
 
 export type OnClickData = {
   checked?: boolean;

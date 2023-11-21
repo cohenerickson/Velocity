@@ -4,11 +4,25 @@ export type MutedInfo = {
   reason?: MutedInfoReason;
 };
 
-export type MutedInfoReason = "capture" | "extension" | "user";
+export enum MutedInfoReason {
+  CAPTURE = "capture",
+  EXTENSION = "extension",
+  USER = "user"
+}
 
-export type TabStatus = "unloaded" | "loading" | "complete";
+export enum TabStatus {
+  COMPLETE = "complete",
+  LOADING = "loading",
+  UNLOADED = "unloaded"
+}
 
-export type WindowType = "normal" | "popup" | "panel" | "app" | "devtools";
+export enum WindowType {
+  NORMAL = "normal",
+  POPUP = "popup",
+  PANEL = "panel",
+  APP = "app",
+  DEVTOOLS = "devtools"
+}
 
 export type ZoomSettings = {
   defaultZoomFactor?: number;
@@ -42,9 +56,16 @@ export type PageSettings = {
   toFileName?: string;
 };
 
-export type ZoomSettingsMode = "automatic" | "manual" | "disabled";
+export enum ZoomSettingsMode {
+  AUTOMATIC = "automatic",
+  MANUAL = "manual",
+  DISABLED = "disabled"
+}
 
-export type ZoomSettingsScope = "per-origin" | "per-tab";
+export enum ZoomSettingsScope {
+  PER_ORIGIN = "per-origin",
+  PER_TAB = "per-tab"
+}
 
 export type Tab = {
   active: boolean;
@@ -91,7 +112,7 @@ export type UpdateProperties = {
   pinned?: boolean;
   selected?: boolean;
   url?: string;
-}
+};
 
 export type QueryInfo = {
   active?: boolean;
@@ -110,4 +131,10 @@ export type QueryInfo = {
   url?: string | string[];
   windowId?: number;
   windowType?: WindowType;
+};
+
+export type ConnectInfo = {
+  documentId?: string;
+  frameId?: number;
+  name?: string;
 };
