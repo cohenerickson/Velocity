@@ -1,2 +1,3 @@
-export { id } from "../util/runtime";
-export { lastError } from "../util/runtime";
+export * from "./classes";
+export * from "./properties";
+export * from "./types";

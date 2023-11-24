@@ -1,4 +1,12 @@
-import { CreateProperties, Tab } from "../api/tabs";
+import { ImageDetails } from "../api/extensionTypes";
+import { Port } from "../api/runtime";
+import {
+  ConnectInfo,
+  CreateProperties,
+  Tab,
+  TabStatus,
+  UpdateProperties
+} from "../api/tabs";
 import { fs } from "../api/util/fs";
 import serial from "../api/util/serial";
 import { signal, Signal } from "@preact/signals";
@@ -30,6 +38,27 @@ export async function setActive(tab: Tab) {
   await write();
 }
 
+serial.handle<string>(
+  "tabs.captureTab",
+  async (tabId: number, options?: ImageDetails) => {
+    return "";
+  }
+);
+
+serial.handle<string>(
+  "tabs.captureVisibleTab",
+  async (windowId: number, options?: ImageDetails) => {
+    return "";
+  }
+);
+
+serial.handle<Port>(
+  "tabs.connect",
+  async (tabId: number, options?: ConnectInfo) => {
+    return new Port("");
+  }
+);
+
 serial.handle<Tab>(
   "tabs.create",
   async (createProperties: CreateProperties = {}) => {
@@ -51,7 +80,7 @@ serial.handle<Tab>(
       openerTabId: createProperties.openerTabId ?? undefined,
       pinned: createProperties.pinned ?? false,
       sessionId: undefined,
-      status: "loading",
+      status: TabStatus.LOADING,
       successorTabId: undefined,
       title: createProperties.url ?? "New Tab",
       url: createProperties.url ?? "about:newTab",
@@ -97,6 +126,34 @@ serial.handle("tabs.remove", (tabIds: number | number[]) => {
     tabs.value = [...tabs.peek()];
   }
 });
+
+serial.handle(
+  "tabs.update",
+  (tabId: number, updateProperties: UpdateProperties) => {
+    const tab = tabs.peek().find((tab) => tab.id === tabId)!;
+
+    if (!tab.active && updateProperties.active) {
+      serial.emit("tabs.onActivated", {
+        tabId: tab.id,
+        windowId: tab.windowId
+      });
+    }
+
+    tab.active = updateProperties.active ?? tab.active;
+    tab.autoDiscardable =
+      updateProperties.autoDiscardable ?? tab.autoDiscardable;
+    tab.highlighted = updateProperties.highlighted ?? tab.highlighted;
+    //tab.mutedInfo = updateProperties.muted ?? tab.muted;
+    tab.openerTabId = updateProperties.openerTabId ?? tab.openerTabId;
+    tab.pinned = updateProperties.pinned ?? tab.pinned;
+    tab.active = updateProperties.selected ?? tab.active;
+    tab.url = updateProperties.url ?? tab.url;
+
+    tabs.value.splice(tab.index, 1, tab);
+
+    return tab;
+  }
+);
 
 export function write(): Promise<void> {
   return fs.writeFile(
