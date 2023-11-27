@@ -67,6 +67,10 @@ declare global {
     browser.dns = await import("./dns");
   }
 
+  if (meta.grantedPermissions.includes("alarms")) {
+    browser.alarms = await import("./alarms");
+  }
+
   const script = await fs.readFile(
     `extensions/${extensionId}/${scriptFile}`,
     "utf8"
