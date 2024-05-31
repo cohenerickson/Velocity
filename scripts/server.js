@@ -1,12 +1,19 @@
 import createBareServer from "@tomphttp/bare-server-node";
 import express from "express";
 import http from "node:http";
+// @ts-expect-error missing types
+import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
+import { baremuxPath } from "@mercuryworkshop/bare-mux";
+import wisp from 'wisp-server-node';
 
 const PORT = process.env.PORT || 3000;
 const __dirname = process.cwd();
 
 const httpServer = http.createServer();
 const app = express();
+
+app.use("/epoxy/", express.static(epoxyPath));
+app.use("/baremux/", express.static(baremuxPath));
 
 app.get("/uv/uv.config.js", (req, res) => {
   res.sendFile(__dirname + "/scripts/uv/uv.config.js");
@@ -21,19 +28,11 @@ app.get("*", (req, res) => {
 const bareServer = createBareServer("/bare/");
 
 httpServer.on("request", (req, res) => {
-  if (bareServer.shouldRoute(req)) {
-    bareServer.routeRequest(req, res);
-  } else {
-    app(req, res);
-  }
+  app(req, res);
 });
 
 httpServer.on("upgrade", (req, socket, head) => {
-  if (bareServer.shouldRoute(req)) {
-    bareServer.routeUpgrade(req, socket, head);
-  } else {
-    socket.end();
-  }
+  wisp.routeRequest(req, socket, head)
 });
 
 httpServer.on("listening", () => {
