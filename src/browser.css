@@ -175,5 +175,5 @@
 #ntp #logo {
   background-color: currentColor;
   -webkit-mask: url(/icons/velocity.svg) no-repeat center;
-  mask: url(icons/velocity.svg) no-repeat center;
+  mask: url(/icons/velocity.svg) no-repeat center;
 }
