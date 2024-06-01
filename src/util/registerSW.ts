@@ -16,16 +16,9 @@ console.log("wisp url is ", wispUrl);
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.ready.then(async () => {
-    try {
-      localStorage.setItem("transport", "epoxy");
-      console.log("Setting transport to Epoxy");
-      BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
-    } catch (e) {
-      await setTimeout(1000);
-      localStorage.setItem("transport", "epoxy");
-      console.log("Setting transport to Epoxy");
-      BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
-    }
+    localStorage.setItem("transport", "epoxy");
+    console.log("Setting transport to Epoxy");
+    BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
   });
   navigator.serviceWorker.register("/sw.js", {
     scope: ""

@@ -32,6 +32,14 @@ export default function Utility(): JSX.Element {
     element.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
+        const wispUrl =
+          (location.protocol === "https:" ? "wss://" : "ws://") +
+          location.host +
+          "/";
+        console.log("wisp url is ", wispUrl);
+        localStorage.setItem("transport", "epoxy");
+        console.log("Setting transport to Epoxy");
+        BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
         if (element.value) {
           getActiveTab()?.navigate(element.value);
           getActiveTab().search = false;
