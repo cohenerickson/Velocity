@@ -1,3 +1,5 @@
+import { setTimeout } from "timers/promises";
+
 declare global {
   var __uv$config: {
     prefix: string;
@@ -9,17 +11,14 @@ declare global {
 }
 
 const wispUrl =
-            (location.protocol === "https:" ? "wss://" : "ws://") +
-            location.host +
-            "/";
-            console.log("wisp url is ", wispUrl);
+  (location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/";
+console.log("wisp url is ", wispUrl);
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.ready.then(async () => {
-  //await registerRemoteListener(sw.active!)
-      localStorage.setItem("transport", "epoxy");
-      console.log("Setting transport to Epoxy");
-      BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
+    localStorage.setItem("transport", "epoxy");
+    console.log("Setting transport to Epoxy");
+    BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
   });
   navigator.serviceWorker.register("/sw.js", {
     scope: ""
