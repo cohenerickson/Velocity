@@ -15,11 +15,6 @@ const wispUrl =
 console.log("wisp url is ", wispUrl);
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.ready.then(async () => {
-    localStorage.setItem("transport", "epoxy");
-    console.log("Setting transport to Epoxy");
-    BareMux.SetTransport("EpxMod.EpoxyClient", { wisp: wispUrl });
-  });
   navigator.serviceWorker.register("/sw.js", {
     scope: ""
   });

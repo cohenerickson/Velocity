@@ -9,7 +9,7 @@ export default function ViewSource(): JSX.Element {
 
   bareClient
     .fetch(query)
-    .then((response) => {
+    .then((response: Response) => {
       response.text().then((text) => {
         document.getElementById("code")!.innerHTML = Prism.highlight(
           text,
@@ -49,3 +49,4 @@ export default function ViewSource(): JSX.Element {
     </main>
   );
 }
+
