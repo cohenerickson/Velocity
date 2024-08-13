@@ -34,16 +34,6 @@ export default function Root(): JSX.Element {
       config.src = "/uv/uv.config.js";
       head.appendChild(config);
 
-      const epoxy_script = document.createElement("script");
-      epoxy_script.src = "/epoxy/index.js";
-      head.appendChild(epoxy_script);
-
-      const baremux_script = document.createElement("script");
-      baremux_script.src = "/baremux/bare.cjs";
-      baremux_script.type = "text/javascript";
-      head.appendChild(baremux_script);
-
-
       config.onload = () => {
         import("~/util/registerSW");
       };
@@ -93,3 +83,4 @@ export default function Root(): JSX.Element {
     </Html>
   );
 }
+

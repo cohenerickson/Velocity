@@ -1,4 +1,5 @@
-import type BareClient from "@tomphttp/bare-client";
+//@ts-expect-error there is types, typescript just doesnt feel like using them
+import type BareClient from "@mercuryworkshop/bare-mux";
 import { createSignal } from "solid-js";
 import { BookmarkTreeNode } from "~/addon/api/bookmarks";
 import { IdleState } from "~/addon/api/idle";
@@ -20,3 +21,4 @@ export const [protocols, setProtocols] = createSignal<Protocol[]>([]);
 export const [keybinds, setKeybinds] = createSignal<Keybind[]>([]);
 export const [addons, setAddons] = createSignal<AddonEntry[]>([]);
 export const [idleState, setIdleState] = createSignal<IdleState>("active");
+

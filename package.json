@@ -40,15 +40,13 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@mercuryworkshop/bare-mux": "^1.1.0",
-    "@mercuryworkshop/epoxy-transport": "^1.1.0",
+    "@mercuryworkshop/bare-mux": "^2.0.4",
+    "@mercuryworkshop/epoxy-transport": "^2.1.5",
     "@solid-primitives/script-loader": "^2.0.2",
     "@solidjs/meta": "^0.28.0",
     "@solidjs/router": "^0.8.2",
     "@thisbeyond/solid-dnd": "^0.7.4",
-    "@titaniumnetwork-dev/ultraviolet": "^3.1.2",
-    "@tomphttp/bare-client": "^1.1.2-beta.3",
-    "@tomphttp/bare-server-node": "^1.2.3",
+    "@titaniumnetwork-dev/ultraviolet": "^3.2.6",
     "@zip.js/zip.js": "^2.6.79",
     "cld3-asm": "^3.1.1",
     "color": "^4.2.3",
@@ -64,9 +62,10 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "solid-js": "^1.6.2",
     "solid-start": "^0.2.0",
-    "wisp-server-node": "^1.1.0"
+    "wisp-server-node": "^1.1.3"
   },
   "engines": {
     "node": ">=18.x"
   }
 }
+
